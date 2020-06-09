@@ -1,0 +1,16 @@
+easy_admin:
+  entities:
+    Country:
+      class: App\Entity\Country
+      label: 'Pays'
+      list:
+        fields:
+              - { property: 'name', label: 'Nom' } 
+              - { property: 'code', label: 'Code pays'}
+      form:
+        fields:
+            - { property: 'name', label: 'Nom' } 
+            - { property: 'code', label: 'Code pays'}    
+              
+      
+      

@@ -1,0 +1,10 @@
+easy_admin:
+  entities:
+    Vehicle:
+      class: App\Entity\Vehicle
+      list:
+        fields:
+          - { property: 'name', label: 'Nom' } 
+      form:
+        fields:
+            - { property: 'name', label: 'Nom' } 

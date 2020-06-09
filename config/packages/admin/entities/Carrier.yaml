@@ -1,0 +1,20 @@
+easy_admin:
+  entities:
+    Carrier:
+        class: App\Entity\Carrier 
+        list:
+          fields:
+              - { property: 'name', label: 'Nom' } 
+              - { property: 'contact', label: 'Contact'}
+              - { property: 'telephone', label: 'Téléphone'}
+              - { property: 'email', label: 'Mail'} 
+        form:
+          fields:
+            - { property: 'name', label: 'Nom' } 
+            - { property: 'contact', label: 'Contact'}
+            - { property: 'telephone', label: 'Téléphone'}
+            - { property: 'email', label: 'Mail'} 
+            - { property: 'adress', label: 'Adresse'} 
+
+        
+     

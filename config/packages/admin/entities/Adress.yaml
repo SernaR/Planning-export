@@ -1,0 +1,18 @@
+easy_admin:
+  entities:
+    Adress:
+        class: App\Entity\Adress
+        label: 'Adresse'
+        list:
+          fields:
+              - { property: 'main', label: 'lieu' } 
+              - { property: 'code', label: 'Code postal'}
+              - { property: 'city', label: 'Ville'}
+              - { property: 'country', label: 'Pays'}
+        form:
+          fields:
+              - { property: 'main', label: 'Adresse' }
+              - { property: 'secondary', label: 'Complément' } 
+              - { property: 'code', label: 'Code postal'}
+              - { property: 'city', label: 'Ville'}
+              - { property: 'country', label: 'Pays'}         

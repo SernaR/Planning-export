@@ -1,0 +1,15 @@
+easy_admin:
+  entities:
+    Warehouse:
+      class: App\Entity\Warehouse
+      label: 'Entrepôt'
+      list:
+        fields:
+          - { property: 'country', label: 'Pays' } 
+          - { property: 'name', label: 'Nom' } 
+          - { property: 'adress', label: 'Adresse' } 
+      form:
+        fields:
+          - { property: 'name', label: 'Nom' } 
+          - { property: 'adress', label: 'Adresse' }
+          
