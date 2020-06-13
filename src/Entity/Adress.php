@@ -38,7 +38,7 @@ class Adress
     private $city;
 
     /**
-     * @ORM\OneToOne(targetEntity=Country::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="adresses")
      */
     private $country;
 

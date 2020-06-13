@@ -49,9 +49,15 @@ class Carrier
      */
     private $adress;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Country::class, inversedBy="carriers")
+     */
+    private $deliveryPlaces;
+
     public function __construct()
     {
         $this->transportOrders = new ArrayCollection();
+        $this->deliveryPlaces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,6 +152,32 @@ class Carrier
     public function setAdress(?Adress $adress): self
     {
         $this->adress = $adress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Country[]
+     */
+    public function getDeliveryPlaces(): Collection
+    {
+        return $this->deliveryPlaces;
+    }
+
+    public function addDeliveryPlace(Country $deliveryPlace): self
+    {
+        if (!$this->deliveryPlaces->contains($deliveryPlace)) {
+            $this->deliveryPlaces[] = $deliveryPlace;
+        }
+
+        return $this;
+    }
+
+    public function removeDeliveryPlace(Country $deliveryPlace): self
+    {
+        if ($this->deliveryPlaces->contains($deliveryPlace)) {
+            $this->deliveryPlaces->removeElement($deliveryPlace);
+        }
 
         return $this;
     }

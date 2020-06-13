@@ -106,7 +106,7 @@ class Warehouse
     }
 
     public function country() {
-        return $this->adress->getCountry()->getName();
+        return $this->adress ? $this->adress->getCountry()->getName() : 'Aucun';
     }
 
     /**

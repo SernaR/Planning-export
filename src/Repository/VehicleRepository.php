@@ -19,6 +19,15 @@ class VehicleRepository extends ServiceEntityRepository
         parent::__construct($registry, Vehicle::class);
     }
 
+    public function findVehicleNames()
+    {
+        return $this->createQueryBuilder('v')
+            ->select('v.id','v.name')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Vehicle[] Returns an array of Vehicle objects
     //  */

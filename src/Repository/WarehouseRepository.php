@@ -19,6 +19,19 @@ class WarehouseRepository extends ServiceEntityRepository
         parent::__construct($registry, Warehouse::class);
     }
 
+    public function findWarehouseByCountry($country)
+    {
+        return $this->createQueryBuilder('w')
+            ->select('w.id','w.name')
+            ->join('w.adress', 'a')
+            ->where('a.country = :country')
+            ->setParameter('country', $country)
+            ->orderBy('w.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Warehouse[] Returns an array of Warehouse objects
     //  */

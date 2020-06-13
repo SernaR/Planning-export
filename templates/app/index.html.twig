@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AppController!{% endblock %}
+
+{% block body %}
+    {{ dump(orders) }}
+    {% for order in orders %}
+        {{ order.carrier.name }}
+    {% endfor %}
+{% endblock %}

@@ -19,6 +19,15 @@ class TransportOrderRepository extends ServiceEntityRepository
         parent::__construct($registry, TransportOrder::class);
     }
 
+    public function lastOrderCode()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('count(t.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+        ;    
+    }
+
     // /**
     //  * @return TransportOrder[] Returns an array of TransportOrder objects
     //  */

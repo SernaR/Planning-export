@@ -39,7 +39,6 @@ class TransportOrder
      */
     private $firstDelivery;
 
-
     /**
      * @ORM\Column(type="float", nullable=true)
      */

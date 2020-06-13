@@ -2,11 +2,40 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+             <!-- Import font awesome -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/css/axentix.min.css" />
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <body class="layout">
+        <header>
+            <nav class="navbar primary">
+                <a href="#" target="_blank" class="navbar-brand">Axentix</a>
+                <div class="navbar-menu ml-auto">
+                <a class="navbar-link" href="#">Link 1</a>
+                <a class="navbar-link" href="#">Link 2</a>
+                <a class="navbar-link" href="#">Link 3</a>
+                <a class="navbar-link" href="#">Link 4</a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Code here the main content -->
+            {% block body %}{% endblock %}
+        </main>
+
+        <footer class="footer primary">
+            Copyright © 2019 - Example
+        </footer>
+        
+        {% block javascripts %}
+            <script src="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/js/axentix.min.js"></script> 
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </body>
 </html>
