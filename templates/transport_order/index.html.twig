@@ -3,18 +3,58 @@
 {% block title %}Hello TransportOrderController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Gours/Documents/GitHub/Export_Symfony/src/Controller/TransportOrderController.php'|file_link(0) }}">src/Controller/TransportOrderController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Gours/Documents/GitHub/Export_Symfony/templates/transport_order/index.html.twig'|file_link(0) }}">templates/transport_order/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <section class="container">
+        
+        {{ form_start(form) }}
+        <div class="card">
+            <div class="form-field card-content">
+                <div class="grix xs4">
+                    {{ form_row(form.code) }}  
+                    {{ form_row(form.country) }}
+                    {{ form_row(form.carrier) }}
+                    <button type="submit" class="btn btn-primary mt-2 btn-block">Rechercher</button>
+                </div>    
+            </div>
+          </div>   
+        {{ form_end(form) }}
+        <div class="card">
+            <div class="card-content responsive-table-2">
+                <table class="table hover">
+                    <tbody>
+                        {% for order in orders %}
+                            <tr class="press modal-trigger" data-target="modal-example">
+                                <td>{{ order.code }}</td>
+                                <td>{{ order.firstDeliveryWarehouse ? order.firstDeliveryWarehouse.adress.country.name : ''}}</td>
+                                <td>{{ order.carrier.name }}</td>
+                                <td>{{ order.firstloadingStart|date("d/m/Y") }}</td>
+                            </tr>
+                        {% endfor %}    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{ knp_pagination_render(orders) }}
+            
+        
+    </section>
+    
+    <div class="modal white rounded-3" id="modal-example">
+        <div class="modal-header">
+            Header
+            <button data-target="modal-example" class="modal-trigger">
+            <i class="fas fa-times"></i> <!-- Use font awesome -->
+            </button>
+        </div>
+        <div class="modal-content">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores dolorum eum in totam amet soluta! Id distinctio iusto
+            voluptatum ipsam officia, odit neque, fuga, commodi totam repellendus deserunt quod laborum? Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Assumenda nostrum doloribus quisquam minima minus animi voluptatum illo illum. Vel, labore iure aut sed nobis
+            officiis itaque molestias rerum natus vero.
+        </div>
+        <div class="modal-footer">
+            Footer
+        </div>
+    </div>
+    
+   
 {% endblock %}

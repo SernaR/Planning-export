@@ -2,22 +2,43 @@
 
 namespace App\Controller;
 
-
-use App\Repository\CountryRepository;
-use App\Repository\VehicleRepository;
-use App\Repository\WarehouseRepository;
+use App\Entity\OrderSearch;
+use App\Form\OrderFilterType;
+use Knp\Component\Pager\PaginatorInterface;
+use App\Repository\TransportOrderRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TransportOrderController extends AbstractController
 {
     /**
-     * @Route("/transport/order", name="transport_order")
+     * @Route("/transport/order/list", name="transport_order_list")
      */
-    public function index()
+    public function index(Request $request, TransportOrderRepository $transportOrderRepository, PaginatorInterface $paginator)
     {
+    
+        $search = new OrderSearch();
+        $form = $this->createForm(OrderFilterType::class, $search);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            //$code = $form['code']->getData();
+            $data = $transportOrderRepository->findAllFiltered($search);
+        } else {
+            $data = $transportOrderRepository->findAll();
+            
+        }
+
+        $orders = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            15
+        );
+
         return $this->render('transport_order/index.html.twig', [
-            'controller_name' => 'TransportOrderController',
+            'orders' => $orders,
+            'form' => $form->createView(),
         ]);
     }
 

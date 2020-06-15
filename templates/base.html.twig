@@ -14,11 +14,11 @@
     <body class="layout">
         <header>
             <nav class="navbar primary">
-                <a href="#" target="_blank" class="navbar-brand">Axentix</a>
+                <a href={{ path('app')}}  class="navbar-brand">Axentix</a>
                 <div class="navbar-menu ml-auto">
-                <a class="navbar-link" href="#">Link 1</a>
-                <a class="navbar-link" href="#">Link 2</a>
-                <a class="navbar-link" href="#">Link 3</a>
+                <a class="navbar-link" href={{ path('transport_order_new') }}>Nouvel OT</a>
+                <a class="navbar-link" href={{ path('transport_order_list') }}>Liste OT</a>
+                <a class="navbar-link" href="#" target="_blank">_blank</a>
                 <a class="navbar-link" href="#">Link 4</a>
                 </div>
             </nav>

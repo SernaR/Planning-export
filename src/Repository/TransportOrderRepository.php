@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\OrderSearch;
 use App\Entity\TransportOrder;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method TransportOrder|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,6 +27,36 @@ class TransportOrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
         ;    
+    }
+
+    public function findAllFiltered(OrderSearch $search) {
+
+        $query = $this->createQueryBuilder('t')
+            ->join('t.carrier', 'ca')
+            ->join('t.firstDeliveryWarehouse', 'w')
+            ->join('w.adress', 'a')
+            ->join('a.country', 'c'); 
+
+        if($search->getCode()) {
+            $query = $query
+                ->andWhere('t.code like :code')
+                ->setParameter('code',  '%'.$search->getCode().'%');
+        }
+
+        if($search->getCountry()) {
+            $query = $query
+                ->andWhere('c.name like :country')
+                ->setParameter('country',  '%'.$search->getCountry().'%');
+        } 
+        
+        if($search->getCarrier()) {
+            $query = $query
+                ->andWhere('ca.name like :carrier')
+                ->setParameter('carrier',  '%'.$search->getCarrier().'%');
+        }
+        return $query->getQuery();
+
+
     }
 
     // /**
