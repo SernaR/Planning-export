@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AdressRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AdressRepository::class)
@@ -39,6 +40,7 @@ class Adress
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="adresses")
+     * @Groups({"orders_read"})
      */
     private $country;
 

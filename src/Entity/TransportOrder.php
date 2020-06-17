@@ -3,12 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\TransportOrderRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=TransportOrderRepository::class)
  * @UniqueEntity("code")
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups"={"orders_read"}
+ *  }
+ * )
  */
 class TransportOrder
 {
@@ -21,41 +29,49 @@ class TransportOrder
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups({"orders_read"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"orders_read"})
      */
     private $firstLoadingStart;
 
     /**
      * @ORM\Column(type="datetime")
+     * 
      */
     private $firstLoadingEnd;
 
     /**
      * @ORM\Column(type="datetime")
+     * 
      */
     private $firstDelivery;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * 
      */
     private $amount;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * 
      */
     private $effectiveFirstLoadingStart;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * 
      */
     private $effectiveFirstLoadingEnd;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * 
      */
     private $effectiveFirstLoadingBoxes;
 
@@ -75,22 +91,24 @@ class TransportOrder
     private $effectiveFirstDelivery;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $weight;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $volume;
 
     /**
      * @ORM\ManyToOne(targetEntity=Carrier::class, inversedBy="transportOrders")
+     * @Groups({"orders_read"})
      */
     private $carrier;
 
     /**
      * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstLoadings")
+     * 
      */
     private $firstLoadingWarehouse;
 
@@ -101,16 +119,19 @@ class TransportOrder
 
     /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstDeliveries")
+     * @Groups({"orders_read"})
      */
     private $firstDeliveryWarehouse;
 

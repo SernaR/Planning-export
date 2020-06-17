@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactDOM from 'react-dom'
-import DateTime from './form/DateTime';
+
+import Select from '../components/form/Select';
+import DateTime from '../components/form/DateTime';
+
 import API from '../services/api'
-import Select from './form/Select';
 import {toast} from '../services/toast'
 
-const NewTO = (props) => {
+const Create = (props) => {
     useEffect( () =>{
         setup()
     }, [])
@@ -142,13 +143,7 @@ const NewTO = (props) => {
                 <button className="btn blue">Submit</button>
             </form>
         </section>
-    </>                
+    </> 
 }
-
-const newToElement = document.querySelector('#react-new-TO')
-
-if (newToElement) {
-    ReactDOM.render(<NewTO />, newToElement)
-}
-
-
+ 
+export default Create;

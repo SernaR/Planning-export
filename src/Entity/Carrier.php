@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CarrierRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +22,7 @@ class Carrier
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"orders_read"})
      */
     private $name;
 
@@ -54,10 +56,18 @@ class Carrier
      */
     private $deliveryPlaces;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="carrier")
+     */
+    private $rates;
+
+    
+
     public function __construct()
     {
         $this->transportOrders = new ArrayCollection();
         $this->deliveryPlaces = new ArrayCollection();
+        $this->rates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,4 +191,37 @@ class Carrier
 
         return $this;
     }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(Rate $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates[] = $rate;
+            $rate->setCarrier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rate $rate): self
+    {
+        if ($this->rates->contains($rate)) {
+            $this->rates->removeElement($rate);
+            // set the owning side to null (unless already changed)
+            if ($rate->getCarrier() === $this) {
+                $rate->setCarrier(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

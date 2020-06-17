@@ -1,13 +1,35 @@
-import './components/NewTO'
+import React from 'react';
+import ReactDOM from "react-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 
-// any CSS you import will output into a single css file (app.css in this case)
+//import './components/NewTO'
+//import './components/Fulfill'
+import Home from './pages/Home'
+import List from './pages/List'
+import Create from './pages/Create'
+
 import '../css/app.css';
 
-// Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
+let axentix = new Axentix('all');
 
+const App = () => {
+    return (
+        <HashRouter>
+            <Switch>
+                <Route path="/creation" component={ Create } />
+                <Route path="/liste" component={ List } />
+                <Route path="/" component={ Home } />
+            </Switch>  
+        </ HashRouter>
+    )
+}
 
-var axentix = new Axentix('all');
+const rootElement = document.querySelector('#root')
+if(rootElement) {
+    ReactDOM.render(<App />, rootElement)
+}
+
 
 
 

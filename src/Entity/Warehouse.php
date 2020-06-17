@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\WarehouseRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,11 +22,13 @@ class Warehouse
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"orders_read"})
      */
     private $name;
 
     /**
      * @ORM\OneToOne(targetEntity=Adress::class, cascade={"persist", "remove"})
+     * @Groups({"orders_read"})
      */
     private $adress;
 
@@ -39,10 +42,16 @@ class Warehouse
      */
     private $firstDeliveries;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="firstLoadingWarehouse")
+     */
+    private $rates;
+
     public function __construct()
     {
         $this->firstLoadings = new ArrayCollection();
         $this->firstDeliveries = new ArrayCollection();
+        $this->rates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +143,37 @@ class Warehouse
             // set the owning side to null (unless already changed)
             if ($firstDelivery->getFirstDeliveryWarehouse() === $this) {
                 $firstDelivery->setFirstDeliveryWarehouse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(Rate $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates[] = $rate;
+            $rate->setFirstLoadingWarehouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rate $rate): self
+    {
+        if ($this->rates->contains($rate)) {
+            $this->rates->removeElement($rate);
+            // set the owning side to null (unless already changed)
+            if ($rate->getFirstLoadingWarehouse() === $this) {
+                $rate->setFirstLoadingWarehouse(null);
             }
         }
 

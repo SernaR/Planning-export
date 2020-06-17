@@ -55,8 +55,27 @@ class TransportOrderRepository extends ServiceEntityRepository
                 ->setParameter('carrier',  '%'.$search->getCarrier().'%');
         }
         return $query->getQuery();
+    }
 
-
+    public function findOneToFulfill($order) {
+        return $this->createQueryBuilder('t')
+            ->select(
+                't.code',
+                't.firstLoadingStart',
+                't.firstLoadingEnd',
+                't.firstDelivery',
+                'c.name as carrier',
+                'lw.name as firstLoadingWarehouse',
+                'dw.name as firstDeliveryWarehouse'
+            )
+            ->join('t.carrier', 'c')
+            ->join('t.firstLoadingWarehouse', 'lw')
+            ->join('t.firstDeliveryWarehouse', 'dw')
+            ->andWhere('t.id = :order')
+            ->setParameter('order', $order)
+            ->getQuery()
+            ->getOneOrNullResult();
+            //->getResult(); 
     }
 
     // /**

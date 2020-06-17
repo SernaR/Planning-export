@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 class TransportOrderController extends AbstractController
 {
     /**
-     * @Route("/params/init")
+     * @Route("/params/init", methods={"GET"})
      */
     public function InitParams(CountryRepository $countryRepository, VehicleRepository $vehicleRepository, WarehouseRepository $warehouseRepository)
     {
@@ -43,7 +43,7 @@ class TransportOrderController extends AbstractController
     }
 
     /**
-     * @Route("/params/init/{country}")
+     * @Route("/params/init/{country}", methods={"GET"})
      */
     public function InitParamsByCountry(CarrierRepository $carrierRepository, WarehouseRepository $warehouseRepository, $country)
     {
@@ -60,7 +60,7 @@ class TransportOrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/create/{carrier}/{vehicle}/{firstLoadingWarehouse}/{firstDeliveryWarehouse}")
+     * @Route("/order/create/{carrier}/{vehicle}/{firstLoadingWarehouse}/{firstDeliveryWarehouse}", methods={"POST"})
      * route avec 2 entrepots...
      * route avec 3 entrepots...
      */
@@ -84,6 +84,14 @@ class TransportOrderController extends AbstractController
             $order->setVehicle($vehicle);
             $order->setFirstLoadingWarehouse($firstLoadingWarehouse);
             $order->setFirstDeliveryWarehouse($firstDeliveryWarehouse);
+
+            //init data for fulfill
+            //$order->setEffectiveFirstLoadingStart($order->getFirstLoadingStart());
+            //$order->setEffectiveFirstLoadingEnd($order->getFirstLoadingEnd());
+            //$order->setEffectiveFirstDelivery($order->getFirstDelivery());
+            //if isset second...
+            //if isset third...
+
             $order->setCreatedAt(new \DateTime());
             $order->setUpdatedAt(new \DateTime());
 
