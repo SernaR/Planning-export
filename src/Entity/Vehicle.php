@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\VehicleRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,11 +17,13 @@ class Vehicle
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"initial_params_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"initial_params_read"})
      */
     private $name;
 
@@ -29,9 +32,19 @@ class Vehicle
      */
     private $transportOrders;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=InitialParams::class, inversedBy="vehicles")
+     */
+    private $initialParams;
+
     public function __construct()
     {
         $this->transportOrders = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -78,6 +91,18 @@ class Vehicle
                 $transportOrder->setVehicle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInitialParams(): ?InitialParams
+    {
+        return $this->initialParams;
+    }
+
+    public function setInitialParams(?InitialParams $initialParams): self
+    {
+        $this->initialParams = $initialParams;
 
         return $this;
     }

@@ -2,7 +2,6 @@ import React from 'react';
 import useSWR from 'swr'
 import fetcher from '../services/api'
 import { ORDERS_API}  from '../services/config'
-console.log('ORDERS_API:', ORDERS_API)
 
 
 const List = (props) => {

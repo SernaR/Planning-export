@@ -11,12 +11,6 @@ function remove(id) {
     return axios.delete(ORDERS_API + "/" + id)
 }
 
-function find(id) {
-    return axios
-        .get(ORDERS_API + '/' + id)
-        .then(response => response.data);
-}
-
 function update(id, invoice) {
     return axios
         .put(ORDERS_API + '/' + id, 
@@ -30,9 +24,8 @@ function create(invoice) {
 }
 
 export default {
-    findAll,
-    find,
-    update,
-    create,
+    //findAll,
+    //update,
+    //create,
     //delete : remove
 }

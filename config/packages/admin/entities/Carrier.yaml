@@ -9,7 +9,6 @@ easy_admin:
               - { property: 'contact', label: 'Contact'}
               - { property: 'telephone', label: 'Téléphone'}
               - { property: 'email', label: 'Mail'}
-              - { property: 'deliveryPlaces', label: 'Destinations'} 
         form:
           fields:
             - { property: 'name', label: 'Nom' } 
@@ -17,7 +16,6 @@ easy_admin:
             - { property: 'telephone', label: 'Téléphone'}
             - { property: 'email', label: 'Mail'} 
             - { property: 'adress', label: 'Adresse'}
-            - { property: 'deliveryPlaces', label: 'Destinations'} 
 
         
      

@@ -1,10 +1,18 @@
+import axios from 'axios';
+
 const fetcher = url => fetch(url, {
   headers: {
       'Accept': 'application/json',
     }
   }).then(r => r.json())
 
-export default { fetcher }
+function find(url, id) {
+  return axios
+      .get(url + '/' + id)
+      .then(response => response.data);
+}  
+
+export default { fetcher, find }
 
 //////////////////////////////////////////////////////////////////////////////////////  
 // asuppr 

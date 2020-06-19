@@ -1,0 +1,17 @@
+easy_admin:
+  entities:
+    Rate:
+        class: App\Entity\Rate
+        label: 'Tarif'
+        list:
+          fields:
+            - { property: 'carrier', label: 'Transporteur' } 
+            - { property: 'firstLoadingWarehouse', label: 'Lieu de chargement'}
+            - { property: 'firstDeliveryWarehouse', label: 'Lieu de livraison'}
+            - { property: 'amount', label: 'Tarif'}
+        form:
+          fields:
+            - { property: 'carrier', label: 'Transporteur' } 
+            - { property: 'firstLoadingWarehouse', label: 'Lieu de chargement'}
+            - { property: 'firstDeliveryWarehouse', label: 'Lieu de livraison'}
+            - { property: 'amount', label: 'Tarif'}       

@@ -1,58 +1,54 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { CREATE_SETUP_API }  from '../services/config'
+import fetcher from '../services/api'
 
 import Select from '../components/form/Select';
 import DateTime from '../components/form/DateTime';
 
-import API from '../services/api'
+import paramsAPI from '../services/paramsAPI'
 import {toast} from '../services/toast'
+import useSWR from 'swr';
 
 const Create = (props) => {
-    useEffect( () =>{
+    /*useEffect( () =>{
         setup()
-    }, [])
+    }, [])*/
+
+    const { data, error } = useSWR( CREATE_SETUP_API, fetcher )
+    //const [initList, setInitList] = useState(data)
 
     const submitted = useRef(false)
     const [loading, setLoading] = useState(false)
 
-    const [initList, setInitList] = useState ({
-        countries: [], 
-        warehouses: [], 
-        vehicles: []
-    })
+  
     const [list, setList] = useState({
         carriers: [],
         warehouses: []
     })
-    const [order, setOrder] = useState({})
+    const [order, setOrder] = useState({
+        carrier: 'n',
+        firstLoadingWarehouse: 'n',
+        firstDeliveryWarehouse: 'n',
+    })
     const [params, setParams] = useState({})
 
     const setup = async () => {
-        setLoading(true)
-        setInitList({
-            countries: [], 
-            warehouses: [], 
-            vehicles: []
-        })
         setList({
             carriers: [],
             warehouses: []
         })
         setOrder({})
         setParams({})
-        try{
-            const initList = await API.setup()
-            setInitList(initList)  
-            
-        }catch (error) {
-            toast.show()
-        } 
-        setLoading(false)
+    }
+
+    const getRate = () => {
+        if (order.carrier && order.firstLoadingWarehouse && order.firstDeliveryWarehouse) return 'plop'
     }
 
     const handleChangeCountry = async ({currentTarget}) => {
         setLoading(true)
         try{
-            const list = await API.findAllByCountry(currentTarget.value)
+            const list = await paramsAPI.findAll(currentTarget.value)
             setList(list)
 
             setParams ({})
@@ -73,7 +69,8 @@ const Create = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setLoading(true)
+        alert(getRate())
+        /*setLoading(true)
         submitted.current = true
         try{
             const { status } = await API.create(order, params)
@@ -84,7 +81,7 @@ const Create = (props) => {
             } 
         } catch (error) {   } 
         toast.show() 
-        setLoading(false)
+        setLoading(false)*/
     }
 
     const validation = valid => {
@@ -93,6 +90,11 @@ const Create = (props) => {
         }
     }
 
+    if (error) return <div>failed to load</div>
+    if (!data) return <div className="progress indeterminate">
+        <div className="progress-bar secondary dark-1"></div>
+    </div>
+  
       
     return <>
         { loading && <div className="progress indeterminate">
@@ -102,7 +104,7 @@ const Create = (props) => {
             <form className="form-grix xs1" onSubmit={handleSubmit}>
                 <div className="form-field">
                     <label >Pays de destination</label>
-                    <Select items={initList.countries} onChange={ handleChangeCountry } value =""/>
+                    <Select items={data.countries} onChange={ handleChangeCountry } />
                 </div>
                 <hr/>
                 <div className="form-field">
@@ -113,11 +115,11 @@ const Create = (props) => {
                     </div>
                     <div className="form-field inline">
                         <label className={validation(params.vehicle)}>Vehicule</label>
-                        <Select name="vehicle" items={initList.vehicles} onChange={ handleChangeSelect }/>
+                        <Select name="vehicle" items={data.vehicles} onChange={ handleChangeSelect }/>
                     </div>
                     <div className="form-field inline">
                         <label className={validation(params.firstLoadingWarehouse)}>Entrepôt</label>
-                        <Select name="firstLoadingWarehouse" items={initList.warehouses} onChange={ handleChangeSelect }/>
+                        <Select name="firstLoadingWarehouse" items={data.warehouses} onChange={ handleChangeSelect }/>
                     </div>
                     <div className="form-field inline">
                         <label className={validation(order.firstLoadingStart)}>Date de départ - début</label>

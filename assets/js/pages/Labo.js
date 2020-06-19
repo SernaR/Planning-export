@@ -1,5 +1,6 @@
 import React from 'react';
 import useSWR from 'swr'
+import { CREATE_SETUP_API }  from '../services/config'
 
 const fetcher = url => fetch(url, {
     headers: {
@@ -9,7 +10,7 @@ const fetcher = url => fetch(url, {
     }).then(r => r.json())
 
 const List = (props) => {
-    const { data, error } = useSWR('/api/transport_orders', fetcher)
+    const { data, error } = useSWR(CREATE_SETUP_API, fetcher)
 
     if (error) return <div>failed to load</div>
     if (!data) return <div>loading...</div>

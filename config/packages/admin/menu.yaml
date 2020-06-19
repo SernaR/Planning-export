@@ -2,11 +2,23 @@ easy_admin:
   design:
     brand_color: 'black'
     menu:
-      - label: 'Parametrage'
+      - label: 'Information transport'
         icon: 'tools'
         children:
           - {entity: 'Warehouse', icon: 'industry', label: 'Entrepôts'}
           - {entity: 'Carrier', icon: 'truck-moving', label: 'Transporteurs'}
-          - {entity: 'Country', icon: 'globe', label: 'Pays'}
           - {entity: 'Adress', icon: 'address-card', label: 'Adresses'}
+      - label: 'Paramètrage transport'
+        icon: 'tools'
+        children:  
+          - {entity: 'Country', icon: 'globe', label: 'Pays'}
           - {entity: 'Vehicle', icon: 'truck-moving', label: 'Véhicules'}
+      - label: 'Tarifs'
+        icon: 'euro-sign'
+        children:  
+          - {entity: 'Rate', icon: 'euro-sign', label: 'Tarif'}  
+      - label: 'Réglage global'
+        icon: 'tools'
+        children:          
+          - {entity: 'InitialParams', icon: 'tools', label: 'Paramètres de base'}
+          - {entity: 'DestinationParams', icon: 'tools', label: 'Paramètres de destination'}

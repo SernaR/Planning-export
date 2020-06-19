@@ -17,17 +17,18 @@ class Warehouse
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"initial_params_read", "orders_read", "destination_params_read"})  
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "initial_params_read", "destination_params_read"})
      */
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity=Adress::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Adress::class, cascade={"persist", "remove"}, inversedBy="warehouse")
      * @Groups({"orders_read"})
      */
     private $adress;
@@ -47,11 +48,26 @@ class Warehouse
      */
     private $rates;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=InitialParams::class, inversedBy="warehouses")
+     */
+    private $initialParams;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=DestinationParams::class, inversedBy="warehouses")
+     */
+    private $destinationParams;
+
     public function __construct()
     {
         $this->firstLoadings = new ArrayCollection();
         $this->firstDeliveries = new ArrayCollection();
         $this->rates = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -176,6 +192,30 @@ class Warehouse
                 $rate->setFirstLoadingWarehouse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInitialParams(): ?InitialParams
+    {
+        return $this->initialParams;
+    }
+
+    public function setInitialParams(?InitialParams $initialParams): self
+    {
+        $this->initialParams = $initialParams;
+
+        return $this;
+    }
+
+    public function getDestinationParams(): ?DestinationParams
+    {
+        return $this->destinationParams;
+    }
+
+    public function setDestinationParams(?DestinationParams $destinationParams): self
+    {
+        $this->destinationParams = $destinationParams;
 
         return $this;
     }

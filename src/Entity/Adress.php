@@ -44,6 +44,13 @@ class Adress
      */
     private $country;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Warehouse::class, mappedBy="adress")
+     * @Groups({"country_read"})
+     */
+    private $warehouse;
+
+
     public function __toString()
    {
        return $this->main.' '.$this->code.' '.$this->city;
@@ -110,6 +117,18 @@ class Adress
     public function setCountry(?Country $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getWarehouse(): ?Warehouse
+    {
+        return $this->warehouse;
+    }
+
+    public function setWarehouse(?Warehouse $warehouse): self
+    {
+        $this->warehouse = $warehouse;
 
         return $this;
     }

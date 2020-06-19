@@ -8,8 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass=CarrierRepository::class)
+ *
  */
 class Carrier
 {
@@ -17,12 +19,14 @@ class Carrier
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"destination_params_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "destination_params_read"})
+     * 
      */
     private $name;
 
@@ -52,22 +56,27 @@ class Carrier
     private $adress;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Country::class, inversedBy="carriers")
-     */
-    private $deliveryPlaces;
-
-    /**
      * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="carrier")
      */
     private $rates;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=DestinationParams::class, mappedBy="carriers")
+     */
+    private $destinationParams;
 
     
 
     public function __construct()
     {
         $this->transportOrders = new ArrayCollection();
-        $this->deliveryPlaces = new ArrayCollection();
         $this->rates = new ArrayCollection();
+        $this->destinationParams = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -167,32 +176,6 @@ class Carrier
     }
 
     /**
-     * @return Collection|Country[]
-     */
-    public function getDeliveryPlaces(): Collection
-    {
-        return $this->deliveryPlaces;
-    }
-
-    public function addDeliveryPlace(Country $deliveryPlace): self
-    {
-        if (!$this->deliveryPlaces->contains($deliveryPlace)) {
-            $this->deliveryPlaces[] = $deliveryPlace;
-        }
-
-        return $this;
-    }
-
-    public function removeDeliveryPlace(Country $deliveryPlace): self
-    {
-        if ($this->deliveryPlaces->contains($deliveryPlace)) {
-            $this->deliveryPlaces->removeElement($deliveryPlace);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Rate[]
      */
     public function getRates(): Collection
@@ -218,6 +201,34 @@ class Carrier
             if ($rate->getCarrier() === $this) {
                 $rate->setCarrier(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DestinationParams[]
+     */
+    public function getDestinationParams(): Collection
+    {
+        return $this->destinationParams;
+    }
+
+    public function addDestinationParam(DestinationParams $destinationParam): self
+    {
+        if (!$this->destinationParams->contains($destinationParam)) {
+            $this->destinationParams[] = $destinationParam;
+            $destinationParam->addCarrier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDestinationParam(DestinationParams $destinationParam): self
+    {
+        if ($this->destinationParams->contains($destinationParam)) {
+            $this->destinationParams->removeElement($destinationParam);
+            $destinationParam->removeCarrier($this);
         }
 
         return $this;

@@ -7,6 +7,7 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 import Home from './pages/Home'
 import List from './pages/List'
 import Create from './pages/Create'
+import Labo from './pages/Labo'
 
 import '../css/app.css';
 
@@ -19,6 +20,7 @@ const App = () => {
             <Switch>
                 <Route path="/creation" component={ Create } />
                 <Route path="/liste" component={ List } />
+                <Route path="/labo" component={ Labo } />
                 <Route path="/" component={ Home } />
             </Switch>  
         </ HashRouter>

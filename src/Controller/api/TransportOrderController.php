@@ -25,24 +25,6 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 class TransportOrderController extends AbstractController
 {
     /**
-     * @Route("/params/init", methods={"GET"})
-     */
-    public function InitParams(CountryRepository $countryRepository, VehicleRepository $vehicleRepository, WarehouseRepository $warehouseRepository)
-    {
-        try {
-            return $this->json([
-            'countries' => $countryRepository->findCountryNames(),
-            'vehicles' => $vehicleRepository->findVehicleNames(),
-            'warehouses' => $warehouseRepository->findWarehouseByCountry(1) //à améliorer
-            ], 200);
-        } catch(Error $e) {
-            return $this->json([
-                'message' => $e->getMessage()
-            ], 500);
-        }        
-    }
-
-    /**
      * @Route("/params/init/{country}", methods={"GET"})
      */
     public function InitParamsByCountry(CarrierRepository $carrierRepository, WarehouseRepository $warehouseRepository, $country)

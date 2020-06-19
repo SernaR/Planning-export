@@ -1,0 +1,16 @@
+easy_admin:
+  entities:
+    DestinationParams:
+        class: App\Entity\DestinationParams
+        label: 'Paramètres destinataire'
+        list:
+          fields:
+            - { property: 'id' } 
+            - { property: 'country', label: 'Pays de destination' } 
+            - { property: 'carriers', label: 'Transporteurs'}
+            - { property: 'warehouses', label: 'Lieux de destination'}
+        form:
+          fields:
+            - { property: 'country', label: 'Pays de destination', type: 'entity', type_options: { class: 'App\Entity\Country'} } 
+            - { property: 'carriers', label: 'Transporteurs', type: 'entity', type_options: { class: 'App\Entity\Carrier', multiple: true,by_reference: false, attr: { data-widget: 'select2' }} } 
+            - { property: 'warehouses', label: 'Lieux de destination', type: 'entity', type_options: { class: 'App\Entity\Warehouse', multiple: true,by_reference: false, attr: { data-widget: 'select2' }}}      
