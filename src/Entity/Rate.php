@@ -3,12 +3,29 @@
 namespace App\Entity;
 
 use App\Repository\RateRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+//use Doctrine\Common\Collections\ArrayCollection;
+//use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=RateRepository::class)
+ * @ApiResource(
+ *  collectionOperations={"get"},
+ *  itemOperations={"get"},
+ *  normalizationContext={
+ *      "groups"={"rate_read"}
+ *  }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={
+ *  "carrier": "exact",
+ *  "firstLoadingWarehouse": "exact",
+ *  "firstDeliveryWarehouse": "exact",
+ * })
  */
 class Rate
 {
@@ -16,11 +33,13 @@ class Rate
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
+     *  @Groups({"rate_read"})
      */
     private $amount;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\api;
+namespace App\Controller\Api;
 
 use Error;
 use Symfony\Component\Routing\Annotation\Route;

@@ -6,7 +6,8 @@ setDefaultLocale('fr')
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const DateTime = ({name, startDate = '', setStartDate}) => {
+const DateTime = ({name, minDate, startDate = '', setStartDate}) => {
+    
     return ( 
         <div className="form-field">   
             <DatePicker
@@ -14,7 +15,7 @@ const DateTime = ({name, startDate = '', setStartDate}) => {
                 placeholderText="Date Time"
                 selected={ startDate }
                 onChange={ date => setStartDate(name, date) }
-                minDate={new Date()}
+                minDate={ minDate }
                 //ajouter 2heures
                 showTimeSelect
                 timeCaption="heure"

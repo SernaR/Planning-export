@@ -8,8 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+
+
 /**
  * @ORM\Entity(repositoryClass=WarehouseRepository::class)
+ * @ApiResource(
+ *  collectionOperations={},
+ *  itemOperations={"get"},
+ * )
  */
 class Warehouse
 {
@@ -67,6 +74,9 @@ class Warehouse
 
     public function __toString()
     {
+        if(is_null($this->name)) {
+            return 'NULL';
+        }
         return $this->name;
     }
 

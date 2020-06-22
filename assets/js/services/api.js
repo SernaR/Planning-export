@@ -2,17 +2,28 @@ import axios from 'axios';
 
 const fetcher = url => fetch(url, {
   headers: {
-      'Accept': 'application/json',
+      'Accept': 'application/ld+json',
     }
   }).then(r => r.json())
+
+  function findAll(url) {
+    return axios
+        .get(url)
+        .then(response => response.data["hydra:member"]);
+} 
 
 function find(url, id) {
   return axios
       .get(url + '/' + id)
       .then(response => response.data);
-}  
+}
 
-export default { fetcher, find }
+function create(url, data) {
+  return axios
+    .post(url, data)
+}
+
+export default { fetcher, find, findAll, create }
 
 //////////////////////////////////////////////////////////////////////////////////////  
 // asuppr 
@@ -49,7 +60,7 @@ function fulfill(order) {
     .then( result => result.json())
 }
 
-function create(order, params) {
+function createPlop(order, params) {
   //creer une logique pour les parametres suivants les entrepots
   return fetch(API_URL + 
     'order/create/'+ params.carrier + 

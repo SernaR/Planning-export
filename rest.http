@@ -1,0 +1,13 @@
+post https://localhost:8000/api/transport_orders
+Content-Type: application/json
+
+{
+    "amount": "test2",
+    "carrier": "api/carriers/1",
+    "vehicle": "api/vehicles/1",
+    "firstLoadingWarehouse": "api/warehouses/2",
+    "firstLoadingStart": "2020-06-20T12:00:00.000Z",
+    "firstLoadingEnd": "2020-06-20T12:30:00.000Z",
+    "firstDeliveryWarehouse": "api/warehouses/3",
+    "firstDelivery": "2020-06-21T12:00:00.000Z"
+}

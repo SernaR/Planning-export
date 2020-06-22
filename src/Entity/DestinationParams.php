@@ -33,7 +33,7 @@ class DestinationParams
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Country::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Country::class)
      * @Groups({"destination_params_read"})
      */
     private $country;

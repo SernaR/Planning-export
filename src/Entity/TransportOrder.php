@@ -3,16 +3,25 @@
 namespace App\Entity;
 
 use App\Repository\TransportOrderRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=TransportOrderRepository::class)
  * @UniqueEntity("code")
  * @ApiResource(
+ *  collectionOperations={
+ *      "get",
+ *      "post"={
+ *          "controller"=App\Controller\Api\OrderController::class
+ *      }
+ *  },
  *  normalizationContext={
  *      "groups"={"orders_read"}
  *  }
@@ -31,89 +40,102 @@ class TransportOrder
      * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({"orders_read"})
      */
-    private $code;
+    private $code = 'test';
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
+     * 
      * @Groups({"orders_read"})
      */
     private $firstLoadingStart;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
      * 
      */
     private $firstLoadingEnd;
 
     /**
      * @ORM\Column(type="datetime")
-     * 
+     * @Assert\NotBlank
+     *
      */
     private $firstDelivery;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * 
+     * @Assert\PositiveOrZero
+     * @Groups({"orders_read"})
      */
-    private $amount;
+    private $amount ;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * 
+     * @Assert\DateTime(message="plop")
      */
     private $effectiveFirstLoadingStart;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * 
+     * @Assert\DateTime
      */
     private $effectiveFirstLoadingEnd;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero
      * 
      */
     private $effectiveFirstLoadingBoxes;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero
      */
     private $effectiveFirstLoadingPallets;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero
      */
     private $effectiveFirstLoadingPieces;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime
      */
     private $effectiveFirstDelivery;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero
      */
     private $weight;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero
      */
     private $volume;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Carrier::class, inversedBy="transportOrders")
+     * @ORM\ManyToOne(targetEntity=Carrier::class, inversedBy="transportOrders", cascade={"persist", "remove"})
+     * @Assert\NotBlank
      * @Groups({"orders_read"})
      */
     private $carrier;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstLoadings")
-     * 
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstLoadings", cascade={"persist", "remove"})
+     * @Assert\NotBlank
      */
     private $firstLoadingWarehouse;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="transportOrders")
+     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="transportOrders", cascade={"persist", "remove"})
+     * @Assert\NotBlank
      */
     private $vehicle;
 
@@ -130,7 +152,8 @@ class TransportOrder
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstDeliveries")
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstDeliveries", cascade={"persist", "remove"})
+     * @Assert\NotBlank
      * @Groups({"orders_read"})
      */
     private $firstDeliveryWarehouse;
