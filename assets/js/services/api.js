@@ -6,11 +6,13 @@ const fetcher = url => fetch(url, {
     }
   }).then(r => r.json())
 
-  function findAll(url) {
-    return axios
-        .get(url)
-        .then(response => response.data["hydra:member"]);
+function findAll(url) {
+  return axios
+      .get(url)
+      .then(response => response.data["hydra:member"]);
 } 
+
+
 
 function find(url, id) {
   return axios
@@ -23,7 +25,12 @@ function create(url, data) {
     .post(url, data)
 }
 
-export default { fetcher, find, findAll, create }
+function update(url, id, data) {
+  return axios
+    .put(url + '/' + id, data)
+}
+
+export default { fetcher, find, create, update }
 
 //////////////////////////////////////////////////////////////////////////////////////  
 // asuppr 

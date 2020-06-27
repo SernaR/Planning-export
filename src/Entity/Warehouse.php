@@ -30,7 +30,7 @@ class Warehouse
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"orders_read", "initial_params_read", "destination_params_read"})
+     * @Groups({"orders_read", "order_read", "initial_params_read", "destination_params_read"})
      */
     private $name;
 

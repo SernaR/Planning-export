@@ -10,22 +10,35 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 
 /**
  * @ORM\Entity(repositoryClass=TransportOrderRepository::class)
  * @UniqueEntity("code")
  * @ApiResource(
+ *  itemOperations={
+ *      "put",
+ *      "get"={
+ *          "normalization_context"={"groups"={"order_read"}}
+ *      }
+ *  },
  *  collectionOperations={
- *      "get",
+ *      "get"={
+ *          "normalization_context"={"groups"={"orders_read"}}
+ *      },
  *      "post"={
  *          "controller"=App\Controller\Api\OrderController::class
  *      }
- *  },
- *  normalizationContext={
- *      "groups"={"orders_read"}
  *  }
  * )
+ * @ApiFilter(SearchFilter::class, properties={
+ *  "code": "partial",
+ *  "carrier.name": "partial",
+ *  "firstDeliveryWarehouse.adress.country.name": "partial"
+ * })
+ *  @ApiFilter(ExistsFilter::class, properties={"effectiveFirstLoadingStart"})
  */
 class TransportOrder
 {
@@ -38,98 +51,103 @@ class TransportOrder
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "order_read"})
      */
-    private $code = 'test';
+    private $code;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank
      * 
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "order_read"})
      */
     private $firstLoadingStart;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank
-     * 
+     * @Groups({"order_read"})
      */
     private $firstLoadingEnd;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank
-     *
+     * @Groups({"order_read"})
      */
     private $firstDelivery;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      * @Assert\PositiveOrZero
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "order_read"})
      */
     private $amount ;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime(message="plop")
+     * @Groups({"order_read"})
      */
     private $effectiveFirstLoadingStart;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime
+     * @Groups({"order_read"})
      */
     private $effectiveFirstLoadingEnd;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\PositiveOrZero
-     * 
+     * @Groups({"order_read"})
      */
     private $effectiveFirstLoadingBoxes;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\PositiveOrZero
+     * @Groups({"order_read"})
      */
     private $effectiveFirstLoadingPallets;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\PositiveOrZero
+     * @Groups({"order_read"})
      */
     private $effectiveFirstLoadingPieces;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime
+     * @Groups({"order_read"})
      */
     private $effectiveFirstDelivery;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\PositiveOrZero
+     * @Groups({"order_read"})
      */
     private $weight;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\PositiveOrZero
+     * @Groups({"order_read"})
      */
     private $volume;
 
     /**
      * @ORM\ManyToOne(targetEntity=Carrier::class, inversedBy="transportOrders", cascade={"persist", "remove"})
      * @Assert\NotBlank
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "order_read"})
      */
     private $carrier;
 
     /**
      * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstLoadings", cascade={"persist", "remove"})
      * @Assert\NotBlank
+     * @Groups({"order_read"})
      */
     private $firstLoadingWarehouse;
 
@@ -154,7 +172,7 @@ class TransportOrder
     /**
      * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstDeliveries", cascade={"persist", "remove"})
      * @Assert\NotBlank
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read", "order_read"})
      */
     private $firstDeliveryWarehouse;
 

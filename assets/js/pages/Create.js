@@ -50,7 +50,6 @@ const Create = (props) => {
         setLoading(true)
         try{
             const list = await paramsAPI.findAll(currentTarget.value)
-            console.log(list)
             setList(list)
         }catch (error) {
             toast.show()
@@ -99,7 +98,7 @@ const Create = (props) => {
     if (!initials) return <div className="progress indeterminate">
         <div className="progress-bar secondary dark-1"></div>
     </div>
-    
+    console.log(initials)
     return <>
         { loading && <div className="progress indeterminate">
             <div className="progress-bar secondary dark-1"></div>

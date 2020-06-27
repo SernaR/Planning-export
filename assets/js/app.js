@@ -5,21 +5,26 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 //import './components/NewTO'
 //import './components/Fulfill'
 import Home from './pages/Home'
-import List from './pages/List'
+import Orders from './pages/Orders'
 import Create from './pages/Create'
+import Announced from './pages/announced'
+import Fulfill from './pages/Fulfill'
 import Labo from './pages/Labo'
 
 import '../css/app.css';
 
 // import $ from 'jquery';
-let axentix = new Axentix('all');
+//"/ordres/annonce/realise
+let axentix = new Axentix('all');////////////////////////////////
 
 const App = () => {
     return (
         <HashRouter>
             <Switch>
-                <Route path="/creation" component={ Create } />
-                <Route path="/liste" component={ List } />
+                <Route path="/ordres/creation" component={ Create } />
+                <Route path="/ordres/liste" component={ Orders } />
+                <Route path="/ordres/annonce/liste" component={ Announced } />
+                <Route path="/ordres/annonce/ordre/:id" component={ Fulfill } />
                 <Route path="/labo" component={ Labo } />
                 <Route path="/" component={ Home } />
             </Switch>  

@@ -1,13 +1,9 @@
-post https://localhost:8000/api/transport_orders
+put https://localhost:8000/api/transport_orders/4
 Content-Type: application/json
 
 {
-    "amount": "test2",
-    "carrier": "api/carriers/1",
-    "vehicle": "api/vehicles/1",
-    "firstLoadingWarehouse": "api/warehouses/2",
-    "firstLoadingStart": "2020-06-20T12:00:00.000Z",
-    "firstLoadingEnd": "2020-06-20T12:30:00.000Z",
-    "firstDeliveryWarehouse": "api/warehouses/3",
-    "firstDelivery": "2020-06-21T12:00:00.000Z"
+    "amount": 100.3,
+    "effectiveFirstDelivery": "2020-06-13T11:30:00+00:00",
+    "effectiveFirstLoadingEnd": "2020-06-13T11:30:00+00:00",
+    "effectiveFirstLoadingStart": "2020-06-13T11:30:00+00:00"
 }
