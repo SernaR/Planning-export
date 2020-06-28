@@ -10,6 +10,9 @@ import rateAPI from '../services/rateAPI'
 import {toast} from '../services/toast'
 import useSWR from 'swr';
 
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PdfDocument } from "../components/PdfDocument";
+
 const Create = (props) => {
 
     const { data: initials, error } = useSWR( CREATE_SETUP_API, API.fetcher )
@@ -22,14 +25,16 @@ const Create = (props) => {
         warehouses: []
     })
     const [order, setOrder] = useState({})
+    const [pdf, setPdf] = useState({})
 
     const setup = () => {
+        submitted.current = false
         setList({
             carriers: [],
             warehouses: []
         })
         setOrder({})
-        submitted.current = false
+        setPdf({})
     }
 
     const getRate = (order) => { 
@@ -75,11 +80,11 @@ const Create = (props) => {
         submitted.current = true
 
         try{
-            const { status } = await API.create(ORDERS_API, order)
+            const { data, status } = await API.create(ORDERS_API, order)
             if(status === 201) {
-                console.log(status)
-                toast.change('Enregistrement éffectué') 
-                setup() 
+                console.log(data)
+                toast.change('Enregistrement éffectué')
+                setPdf(data) 
             } 
         } catch (error) {    
             toast.change('Des erreurs dans le formulaire') 
@@ -94,17 +99,21 @@ const Create = (props) => {
         }
     }
 
+    const handlePlop = () => {
+        console.log('Plop')
+    }
+
     if (error) return <div>failed to load</div>
     if (!initials) return <div className="progress indeterminate">
         <div className="progress-bar secondary dark-1"></div>
     </div>
-    console.log(initials)
+
     return <>
         { loading && <div className="progress indeterminate">
             <div className="progress-bar secondary dark-1"></div>
         </div> }
         <section className="container">
-            <form className="form-grix xs1" onSubmit={handleSubmit}>
+            <form className="form-grix xs1">
                 <div className="form-field">
                     <label >Pays de destination</label>
                     <Select items={initials.countries} onChange={ handleChangeCountry } />
@@ -148,8 +157,20 @@ const Create = (props) => {
                         <label className={validation(order.amount)}>Tarif</label>  
                         <span>{order.amount}</span>
                     </div>    
-                </div>
-                <button className="btn blue">Submit</button>
+                </div> 
+                { !submitted.current && 
+                    <button className="btn blue" onClick={handleSubmit}> Submit </button>
+                || <div className="flex">
+                    <PDFDownloadLink
+                        document={<PdfDocument order={order} />}
+                        fileName="testPDF.pdf"
+                        className="btn blue mr-2"
+                    >
+                    {({ blob, url, loading, error }) => loading ? "Loading document..." : "Download" }
+                    </PDFDownloadLink>
+                    <button className="btn blue mr-2" onClick={setup}> Suivant </button>
+                    <button className="btn blue mr-2" onClick={setup}> Retour </button>
+                </div> }
             </form>
         </section>
         <div><pre>{JSON.stringify(order, null, 4)}</pre></div>
@@ -157,3 +178,4 @@ const Create = (props) => {
 }
  
 export default Create;
+
