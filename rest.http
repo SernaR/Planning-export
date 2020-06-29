@@ -1,9 +1,10 @@
-put https://localhost:8000/api/transport_orders/4
+GET https://localhost:8000/api/transport_orders/4
 Content-Type: application/json
 
 {
     "amount": 100.3,
-    "effectiveFirstDelivery": "2020-06-13T11:30:00+00:00",
-    "effectiveFirstLoadingEnd": "2020-06-13T11:30:00+00:00",
-    "effectiveFirstLoadingStart": "2020-06-13T11:30:00+00:00"
+    "invoice": "inv6",
+    "comment": "",
+    "code": "6"
+    
 }

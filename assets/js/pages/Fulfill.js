@@ -88,7 +88,7 @@ const Fulfill = ({ match, history }) => {
             const {data, status} = await API.update(ORDERS_API, match.params.id, fulfill)
             if(status === 200) {
                 toast.change('Enregistrement éffectué') 
-                history.push('/ordres/annonce/liste')
+                history.push('/ordres/liste') //filtre ?
             }
         } catch (error) {    
             toast.change('Des erreurs dans le formulaire') 

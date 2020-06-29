@@ -99,10 +99,6 @@ const Create = (props) => {
         }
     }
 
-    const handlePlop = () => {
-        console.log('Plop')
-    }
-
     if (error) return <div>failed to load</div>
     if (!initials) return <div className="progress indeterminate">
         <div className="progress-bar secondary dark-1"></div>

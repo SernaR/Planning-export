@@ -46,6 +46,7 @@ class TransportOrder
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"orders_read", "order_read"})
      */
     private $id;
 
@@ -86,7 +87,7 @@ class TransportOrder
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"order_read"})
+     * @Groups({"orders_read", "order_read"})
      */
     private $effectiveFirstLoadingStart;
 
@@ -175,6 +176,18 @@ class TransportOrder
      * @Groups({"orders_read", "order_read"})
      */
     private $firstDeliveryWarehouse;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"orders_read", "order_read"})
+     */
+    private $invoice;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"order_read"})
+     */
+    private $comment;
 
     public function getId(): ?int
     {
@@ -405,6 +418,30 @@ class TransportOrder
     public function setFirstDeliveryWarehouse(?Warehouse $firstDeliveryWarehouse): self
     {
         $this->firstDeliveryWarehouse = $firstDeliveryWarehouse;
+
+        return $this;
+    }
+
+    public function getInvoice(): ?string
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(?string $invoice): self
+    {
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

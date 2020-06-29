@@ -12,6 +12,7 @@ import Fulfill from './pages/Fulfill'
 import Labo from './pages/Labo'
 import Labo_PDF from './pages/Labo_PDF'
 import PdfViewer from './components/PdfViewer'
+import Bill from './pages/Bill'
 
 import '../css/app.css';
 
@@ -27,6 +28,7 @@ const App = () => {
                 <Route path="/ordres/liste" component={ Orders } />
                 <Route path="/ordres/annonce/liste" component={ Announced } />
                 <Route path="/ordres/annonce/ordre/:id" component={ Fulfill } />
+                <Route path="/ordres/facturation/ordre/:id" component={ Bill } />
                 <Route path="/labo" component={ Labo } />
                 <Route path="/pdf" component={ Labo_PDF } />
                 <Route path="/pdf-viewer" component={ PdfViewer } />

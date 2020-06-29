@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Pagination from '../components/Pagination';
+import { Link } from 'react-router-dom';
 
 const List = ({url}) => {
     const [loading, setLoading] = useState(false)
@@ -14,6 +15,7 @@ const List = ({url}) => {
 
         axios.get(url + and + 'page=' + currentPage)
             .then( response => {
+                console.log(response.data["hydra:member"])
                 setOrders(response.data["hydra:member"]);
                 setTotalItems(response.data["hydra:totalItems"]);
                 setLoading(false);
@@ -22,6 +24,26 @@ const List = ({url}) => {
     },  [currentPage, url] );
 
     const handlePageChange = (page) => setCurrentPage(page);
+
+    const fulfilled = (id, loaded) => {
+        let text = 'A confirmer'
+        let status = 'primary'
+        if(loaded) {
+            text = 'Réalisé'
+            status = 'secondary'
+        }
+        return <Link to={'/ordres/annonce/ordre/' + id} className={"btn small rounded-4 " + status}>{text}</Link>
+    }
+
+    const bill = (id, paid) => {
+        let text = 'A payer'
+        let status = 'primary'
+        if(paid) {
+            text = 'Facturé'
+            status = 'secondary'
+        }
+        return <Link to={'/ordres/facturation/ordre/' + id} className={"btn small rounded-4 " + status}>{text}</Link>
+    }
 
     return <>
         { loading && <div className="progress indeterminate">
@@ -36,6 +58,8 @@ const List = ({url}) => {
                             <td>{ order.firstDeliveryWarehouse ? order.firstDeliveryWarehouse.adress.country.name : ''}</td> 
                             <td>{ order.carrier ? order.carrier.name : ''}</td>
                             <td>{ order.firstLoadingStart }</td>
+                            <td>{fulfilled(order.id, order.effectiveFirstLoadingStart)}</td>
+                            <td>{bill(order.id, order.invoice)}</td>
                         </tr>)} 
                     </tbody>
                 </table>
