@@ -20,35 +20,33 @@ const Create = (props) => {
     const submitted = useRef(false)
     const [loading, setLoading] = useState(false)
   
-    const [list, setList] = useState({
-        carriers: [],
-        warehouses: []
-    })
+    const [list, setList] = useState({})
     const [order, setOrder] = useState({})
     const [pdf, setPdf] = useState({})
 
     const setup = () => {
         submitted.current = false
-        setList({
-            carriers: [],
-            warehouses: []
-        })
+        setList({})
         setOrder({})
         setPdf({})
     }
 
     const getRate = (order) => { 
         if (order.carrier && order.firstLoadingWarehouse && order.firstDeliveryWarehouse) {
-            setLoading(true)
+            //setLoading(true)
             rateAPI.find(order)
                 .then( amount=> {
-                    setOrder({ ...order, amount })
-                    setLoading(false)
+                    setOrder({ ...order, amount })   
                 }) 
-                .catch(error => toast.show()) 
+                .catch(error => {
+                    setOrder({ ...order, amount: null })   
+                    toast.change('pas de tarif sur ce schema')
+                    toast.show()
+                }) 
         } else {
             setOrder(order)
         }
+        //setLoading(false)
     }
 
     const handleChangeCountry = async ({currentTarget}) => {
@@ -82,7 +80,6 @@ const Create = (props) => {
         try{
             const { data, status } = await API.create(ORDERS_API, order)
             if(status === 201) {
-                console.log(data)
                 toast.change('Enregistrement éffectué')
                 setPdf(data) 
             } 
@@ -150,24 +147,24 @@ const Create = (props) => {
                         <DateTime minDate={order.firstLoadingEnd} startDate={order.firstDelivery} setStartDate={handleChangeDate} name="firstDelivery"/>
                     </div> 
                     <div className="form-field inline">
-                        <label className={validation(order.amount)}>Tarif</label>  
+                        <label>Tarif</label>  
                         <span>{order.amount}</span>
                     </div>    
                 </div> 
-                { !submitted.current && 
-                    <button className="btn blue" onClick={handleSubmit}> Submit </button>
-                || <div className="flex">
-                    <PDFDownloadLink
-                        document={<PdfDocument order={order} />}
-                        fileName="testPDF.pdf"
-                        className="btn blue mr-2"
-                    >
-                    {({ blob, url, loading, error }) => loading ? "Loading document..." : "Download" }
-                    </PDFDownloadLink>
-                    <button className="btn blue mr-2" onClick={setup}> Suivant </button>
-                    <button className="btn blue mr-2" onClick={setup}> Retour </button>
-                </div> }
+                
+                <button className="btn blue" onClick={handleSubmit}> Submit </button>
             </form>
+            { 1 === 0 && <div className="flex">
+                <PDFDownloadLink
+                    document={<PdfDocument order={order} />}
+                    fileName="testPDF.pdf"
+                    className="btn blue mr-2"
+                >
+                {({ blob, url, loading, error }) => loading ? "Loading document..." : "Download" }
+                </PDFDownloadLink>
+                <button className="btn blue mr-2" onClick={setup}> Suivant </button>
+                <button className="btn blue mr-2" onClick={setup}> Retour </button>
+            </div>}
         </section>
         <div><pre>{JSON.stringify(order, null, 4)}</pre></div>
     </> 

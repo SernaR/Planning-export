@@ -1,4 +1,4 @@
-GET https://localhost:8000/api/transport_orders/4
+GET https://localhost:8000/api/destination_params?country[name]=France
 Content-Type: application/json
 
 {

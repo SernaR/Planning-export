@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ORM\Entity(repositoryClass=TransportOrderRepository::class)
@@ -38,7 +39,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
  *  "carrier.name": "partial",
  *  "firstDeliveryWarehouse.adress.country.name": "partial"
  * })
- *  @ApiFilter(ExistsFilter::class, properties={"effectiveFirstLoadingStart"})
+ * @ApiFilter(ExistsFilter::class, properties={"effectiveFirstLoadingStart"})
+ * @ApiFilter(DateFilter::class, properties={"firstLoadingStart"})
  */
 class TransportOrder
 {

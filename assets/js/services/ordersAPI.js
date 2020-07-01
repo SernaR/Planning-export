@@ -1,6 +1,16 @@
 import axios from 'axios';
 import { ORDERS_API}  from './config'
 
+function planning(dateStart, dateEnd) {
+    return axios
+        .get(ORDERS_API + '?firstLoadingStart[before]=' + dateEnd + '&firstLoadingStart[after]=' + dateStart)
+        .then(response => response.data["hydra:member"]);
+}
+
+
+//mettre create et update
+
+
 function findAll() {
     return axios
         .get(ORDERS_API)
@@ -24,6 +34,7 @@ function create(invoice) {
 }
 
 export default {
+    planning
     //findAll,
     //update,
     //create,

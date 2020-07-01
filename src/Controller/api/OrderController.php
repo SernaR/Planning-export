@@ -13,6 +13,7 @@ class OrderController
     {
         $this->code = $transportOrderRepository->lastOrderCode() + 1;
     }
+    
     public function __invoke(TransportOrder $data)
     {
         $country = $data->getFirstDeliveryWarehouse()->getAdress()->getCountry()->getCode();
