@@ -11,29 +11,10 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>
-    <body class="layout">
-        <header>
-            <nav class="navbar primary">
-                <a href={{ path('app')}}  class="navbar-brand">Logo</a>
-                <div class="navbar-menu ml-auto">
-                <a class="navbar-link" href={{ path('transport_order_new') }}>Nouvel OT</a>
-                <a class="navbar-link" href={{ path('transport_order_list') }}>Liste OT</a>
-                <a class="navbar-link" href={{ path('fulfill') }}>Réalisé</a>
-                <a class="navbar-link" href="#" target="_blank">_blank</a>
-                <a class="navbar-link" href="#">Link 4</a>
-                </div>
-            </nav>
-        </header>
-
-        <main>
-            <!-- Code here the main content -->
-            {% block body %}{% endblock %}
-        </main>
-
-        <footer class="footer primary">
-            Copyright © 2019 - Example
-        </footer>
-        
+    <body >
+      
+        {% block body %}{% endblock %}
+       
         {% block javascripts %}
             <script src="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/js/axentix.min.js"></script> 
             {{ encore_entry_script_tags('app') }}

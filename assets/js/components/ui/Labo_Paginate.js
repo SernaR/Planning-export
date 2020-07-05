@@ -1,7 +1,7 @@
 import React from 'react';
-import { itemsPerPage }  from '../services/config'
+import { itemsPerPage }  from '../../services/config'
 
-const Pagination = ({ currentPage, length, onPageChanged }) => {
+const Paginate = ({ currentPage, length, onPageChanged }) => {
     const pagesCount = Math.ceil(length / itemsPerPage);
     const pages = [];
 
@@ -28,7 +28,7 @@ const Pagination = ({ currentPage, length, onPageChanged }) => {
                     >&raquo;</button>
                 </li>
             </ul>
-        </div>   
+        </div>  
     );
 }
 
@@ -39,4 +39,4 @@ const Pagination = ({ currentPage, length, onPageChanged }) => {
 }*/
 
  
-export default Pagination;
+export default Paginate;

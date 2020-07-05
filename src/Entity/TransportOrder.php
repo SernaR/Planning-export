@@ -39,8 +39,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *  "carrier.name": "partial",
  *  "firstDeliveryWarehouse.adress.country.name": "partial"
  * })
- * @ApiFilter(ExistsFilter::class, properties={"effectiveFirstLoadingStart"})
+ * @ApiFilter(ExistsFilter::class, properties={"effectiveFirstLoadingStart", "invoice"})
  * @ApiFilter(DateFilter::class, properties={"firstLoadingStart"})
+ * 
  */
 class TransportOrder
 {

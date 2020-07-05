@@ -4,6 +4,7 @@ import API from '../services/api'
 
 import Select from '../components/form/Select';
 import DateTime from '../components/form/DateTime';
+import ProgressBar from '../components/ui/ProgressBar'
 
 import paramsAPI from '../services/paramsAPI'
 import rateAPI from '../services/rateAPI'
@@ -102,10 +103,9 @@ const Create = (props) => {
     </div>
 
     return <>
-        { loading && <div className="progress indeterminate">
-            <div className="progress-bar secondary dark-1"></div>
-        </div> }
+        { loading && <ProgressBar /> || <div style={{height: '4px' }}></div>}
         <section className="container">
+
             <form className="form-grix xs1">
                 <div className="form-field">
                     <label >Pays de destination</label>

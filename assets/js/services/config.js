@@ -4,4 +4,4 @@ export const RATE_API = '/api/rates'
 
 export const CREATE_SETUP_API = '/api/initial_params/1'
 
-export const itemsPerPage = 30
+export const itemsPerPage = 15

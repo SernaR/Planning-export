@@ -7,7 +7,7 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 import Home from './pages/Home'
 import Orders from './pages/Orders'
 import Create from './pages/Create'
-import Announced from './pages/announced'
+//import Announced from './pages/announced'
 import Fulfill from './pages/Fulfill'
 import Labo from './pages/Labo'
 import Labo_PDF from './pages/Labo_PDF'
@@ -27,7 +27,6 @@ const App = () => {
             <Switch>
                 <Route path="/ordres/creation" component={ Create } />
                 <Route path="/ordres/liste" component={ Orders } />
-                <Route path="/ordres/annonce/liste" component={ Announced } />
                 <Route path="/ordres/annonce/ordre/:id" component={ Fulfill } />
                 <Route path="/ordres/facturation/ordre/:id" component={ Bill } />
                 <Route path="/planning" component={ Planning } />

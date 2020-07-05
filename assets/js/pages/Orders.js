@@ -1,8 +1,22 @@
 import React, { useState } from 'react';
 import { ORDERS_API}  from '../services/config'
-import List from'../components/List'
+import List from '../components/orders/List'
+
+import Grid from '@material-ui/core/Grid';
+import Search from '../components/orders/Search';
+import Filters from '../components/orders/Filters';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+}));
 
 const Orders = (props) => {
+    const classes = useStyles();
+
     const [search, setSearch] = useState({
         code:'',
         carrier: '',
@@ -15,11 +29,17 @@ const Orders = (props) => {
         setSearch({ ...search, [name]: value });
     }
 
-    const handleClick = () => {
+    const handleSubmit = () => {
         setUrl( getUrl() )
         //desactiver boutton pagination (bootstrap)
     }
 
+    const handleFilter = (filter) => {
+        console.log(filter)
+        setUrl( ORDERS_API + `?exists[${filter}]=false`)
+    }
+    
+    
     const getUrl = () => {
         const { code, carrier, country } = search
         const filters = []
@@ -43,19 +63,22 @@ const Orders = (props) => {
         return ORDERS_API + '?' + filters.join('&')
     }
 
-    return <>
-        <div className="card">
-            <div className="form-field card-content">
-                <div className="grix xs4">
-                    <input type="text" className="form-control" placeholder="Ordre de transport" name="code" value={search.code} onChange={handleChange}/>
-                    <input type="text" className="form-control" placeholder="Transporteur" name="carrier" value={search.carrier} onChange={handleChange}/>
-                    <input type="text" className="form-control" placeholder="Pays" name="country" value={search.country} onChange={handleChange}/>
-                    <button type="submit" className="btn btn-primary mt-2 btn-block" onClick={handleClick}>Rechercher</button>
-                </div>    
-            </div>
-        </div>   
-        <List url={ url } />
-    </> 
+    return (
+    <div className={classes.root}>
+        <Grid container spacing={2}>
+            <Grid item xs={3}>
+                <Search 
+                    search={search} 
+                    onChange={ handleChange } 
+                    onSubmit={ handleSubmit } 
+                /> 
+                <Filters onFilter = { handleFilter } /> 
+            </Grid>
+            <Grid item xs={8}>
+                <List url={ url } />
+            </Grid>
+        </Grid>
+    </div>)
 }
  
 export default Orders;
