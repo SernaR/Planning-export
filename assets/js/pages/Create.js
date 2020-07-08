@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { CREATE_SETUP_API, ORDERS_API }  from '../services/config'
 import API from '../services/api'
+import Hero from '../components/ui/Hero';
 
-import Select from '../components/form/Select';
-import DateTime from '../components/form/DateTime';
+import Field from '../components/form/Field';
+import Select from '../components/form/Selection';
+import Picker from '../components/form/DateTimePicker';
 import ProgressBar from '../components/ui/ProgressBar'
 
 import paramsAPI from '../services/paramsAPI'
@@ -14,8 +16,25 @@ import useSWR from 'swr';
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PdfDocument } from "../components/PdfDocument";
 
-const Create = (props) => {
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
 
+
+const useStyles = makeStyles((theme) => ({
+    card: {
+      margin: '1em auto',
+      paddingBottom: theme.spacing(2)
+    },
+}))
+  
+
+const Create = (props) => {
+    const classes = useStyles();
     const { data: initials, error } = useSWR( CREATE_SETUP_API, API.fetcher )
     
     const submitted = useRef(false)
@@ -40,7 +59,7 @@ const Create = (props) => {
                     setOrder({ ...order, amount })   
                 }) 
                 .catch(error => {
-                    setOrder({ ...order, amount: null })   
+                    setOrder(order)   
                     toast.change('pas de tarif sur ce schema')
                     toast.show()
                 }) 
@@ -50,10 +69,10 @@ const Create = (props) => {
         //setLoading(false)
     }
 
-    const handleChangeCountry = async ({currentTarget}) => {
+    const handleChangeCountry = async ({value}) => {
         setLoading(true)
         try{
-            const list = await paramsAPI.findAll(currentTarget.value)
+            const list = await paramsAPI.findAll(value)
             setList(list)
         }catch (error) {
             toast.show()
@@ -61,8 +80,7 @@ const Create = (props) => {
         setLoading(false)
     }
 
-    const handleChangeSelect = ({ currentTarget }) => {
-        const { name, value } = currentTarget;
+    const handleChangeSelect = ({ name, value }) => {
         getRate({ ...order, [name]: value })
     }
     
@@ -70,10 +88,13 @@ const Create = (props) => {
         setOrder({ ...order, [name]: date })
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        
-        //test validité date 3>2>1
+    const handleChangerRate = ({currentTarget}) => {
+        const amount = parseFloat(currentTarget.value)
+        setOrder({ ...order, amount })
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
         
         setLoading(true)
         submitted.current = true
@@ -92,9 +113,7 @@ const Create = (props) => {
     }
 
     const validation = valid => {
-        if( submitted.current && (!valid || valid === '0' )) {
-            return "txt-red"
-        }
+        return ( submitted.current && (!valid || valid === '0' ))
     }
 
     if (error) return <div>failed to load</div>
@@ -104,71 +123,90 @@ const Create = (props) => {
 
     return <>
         { loading && <ProgressBar /> || <div style={{height: '4px' }}></div>}
-        <section className="container">
-
-            <form className="form-grix xs1">
-                <div className="form-field">
-                    <label >Pays de destination</label>
-                    <Select items={initials.countries} onChange={ handleChangeCountry } />
-                </div>
-                <hr/>
-                <div className="form-field">
-                    <label >condition de départ</label>
-                    <div className="form-field inline">
-                        <label className={validation(order.carrier)}>Transporteur</label> 
-                        <Select name="carrier" items={list.carriers} onChange={ handleChangeSelect } />
-                    </div>
-                    <div className="form-field inline">
-                        <label className={validation(order.vehicle)}>Vehicule</label>
-                        <Select name="vehicle" items={initials.vehicles} onChange={ handleChangeSelect }/>
-                    </div>
-                    <div className="form-field inline">
-                        <label className={validation(order.firstLoadingWarehouse)}>Entrepôt</label>
-                        <Select name="firstLoadingWarehouse" items={initials.warehouses} onChange={ handleChangeSelect }/>
-                    </div>
-                    <div className="form-field inline">
-                        <label className={validation(order.firstLoadingStart)}>Date de départ - début</label>
-                        <DateTime minDate={new Date()} startDate={order.firstLoadingStart} setStartDate={handleChangeDate} name="firstLoadingStart" />
-                    </div>
-                    <div className="form-field inline">
-                        <label className={validation(order.firstLoadingEnd)}>Date de départ - fin</label>
-                        <DateTime minDate={order.firstLoadingStart} startDate={order.firstLoadingEnd} setStartDate={handleChangeDate} name="firstLoadingEnd"/>
-                    </div>
-                </div>
-                <hr/>
-                <div className="form-field">
-                    <label >condition d'arrivé</label>
-                    <div className="form-field inline">
-                        <label className={validation(order.firstDeliveryWarehouse)}>Entrepôt</label>
-                        <Select name="firstDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }/>
-                    </div>  
-                    <div className="form-field inline">
-                        <label className={validation(order.firstDelivery)}>Date d'arrivé</label>  
-                        <DateTime minDate={order.firstLoadingEnd} startDate={order.firstDelivery} setStartDate={handleChangeDate} name="firstDelivery"/>
-                    </div> 
-                    <div className="form-field inline">
-                        <label>Tarif</label>  
-                        <span>{order.amount}</span>
-                    </div>    
-                </div> 
-                
-                <button className="btn blue" onClick={handleSubmit}> Submit </button>
-            </form>
-            { 1 === 0 && <div className="flex">
-                <PDFDownloadLink
-                    document={<PdfDocument order={order} />}
-                    fileName="testPDF.pdf"
-                    className="btn blue mr-2"
-                >
-                {({ blob, url, loading, error }) => loading ? "Loading document..." : "Download" }
-                </PDFDownloadLink>
-                <button className="btn blue mr-2" onClick={setup}> Suivant </button>
-                <button className="btn blue mr-2" onClick={setup}> Retour </button>
-            </div>}
-        </section>
+        <Hero/>
+        <Container fixed>
+        <form onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <Card className={classes.card}>
+                        <CardContent >
+                            <Typography variant='h3'>Géneral</Typography>
+                            <Select 
+                                items={initials.countries} onChange={ handleChangeCountry } 
+                                label="Pays de destination"/>
+                            <Select 
+                                name="carrier" items={list.carriers} onChange={ handleChangeSelect }
+                                label="Transporteur"
+                                error={validation(order.carrier)}/>
+                            <Select 
+                                name="vehicle" items={initials.vehicles} onChange={ handleChangeSelect }
+                                label="Vehicule"
+                                error={validation(order.vehicle)}/>        
+                        </CardContent>
+                    </Card>    
+                </Grid>
+                <Grid item xs={4}>
+                    <Card className={classes.card}>
+                        <CardContent>
+                            <Typography variant='h3'>Départ</Typography>
+                            <Select 
+                                name="firstLoadingWarehouse" items={initials.warehouses} onChange={ handleChangeSelect }
+                                label="Entrepôt"
+                                error={validation(order.firstLoadingWarehouse)}/>
+                            <Picker 
+                                label="Date de départ - début" 
+                                onChange={handleChangeDate} 
+                                name="firstLoadingStart" 
+                                value={order.firstLoadingStart}
+                                error={validation(order.firstLoadingStart)}/>     
+                            <Picker 
+                                label="Date de départ - fin" 
+                                onChange={handleChangeDate} 
+                                name="firstLoadingEnd" 
+                                value={order.firstLoadingEnd}
+                                minDate={order.firstLoadingStart}
+                                error={validation(order.firstLoadingEnd)}/>  
+                        </CardContent>
+                    </Card> 
+                </Grid>
+                <Grid item xs={4}>
+                    <Card className={classes.card}>
+                        <CardContent >
+                        <Typography variant='h3'>Arrivé</Typography>
+                            <Select 
+                                name="firstDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }
+                                label="Entrepôt"
+                                error={validation(order.firstDeliveryWarehouse)}/>
+                            <Picker 
+                                label="Date d'arrivé" 
+                                onChange={handleChangeDate} 
+                                name="firstDelivery" 
+                                value={order.firstDelivery}
+                                minDate={order.firstLoadingEnd}
+                                error={validation(order.firstDelivery)}/>    
+                            <Field label='Tarif' value={order.amount} onChange={handleChangerRate}/>
+                        </CardContent>
+                    </Card> 
+                </Grid>
+            </Grid>
+            <button type="submit"> Submit </button>
+        </form>        
+        </Container>
+        
+        { 1 === 0 && <div className="flex">
+            <PDFDownloadLink
+                document={<PdfDocument order={order} />}
+                fileName="testPDF.pdf"
+                className="btn blue mr-2"
+            >
+            {({ blob, url, loading, error }) => loading ? "Loading document..." : "Download" }
+            </PDFDownloadLink>
+            <button className="btn blue mr-2" onClick={setup}> Suivant </button>
+            <button className="btn blue mr-2" onClick={setup}> Retour </button>
+        </div>}
+      
         <div><pre>{JSON.stringify(order, null, 4)}</pre></div>
     </> 
 }
  
 export default Create;
-

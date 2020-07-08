@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PregressBar() {
+export default function ProgressBar() {
   const classes = useStyles();
   const [progress, setProgress] = React.useState(0);
 

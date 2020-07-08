@@ -16,7 +16,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
 import moment from 'moment'
-moment.locale('fr')
+moment.locale("fr")
 
 import { Link } from 'react-router-dom';
 

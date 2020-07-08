@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const Home = (props) => {
+const Home = () => {
     return ( <div className="container">
         <h1 className="txt-center">Bienvenue dans le Laboratoire</h1>
         <div className="flex mt-5">
