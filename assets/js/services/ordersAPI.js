@@ -3,7 +3,7 @@ import { ORDERS_API}  from './config'
 
 function planning(dateStart, dateEnd) {
     return axios
-        .get(ORDERS_API + '?firstLoadingStart[before]=' + dateEnd + '&firstLoadingStart[after]=' + dateStart)
+        .get(ORDERS_API + '?firstLoadingStart[before]=' + dateEnd + '&firstLoadingStart[after]=' + dateStart + '&isCancelled=false&order[code]=asc')
         .then(response => response.data["hydra:member"]);
 }
 

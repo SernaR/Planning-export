@@ -30,6 +30,7 @@ class Vehicle
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"initial_params_read"})
+     * @Groups({"orders_read", "order_read"})   
      */
     private $name;
 

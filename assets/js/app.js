@@ -39,12 +39,10 @@ const App = () => {
                 <NavbarWithRouter />
                 <Switch>
 
-                    <Route path="/ordres/creation" component={ Create } />
-                    <Route path="/ordres/annonce/ordre/:id" component={ Fulfill } />
- 
-                    <Route path="/ordres/facturation/ordre/:id" component={ Bill } />
-                    <Route path="/ordres/liste" component={ Orders } />
-
+                    <Route path="/creation/:id" component={ Create } />
+                    <Route path="/annonce/ordre/:id" component={ Fulfill } />
+                    <Route path="/facturation/ordre/:id" component={ Bill } />
+                    <Route path="/liste" component={ Orders } />
                     <Route path="/planning" component={ Planning } />
                     <Route path="/labo" component={ Labo } />
                     <Route path="/pdf" component={ Labo_PDF } />

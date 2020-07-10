@@ -14,6 +14,8 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * @ORM\Entity(repositoryClass=TransportOrderRepository::class)
@@ -41,7 +43,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  * })
  * @ApiFilter(ExistsFilter::class, properties={"effectiveFirstLoadingStart", "invoice"})
  * @ApiFilter(DateFilter::class, properties={"firstLoadingStart"})
- * 
+ * @ApiFilter(OrderFilter::class, properties={"code", "firstLoadingStart"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(BooleanFilter::class, properties={"isCancelled"})
  */
 class TransportOrder
 {
@@ -158,6 +161,7 @@ class TransportOrder
     /**
      * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="transportOrders", cascade={"persist", "remove"})
      * @Assert\NotBlank
+     * @Groups({"orders_read", "order_read"})   
      */
     private $vehicle;
 
@@ -191,6 +195,25 @@ class TransportOrder
      * @Groups({"order_read"})
      */
     private $comment;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"orders_read", "order_read"})
+     */
+    private $isCancelled = false;
+
+    /**
+     * @Groups({"orders_read", "order_read"})   
+     */
+    private $country;
+
+    public function getCountry()
+    {
+        return [
+            'id' => $this->getFirstDeliveryWarehouse()->getAdress()->getCountry()->getId(),
+            'name' =>$this->getFirstDeliveryWarehouse()->getAdress()->getCountry()->getName()
+        ];   
+    }
 
     public function getId(): ?int
     {
@@ -445,6 +468,18 @@ class TransportOrder
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getIsCancelled(): ?bool
+    {
+        return $this->isCancelled;
+    }
+
+    public function setIsCancelled(?bool $isCancelled): self
+    {
+        $this->isCancelled = $isCancelled;
 
         return $this;
     }

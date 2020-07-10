@@ -1,10 +1,12 @@
-GET https://localhost:8000/api/destination_params?country[name]=France
+put https://localhost:8000/api/transport_orders/66
 Content-Type: application/json
 
 {
-    "amount": 100.3,
-    "invoice": "inv6",
-    "comment": "",
-    "code": "6"
-    
+    "carrier": "/api/carriers/2",
+    "vehicle": "/api/vehicles/1",
+    "firstLoadingWarehouse": "/api/warehouses/2",
+    "firstLoadingStart": "2020-07-13T08:52:00.000Z",
+    "firstLoadingEnd": "2020-07-13T09:00:00.000Z",
+    "firstDeliveryWarehouse": "/api/warehouses/4",
+    "firstDelivery": "2020-07-14T10:00:00.000Z"
 }

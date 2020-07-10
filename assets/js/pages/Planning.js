@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ordersAPI from '../services/ordersAPI'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,14 +11,21 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+
+import PlanningList from '../components/orders/PlanningList'
+import Hero from '../components/ui/Hero'
 
 import moment from 'moment'
 moment.locale("fr")
 
 import { Link } from 'react-router-dom';
+import { IconButton } from '@material-ui/core';
 
 const dateInit = moment().format('dddd') === 'lundi'? moment() : moment().weekday(-7)
 
@@ -47,6 +54,7 @@ const Planning = (props) => {
   const [monday, setMonday] = useState(dateInit)
   const [planning, setPlanning] = useState([])
   const [orders, setOrders] = useState([])
+  const weekOrders = useRef([])
 
   useEffect(() => {
     fetchData()
@@ -55,14 +63,12 @@ const Planning = (props) => {
   const fetchData = async() => {
     const rows = []
     const countries = []
-    //const orders = []
+  
     try{
-      const orders = await ordersAPI.planning(monday.format('DD-MM-YYYY'), monday.clone().add(5, 'd').format('DD-MM-YYYY'))
+      const orders = await ordersAPI.planning(monday.format('DD-MM-YYYY'), monday.clone().add(6, 'd').format('DD-MM-YYYY'))
       if(orders) {
         orders.map( order => {
-          const date = moment(order.firstLoadingStart).format('dddd')
-          const country = order.firstDeliveryWarehouse.adress.country.name
-
+          const {date, country} = getData(order)
           const index = countries.indexOf(country)
           const newCountry = index === -1
 
@@ -72,14 +78,14 @@ const Planning = (props) => {
           } else {
             rows[index][date]? rows[index][date]++ : rows[index][date] = 1
           }
-          setOrders(orders) //vider la liste
         })
+        weekOrders.current = orders
+        setOrders(orders) 
       }
     } catch(err){
         console.log(err.response)
     }
     setPlanning(rows)
-    
   }
 
   const next = () => {
@@ -89,14 +95,38 @@ const Planning = (props) => {
   const previous = () => {
     setMonday(monday.clone().subtract(7, 'days'))
   }
- 
-  return (
+
+  const filter = (selectedCountry, selecteDate) => {
+    const filteredOrders = weekOrders.current.filter( order => {
+      const {date, country} = getData(order)
+      return date === selecteDate && country === selectedCountry
+    })
+   setOrders(filteredOrders)
+  }
+
+  const getData = order => {
+    return {
+      date: moment(order.firstLoadingStart).format('dddd'),
+      country: order.firstDeliveryWarehouse.adress.country.name
+    }
+  }
+
+  return ( <>
+    <Hero/>
     <Container fixed>
        <Card className={classes.card}>
         <CardContent className={classes.cardContent}>
-            <Button onClick={previous}>{'<<'}</Button>
+            <IconButton 
+                aria-label="before"
+                onClick={previous}>
+                <NavigateBeforeIcon />
+            </IconButton>
             <span>Semaine { monday.week() }</span>
-            <Button onClick={next}>{'>>'}</Button>
+            <IconButton 
+                aria-label="after"
+                onClick={next}>
+                <NavigateNextIcon />
+            </IconButton>
           </CardContent>
       </Card>    
       <TableContainer component={Paper}>
@@ -118,19 +148,20 @@ const Planning = (props) => {
                 <TableCell component="th" scope="row">
                   {row.country}
                 </TableCell>
-                <TableCell align="center" className={classes.cell}>{row.lundi}</TableCell>
-                <TableCell align="center" className={classes.cell}>{row.mardi}</TableCell>
-                <TableCell align="center" className={classes.cell}>{row.mercredi}</TableCell>
-                <TableCell align="center" className={classes.cell}>{row.jeudi}</TableCell>
-                <TableCell align="center" className={classes.cell} onClick={() => alert('plop')}>{row.vendredi}</TableCell>
-                <TableCell align="center" className={classes.cell} ><Link to={'/ordres/facturation/ordre/4'}>{row.samedi}</Link></TableCell>
+                <TableCell align="center" className={classes.cell} onClick={() => filter(row.country, 'lundi')}>{row.lundi}</TableCell>
+                <TableCell align="center" className={classes.cell} onClick={() => filter(row.country, 'mardi')}>{row.mardi}</TableCell>
+                <TableCell align="center" className={classes.cell} onClick={() => filter(row.country, 'mercredi')}>{row.mercredi}</TableCell>
+                <TableCell align="center" className={classes.cell} onClick={() => filter(row.country, 'jeudi')}>{row.jeudi}</TableCell>
+                <TableCell align="center" className={classes.cell} onClick={() => filter(row.country, 'vendredi')}>{row.vendredi}</TableCell>
+                <TableCell align="center" className={classes.cell} onClick={() => filter(row.country, 'samedi')}>{row.samedi}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-            <div>{JSON.stringify(orders, null , 4)}</div>
-    </Container>  
+      <PlanningList orders={orders} onRemove={ fetchData }/>     
+    </Container>
+    </>  
   );
 }
 

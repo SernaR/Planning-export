@@ -34,9 +34,9 @@ export default function Navbar() {
           <Typography variant="h6" color="inherit" className={classes.title}>
             <NavLink to="/">La Redoute</NavLink>  
           </Typography>
-          <Button color="inherit"><NavLink to="/ordres/creation">Nouveau</NavLink></Button>
+          <Button color="inherit"><NavLink to="/creation/nouveau">Nouveau</NavLink></Button>
           <Button color="inherit"><NavLink to="/planning">Planning</NavLink></Button>
-          <Button color="inherit"><NavLink to="/ordres/liste">Liste</NavLink></Button>
+          <Button color="inherit"><NavLink to="/liste">Liste</NavLink></Button>
           <Button color="inherit"><a href={ ADMIN }>Admin</a></Button>
         </Toolbar>
       </AppBar>

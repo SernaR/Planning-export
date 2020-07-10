@@ -3,6 +3,8 @@ import axios from 'axios';
 import Paginate from '../ui/Paginate';
 import { Link } from 'react-router-dom';
 
+import moment from 'moment'
+
 import { makeStyles } from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
@@ -47,7 +49,7 @@ const List = ({url}) => {
         setLoading(true);
         const and = url.includes('?') ? '&' : '?'
 
-        axios.get(url + and + 'page=' + currentPage)
+        axios.get(url + and + 'order[firstLoadingStart]=desc&page=' + currentPage)
             .then( response => {
                 setOrders(response.data["hydra:member"]);
                 setTotalItems(response.data["hydra:totalItems"]);
@@ -59,13 +61,14 @@ const List = ({url}) => {
     const handlePageChange = (page) => setCurrentPage(page);
 
     const fulfilled = (id, loaded) => {
+        //status annulé -> disabled
         let text = 'A confirmer'
         let status = 'contained'
         if(loaded) {
             text = 'Réalisé'
             status = 'outlined'
         }
-        return <Link to={'/ordres/annonce/ordre/' + id}><Button className={classes.button} size="small" variant={status}>{text}</Button></Link>
+        return <Link to={'/annonce/ordre/' + id}><Button className={classes.button} size="small" variant={status}>{text}</Button></Link>
     }
 
     const bill = (id, paid) => {
@@ -75,7 +78,7 @@ const List = ({url}) => {
             text = 'Facturé'
             status = 'outlined'
         }
-        return <Link to={'/ordres/facturation/ordre/' + id}><Button className={classes.button} size="small" variant={status}>{text}</Button></Link>
+        return <Link to={'/facturation/ordre/' + id}><Button className={classes.button} size="small" variant={status}>{text}</Button></Link>
     }
 
     return <>
@@ -102,7 +105,7 @@ const List = ({url}) => {
                                 <TableCell>{ order.code }</TableCell>
                                 <TableCell>{ order.firstDeliveryWarehouse ? order.firstDeliveryWarehouse.adress.country.name : ''}</TableCell> 
                                 <TableCell>{ order.carrier ? order.carrier.name : ''}</TableCell>
-                                <TableCell>{ order.firstLoadingStart }</TableCell>
+                                <TableCell>{ moment(order.firstLoadingStart).format('DD-MM-YYYY HH:mm') }</TableCell>
                                 <TableCell>{ fulfilled(order.id, order.effectiveFirstLoadingStart) }</TableCell>
                                 <TableCell>{ bill(order.id, order.invoice) }</TableCell>
                             </TableRow>

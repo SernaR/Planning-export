@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { CREATE_SETUP_API, ORDERS_API }  from '../services/config'
 import API from '../services/api'
 import Hero from '../components/ui/Hero';
@@ -33,16 +33,20 @@ const useStyles = makeStyles((theme) => ({
 }))
   
 
-const Create = (props) => {
+const Create = ({match}) => {
     const classes = useStyles();
+    const { id } = match.params;
+
     const { data: initials, error } = useSWR( CREATE_SETUP_API, API.fetcher )
     
     const submitted = useRef(false)
+    const [country, setCountry] = useState('')
     const [loading, setLoading] = useState(false)
   
     const [list, setList] = useState({})
     const [order, setOrder] = useState({})
     const [pdf, setPdf] = useState({})
+    const [editing, setEditing] = useState(false)
 
     const setup = () => {
         submitted.current = false
@@ -51,9 +55,52 @@ const Create = (props) => {
         setPdf({})
     }
 
+    const fetchCountryParams = async () => {
+        setLoading(true)
+        try{
+            const list = await paramsAPI.findAll(country)
+            setList(list)
+        }catch (error) {
+            toast.show()
+        } 
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        fetchCountryParams()
+    }, [country])
+
+
+    const fetchData = async(id) => {
+        try {
+            const order = await API.find(ORDERS_API, id)
+            setCountry( order.country.id)
+            setOrder({
+                carrier: order.carrier['@id'],
+                vehicle: order.vehicle['@id'],
+                firstLoadingWarehouse: order.firstLoadingWarehouse['@id'],
+                firstLoadingStart: order.firstLoadingStart,
+                firstDeliveryWarehouse: order.firstDeliveryWarehouse['@id'],
+                firstLoadingEnd: order.firstLoadingEnd,
+                firstDelivery: order.firstDelivery,
+                amount: order.amount
+            })
+        }catch(err) {
+            alert('error')
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        if(id !== "nouveau") {
+            setEditing(true);
+            fetchData(id);
+        } 
+    }, [id])
+
     const getRate = (order) => { 
         if (order.carrier && order.firstLoadingWarehouse && order.firstDeliveryWarehouse) {
-            //setLoading(true)
+            setLoading(true)
             rateAPI.find(order)
                 .then( amount=> {
                     setOrder({ ...order, amount })   
@@ -66,18 +113,17 @@ const Create = (props) => {
         } else {
             setOrder(order)
         }
-        //setLoading(false)
+        setLoading(false)
     }
 
-    const handleChangeCountry = async ({value}) => {
-        setLoading(true)
-        try{
-            const list = await paramsAPI.findAll(value)
-            setList(list)
-        }catch (error) {
-            toast.show()
-        } 
-        setLoading(false)
+    const handleChangeCountry = ({value}) => {
+        setOrder({ ...order,
+            firstDeliveryWarehouse: '',
+            carrier: '',
+            firstLoadingWarehouse: '',
+            amount: ''
+        })
+        setCountry(value)
     }
 
     const handleChangeSelect = ({ name, value }) => {
@@ -98,12 +144,19 @@ const Create = (props) => {
         
         setLoading(true)
         submitted.current = true
+        let resultCode
 
         try{
-            const { data, status } = await API.create(ORDERS_API, order)
-            if(status === 201) {
+            if(editing) {
+                const { data, status } = await API.update(ORDERS_API, id, order)
+                resultCode = status
+            }else {
+                const { data, status } = await API.create(ORDERS_API, order)
+                resultCode = status
+            }
+            if(resultCode === 201 || resultCode === 200) {
                 toast.change('Enregistrement éffectué')
-                setPdf(data) 
+                //setPdf(data) 
             } 
         } catch (error) {    
             toast.change('Des erreurs dans le formulaire') 
@@ -125,7 +178,7 @@ const Create = (props) => {
         { loading && <ProgressBar /> || <div style={{height: '4px' }}></div>}
         <Hero/>
         <Container fixed>
-        <form onSubmit={handleSubmit}>
+        <form >
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Card className={classes.card}>
@@ -133,14 +186,16 @@ const Create = (props) => {
                             <Typography variant='h3'>Géneral</Typography>
                             <Select 
                                 items={initials.countries} onChange={ handleChangeCountry } 
-                                label="Pays de destination"/>
+                                label="Pays de destination" item={country}/>
                             <Select 
                                 name="carrier" items={list.carriers} onChange={ handleChangeSelect }
                                 label="Transporteur"
+                                item={order.carrier}
                                 error={validation(order.carrier)}/>
                             <Select 
                                 name="vehicle" items={initials.vehicles} onChange={ handleChangeSelect }
                                 label="Vehicule"
+                                item={order.vehicle}
                                 error={validation(order.vehicle)}/>        
                         </CardContent>
                     </Card>    
@@ -152,6 +207,7 @@ const Create = (props) => {
                             <Select 
                                 name="firstLoadingWarehouse" items={initials.warehouses} onChange={ handleChangeSelect }
                                 label="Entrepôt"
+                                item={order.firstLoadingWarehouse}
                                 error={validation(order.firstLoadingWarehouse)}/>
                             <Picker 
                                 label="Date de départ - début" 
@@ -176,6 +232,7 @@ const Create = (props) => {
                             <Select 
                                 name="firstDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }
                                 label="Entrepôt"
+                                item={order.firstDeliveryWarehouse}
                                 error={validation(order.firstDeliveryWarehouse)}/>
                             <Picker 
                                 label="Date d'arrivé" 
@@ -184,12 +241,12 @@ const Create = (props) => {
                                 value={order.firstDelivery}
                                 minDate={order.firstLoadingEnd}
                                 error={validation(order.firstDelivery)}/>    
-                            <Field label='Tarif' value={order.amount} onChange={handleChangerRate}/>
+                            <Field label='Tarif' value={order.amount} onChange={ handleChangerRate }/>
                         </CardContent>
                     </Card> 
                 </Grid>
             </Grid>
-            <button type="submit"> Submit </button>
+            <Button onClick={ handleSubmit } variant="contained" color="primary">Enregistrer</Button>
         </form>        
         </Container>
         

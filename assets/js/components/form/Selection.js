@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -17,19 +16,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Selection({ name, items = [], onChange, label, error }) {
+export default function Selection({ name, item = '', items = [], onChange, label, error }) {
   const classes = useStyles();
-  const [item, setItem] = React.useState('');
 
   const handleChange = ({target}) => {
     onChange(target)
-    setItem(target.value);
   };
 
   return (
     <div>
       <FormControl className={classes.root} error={error}>
-        <InputLabel >{label}</InputLabel>
+        <InputLabel>{label}</InputLabel>
         <Select
           value={item}
           name={name}
