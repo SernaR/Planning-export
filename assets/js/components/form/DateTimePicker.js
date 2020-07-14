@@ -9,9 +9,10 @@ const useStyles = makeStyles((theme) => ({
     },
   }))
 
-function Picker({ label, minDate, onChange, name, value=null, error }) {
+function Picker({ label, minDate, onChange, name, value=null, error, disablePast=false }) {
     const classes = useStyles();    
     const checkDate = (value && value <= minDate ) || error
+    
     return (
         <DateTimePicker
             className={classes.root}
@@ -21,7 +22,7 @@ function Picker({ label, minDate, onChange, name, value=null, error }) {
             value={value}
             onChange={date =>onChange(name, date)}
             error={checkDate}
-            disablePast
+            disablePast={disablePast}
             minDate={minDate}
             format='DD/MM/YYYY HH:mm'
         />

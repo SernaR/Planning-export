@@ -32,11 +32,9 @@ const Orders = (props) => {
 
     const handleSubmit = () => {
         setUrl( getUrl() )
-        //desactiver boutton pagination (bootstrap)
     }
 
     const handleFilter = (filter) => {
-        console.log(filter)
         setUrl( ORDERS_API + `?exists[${filter}]=false`)
     }
     
@@ -67,7 +65,7 @@ const Orders = (props) => {
     return (
     <div className={classes.root}>
         <Hero/>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justify='center'>
             <Grid item xs={3}>
                 <Search 
                     search={search} 

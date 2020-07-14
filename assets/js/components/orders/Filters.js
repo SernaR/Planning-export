@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        margin: '1em',
+        marginTop: theme.spacing(2),
         //maxWidth: 345,
     },
         cardContent: {

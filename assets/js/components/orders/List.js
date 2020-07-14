@@ -14,9 +14,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Button } from '@material-ui/core';
+import { Button, Backdrop, CircularProgress  } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
     },
@@ -35,8 +35,12 @@ const useStyles = makeStyles({
     title: {
         fontWeight: 'bold',
         textTransform: 'uppercase',
-    }
-  })
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+      },
+  }))
 
 const List = ({url}) => {
     const classes = useStyles();
@@ -46,17 +50,26 @@ const List = ({url}) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect( () => {
+        fetchData( currentPage, url )
+    },  [currentPage] );
+
+    useEffect( () => {
+        fetchData( 1, url )
+        setCurrentPage(1)
+    },  [url] );
+
+    const fetchData = ( page, url ) => {
         setLoading(true);
         const and = url.includes('?') ? '&' : '?'
 
-        axios.get(url + and + 'order[firstLoadingStart]=desc&page=' + currentPage)
+        axios.get(url + and + 'order[firstLoadingStart]=desc&page=' + page)
             .then( response => {
                 setOrders(response.data["hydra:member"]);
                 setTotalItems(response.data["hydra:totalItems"]);
-                setLoading(false);
+                setLoading(false);/////////////////////////////à deplacer quand toast MEP
             })
             .catch(error => console.log(error.response));
-    },  [currentPage, url] );
+    }
 
     const handlePageChange = (page) => setCurrentPage(page);
 
@@ -82,9 +95,9 @@ const List = ({url}) => {
     }
 
     return <>
-        { loading && <div className="progress indeterminate">
-            <div className="progress-bar secondary dark-1"></div>
-        </div> }
+        { loading && <Backdrop className={classes.backdrop} open={true} >
+        <CircularProgress color="inherit" />
+      </Backdrop> }
     
             <TableContainer className={classes.container} component={Paper}>
                 <Table size="small" aria-label="table">

@@ -22,7 +22,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
+import { Typography, Divider } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -121,7 +121,7 @@ const Create = ({match}) => {
             firstDeliveryWarehouse: '',
             carrier: '',
             firstLoadingWarehouse: '',
-            amount: ''
+            amount: null
         })
         setCountry(value)
     }
@@ -144,22 +144,26 @@ const Create = ({match}) => {
         
         setLoading(true)
         submitted.current = true
-        let resultCode
 
-        try{
-            if(editing) {
-                const { data, status } = await API.update(ORDERS_API, id, order)
-                resultCode = status
-            }else {
-                const { data, status } = await API.create(ORDERS_API, order)
-                resultCode = status
+        if(!(order.firstDelivery>order.firstLoadingEnd && order.firstLoadingEnd>order.firstLoadingStart)){
+            toast.change('Des erreurs dans les dates')
+        }else {
+            let resultCode
+            try{
+                if(editing) {
+                    const { data, status } = await API.update(ORDERS_API, id, order)
+                    resultCode = status
+                }else {
+                    const { data, status } = await API.create(ORDERS_API, order)
+                    resultCode = status
+                }
+                if(resultCode === 201 || resultCode === 200) {
+                    toast.change('Enregistrement éffectué')
+                    //setPdf(data) 
+                } 
+            } catch (error) {    
+                toast.change('Des erreurs dans le formulaire') 
             }
-            if(resultCode === 201 || resultCode === 200) {
-                toast.change('Enregistrement éffectué')
-                //setPdf(data) 
-            } 
-        } catch (error) {    
-            toast.change('Des erreurs dans le formulaire') 
         }
         toast.show()  
         setLoading(false)
@@ -184,6 +188,7 @@ const Create = ({match}) => {
                     <Card className={classes.card}>
                         <CardContent >
                             <Typography variant='h3'>Géneral</Typography>
+                            <Divider />
                             <Select 
                                 items={initials.countries} onChange={ handleChangeCountry } 
                                 label="Pays de destination" item={country}/>
@@ -214,6 +219,7 @@ const Create = ({match}) => {
                                 onChange={handleChangeDate} 
                                 name="firstLoadingStart" 
                                 value={order.firstLoadingStart}
+                                disablePast={true}
                                 error={validation(order.firstLoadingStart)}/>     
                             <Picker 
                                 label="Date de départ - fin" 

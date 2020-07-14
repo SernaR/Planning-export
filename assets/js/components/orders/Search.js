@@ -8,9 +8,9 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
-    margin: '1em',
+    marginTop: theme.spacing(2),
     //maxWidth: 345,
   },
   cardContent: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     margin: '1em auto',
   },
   field: {
-    marginBottom: '1em',
+    marginBottom: theme.spacing(2),
     width: '100%'
   },
   button: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     textTransform: 'uppercase'
   }
-})
+}))
 
 const fields = [
     { name: 'code', placeholder: 'Ordre de transport'},

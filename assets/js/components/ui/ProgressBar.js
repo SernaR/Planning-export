@@ -10,7 +10,7 @@ const useStyles = makeStyles({
 
 export default function ProgressBar() {
   const classes = useStyles();
-  const [progress, setProgress] = React.useState(0);
+  /*const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
     const timer = setInterval(() => {
@@ -26,11 +26,14 @@ export default function ProgressBar() {
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, []);*/
 
   return (
     <div className={classes.root}>
-      <LinearProgress variant="determinate" value={progress} />
+      <LinearProgress color="secondary" />
+      
     </div>
   );
 }
+
+//<LinearProgress variant="determinate" value={progress} />
