@@ -6,27 +6,26 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function AlertDialog({ text, open, onClose, onConfirm}) {
+export default function AlertDialog({ text, open, onClose, children}) {
  
   return (
       <Dialog
         open={ Number.isInteger(open) }
         aria-labelledby="Confirmation"
         aria-describedby={ text }
+        fullWidth
       >
-        <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+        <DialogTitle>{"Confirmation"}</DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText>
             { text }
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onConfirm} color="primary">
-            Continuer
-          </Button>
           <Button onClick={onClose} color="primary" autoFocus>
             Retour
           </Button>
+          {children}
         </DialogActions>
       </Dialog>
     

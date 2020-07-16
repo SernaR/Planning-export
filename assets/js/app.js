@@ -38,7 +38,6 @@ const App = () => {
             <HashRouter>
                 <NavbarWithRouter />
                 <Switch>
-
                     <Route path="/creation/:id" component={ Create } />
                     <Route path="/annonce/ordre/:id" component={ Fulfill } />
                     <Route path="/facturation/ordre/:id" component={ Bill } />

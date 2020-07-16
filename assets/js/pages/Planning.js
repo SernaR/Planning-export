@@ -18,8 +18,7 @@ import Hero from '../components/ui/Hero'
 import moment from 'moment'
 moment.locale("fr")
 
-import { Link } from 'react-router-dom';
-import { IconButton, Grid, Typography, Divider } from '@material-ui/core';
+import { IconButton, Grid, Typography, Divider, Collapse } from '@material-ui/core';
 
 const dateInit = moment().weekday(0)
 //const dateInit = moment().format('dddd') === 'lundi'? moment() : moment().weekday(0)
@@ -53,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 
 const Planning = (props) => {
   const classes = useStyles();
-  const [monday, setMonday] = useState(dateInit)
+  const [monday, setMonday] = useState(dateInit) //params.monday || dateinit ??
   const [planning, setPlanning] = useState([])
   const [orders, setOrders] = useState([])
   const weekOrders = useRef([])
@@ -164,7 +163,6 @@ const Planning = (props) => {
             </Table>
           </TableContainer>
         </Grid>    
-        
       </Grid>  
    
     </section>  

@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
     Page,
     Text,
@@ -29,7 +30,7 @@ export function PdfDocument({order}) {
             <Page size="A4"style={styles.page}>
                 { order && <>
                     <View style={styles.section}>
-                        <Text>texte 1 : {order.carrier} </Text>
+                        <Text>texte 1 : {order.amout} </Text>
                     </View>
                 </>}
             </Page>

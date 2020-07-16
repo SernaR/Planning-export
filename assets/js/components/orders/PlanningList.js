@@ -29,7 +29,7 @@ const PlanningList = ({orders, onRemove }) => {
     const [openAlert, setOpenAlert] = useState(false);
     
 
-    const fulfilled = (id, loaded) => {
+    /*const fulfilled = (id, loaded) => {
         let text = 'A confirmer'
         let status = 'contained'
         if(loaded) {
@@ -37,7 +37,7 @@ const PlanningList = ({orders, onRemove }) => {
             status = 'outlined'
         }
         return <Link to={ '/ordres/annonce/ordre/' + id }><Button className={classes.button} size="small" variant={status}>{text}</Button></Link>
-    }
+    }*/
 
     const handleCancel = async() => {
         try {
@@ -96,8 +96,11 @@ const PlanningList = ({orders, onRemove }) => {
         <AlertDialog 
             text="Vous allez annuler l'ordre de transport" 
             open={openAlert} 
-            onClose={() =>setOpenAlert(false)} 
-            onConfirm={ handleCancel }/>
+            onClose={() =>setOpenAlert(false)} >
+            <Button onClick={handleCancel} variant="contained" color="primary">
+                Continuer
+            </Button>
+        </AlertDialog>
         </>
      );
 }

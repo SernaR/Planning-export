@@ -176,19 +176,19 @@ const Fulfill = ({ match, history }) => {
                     <CardContent>
                         <Grid container justify="space-around">
                             <Grid item xs={12}><Typography variant='h3'>Quantité réalisé</Typography></Grid>
-                            <Grid xs={2}>
+                            <Grid item xs={2}>
                                 <Field name='effectiveFirstLoadingBoxes' label='Colis' value={fulfill.effectiveFirstLoadingBoxes} onChange={ handleChange } variant='outlined' error={NumberValidation(fulfill.effectiveFirstLoadingBoxes)}/>
                             </Grid>
-                            <Grid xs={2}>
+                            <Grid item xs={2}>
                                 <Field name='effectiveFirstLoadingPallets' label='Palettes' value={fulfill.effectiveFirstLoadingPallets} onChange={ handleChange } variant='outlined' error={NumberValidation(fulfill.effectiveFirstLoadingPallets)}/>
                             </Grid>
-                            <Grid xs={2}>  
+                            <Grid item xs={2}>  
                                 <Field name='effectiveFirstLoadingPieces' label='Pièces' value={fulfill.effectiveFirstLoadingPieces} onChange={ handleChange } variant='outlined' error={NumberValidation(fulfill.effectiveFirstLoadingPieces)}/>                                   
                             </Grid>
-                            <Grid xs={2}>  
+                            <Grid item xs={2}>  
                                 <Field name='weight' label='Poids' value={fulfill.weight} onChange={ handleChange } variant='outlined' unit='Kg' error={NumberValidation(fulfill.weight)}/>                                  
                             </Grid>
-                            <Grid xs={2}>  
+                            <Grid item xs={2}>  
                                 <Field name='volume' label='Volume' value={fulfill.volume} onChange={ handleChange } variant='outlined' unit='m³' error={NumberValidation(fulfill.volume)}/>                                    
                             </Grid>
                         </Grid>  
