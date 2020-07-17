@@ -138,7 +138,7 @@ class TransportOrder
     private $weight;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      * @Assert\PositiveOrZero
      * @Groups({"order_read"})
      */

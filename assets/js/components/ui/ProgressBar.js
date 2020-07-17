@@ -30,7 +30,7 @@ export default function ProgressBar() {
 
   return (
     <div className={classes.root}>
-      <LinearProgress color="secondary" />
+      <LinearProgress color="primary" />
       
     </div>
   );

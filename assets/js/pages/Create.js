@@ -6,7 +6,6 @@ import Hero from '../components/ui/Hero';
 import Field from '../components/form/Field';
 import Select from '../components/form/Selection';
 import Picker from '../components/form/DateTimePicker';
-import ProgressBar from '../components/ui/ProgressBar'
 
 import paramsAPI from '../services/paramsAPI'
 import rateAPI from '../services/rateAPI'
@@ -30,8 +29,14 @@ import PageWrap from '../components/ui/PageWrap';
 const useStyles = makeStyles((theme) => ({
     card: {
       margin: '1em auto',
-      paddingBottom: theme.spacing(2)
+      paddingLeft:theme.spacing(2),
+      paddingRight: theme.spacing(2)
     },
+    title: {
+        paddingBottom: theme.spacing(2),
+        textAlign: 'center',
+        fontSize: '2em'
+    }
 }))
   
 
@@ -162,7 +167,7 @@ const Create = ({match, history}) => {
         event.preventDefault()
         
         setLoading(true)
-        submitted.current = true
+        
         const order = formater()
 
         try{
@@ -173,7 +178,8 @@ const Create = ({match, history}) => {
                 setOpenAlert(result.data.id)
                 setup()
             } 
-        } catch (error) {    
+        } catch (error) { 
+            submitted.current = true   
             toast.change('Des erreurs dans le formulaire')
             toast.show()  
         }
@@ -210,7 +216,7 @@ const Create = ({match, history}) => {
                 <Grid item xs={4}>
                     <Card className={classes.card}>
                         <CardContent >
-                            <Typography variant='h3' align="center" >Géneral</Typography>
+                            <Typography className={classes.title} >Géneral</Typography>
                             <Select 
                                 items={initials.countries} onChange={ handleChangeCountry } 
                                 label="Pays de destination" item={country}/>
@@ -230,7 +236,7 @@ const Create = ({match, history}) => {
                 <Grid item xs={4}>
                     <Card className={classes.card}>
                         <CardContent>
-                            <Typography variant='h3' align="center">Départ</Typography>
+                            <Typography className={classes.title}>Départ</Typography>
                             <Select 
                                 name="firstLoadingWarehouse" items={initials.warehouses} onChange={ handleChangeSelect }
                                 label="Entrepôt"
@@ -256,7 +262,7 @@ const Create = ({match, history}) => {
                 <Grid item xs={4}>
                     <Card className={classes.card}>
                         <CardContent >
-                        <Typography variant='h3' align="center">Arrivé</Typography>
+                        <Typography className={classes.title}>Arrivé</Typography>
                             <Select 
                                 name="firstDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }
                                 label="Entrepôt"
@@ -304,6 +310,3 @@ const Create = ({match, history}) => {
  
 export default Create;
 
-/*{ loading && <ProgressBar /> || <div style={{height: '4px' }}></div>}
-        <Hero/>
-        */

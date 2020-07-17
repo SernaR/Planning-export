@@ -71,7 +71,7 @@ const PlanningList = ({orders, onRemove }) => {
                             <TableCell>{ order.code }</TableCell>
                             <TableCell>{ order.firstDeliveryWarehouse ? order.firstDeliveryWarehouse.adress.country.name : ''}</TableCell> 
                             <TableCell>{ order.carrier ? order.carrier.name : ''}</TableCell>
-                            <TableCell>{ moment(order.firstLoadingStart).format('DD-MM-YYYY à HH:mm') }</TableCell>
+                            <TableCell>{ moment(order.firstLoadingStart).format('DD/MM/YYYY à HH:mm') }</TableCell>
                             <TableCell>
                                 <Link to={ '/creation/' + order.id }>
                                     <IconButton 

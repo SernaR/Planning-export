@@ -13,19 +13,22 @@ const useStyles = makeStyles((theme) => ({
         //height: theme.spacing(10),
       },
     },
+    title: {
+      textAlign: 'center',
+      fontSize: '2.4em'
+  }
   }));
 
   
 const PageWrap = ({ loading, children, title = 'Titre du document' }) => {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
 
     return ( <main>
         { loading && <ProgressBar /> || <div style={{height: '4px' }}></div>}
         <div className={classes.root}>
             <Card>
                 <CardContent >
-                    <Typography variant='h3' align='center'>{title}</Typography>
+                    <Typography className={classes.title}>{title}</Typography>
                 </CardContent>
             </Card> 
         </div>
