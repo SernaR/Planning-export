@@ -1,5 +1,5 @@
 import React from "react";
-import { KeyboardDateTimePicker, DateTimePicker } from "@material-ui/pickers";
+import { DateTimePicker } from "@material-ui/pickers";
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }))
 
-function Picker({ label, minDate, onChange, name, value=null, error, disablePast=false }) {
+function Picker({ label, minDate, maxDate, onChange, name, value=null, error, disablePast=false }) {
     const classes = useStyles();    
     const checkDate = (value && value <= minDate ) || error
     
@@ -24,6 +24,7 @@ function Picker({ label, minDate, onChange, name, value=null, error, disablePast
             error={checkDate}
             disablePast={disablePast}
             minDate={minDate}
+            maxDate={maxDate}
             format='DD/MM/YYYY HH:mm'
         />
     );

@@ -21,12 +21,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * @ORM\Entity(repositoryClass=TransportOrderRepository::class)
  * @UniqueEntity("code")
  * @ApiResource(
- *  itemOperations={
- *      "put",
- *      "get"={
- *          "normalization_context"={"groups"={"order_read"}}
- *      }
- *  },
+ *  normalizationContext={"groups"={"order_read"}},
+ *  itemOperations={"put", "get"},
  *  collectionOperations={
  *      "get"={
  *          "normalization_context"={"groups"={"orders_read"}}
@@ -174,6 +170,7 @@ class TransportOrder
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
+     * @Groups({"order_read"})
      */
     private $updatedAt;
 

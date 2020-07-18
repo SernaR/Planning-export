@@ -20,27 +20,31 @@ class Adress
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"order_read"})
      */
     private $main;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"order_read"})
      */
     private $secondary;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"order_read"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"order_read"})
      */
     private $city;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="adresses")
-     * @Groups({"orders_read"})
+     * 
      */
     private $country;
 

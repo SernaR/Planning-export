@@ -69,7 +69,7 @@ const PlanningList = ({orders, onRemove }) => {
                     {orders.map( (order, key) => 
                         <TableRow hover role="checkbox" key={key}>
                             <TableCell>{ order.code }</TableCell>
-                            <TableCell>{ order.firstDeliveryWarehouse ? order.firstDeliveryWarehouse.adress.country.name : ''}</TableCell> 
+                            <TableCell>{ order.firstDeliveryWarehouse ? order.country.name : ''}</TableCell> 
                             <TableCell>{ order.carrier ? order.carrier.name : ''}</TableCell>
                             <TableCell>{ moment(order.firstLoadingStart).format('DD/MM/YYYY à HH:mm') }</TableCell>
                             <TableCell>

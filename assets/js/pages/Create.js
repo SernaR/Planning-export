@@ -13,7 +13,7 @@ import {toast} from '../services/toast'
 import useSWR from 'swr';
 
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { PdfDocument } from "../components/PdfDocument";
+import PdfDocument from "../components/PdfDocument";
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -25,6 +25,7 @@ import { Typography } from '@material-ui/core';
 import LoadingPage from '../components/ui/LoadingPage';
 import AlertDialog from '../components/ui/AlertDialog';
 import PageWrap from '../components/ui/PageWrap';
+
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -89,6 +90,7 @@ const Create = ({match, history}) => {
             const order = await API.find(ORDERS_API, id)
             setCountry( order.country.id)
             checkDate({  
+                code: order.code,
                 carrier: order.carrier['@id'],
                 vehicle: order.vehicle['@id'],
                 firstLoadingWarehouse: order.firstLoadingWarehouse['@id'],
@@ -208,7 +210,7 @@ const Create = ({match, history}) => {
 
     return <PageWrap
         loading={loading}
-        title="Order de Tansport"
+        title={ `Order de Tansport ${order.code || ''}`}
     > 
         <Container fixed>
         <form >
@@ -255,6 +257,7 @@ const Create = ({match, history}) => {
                                 name="firstLoadingEnd" 
                                 value={order.firstLoadingEnd}
                                 minDate={order.firstLoadingStart}
+                                maxDate={order.firstLoadingStart}
                                 error={validation(order.firstLoadingEnd)}/>  
                         </CardContent>
                     </Card> 

@@ -41,11 +41,13 @@ class Carrier
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"order_read"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *  @Groups({"order_read"})
      */
     private $email;
 
@@ -56,6 +58,7 @@ class Carrier
 
     /**
      * @ORM\OneToOne(targetEntity=Adress::class, cascade={"persist", "remove"})
+     *  @Groups({"order_read"})
      */
     private $adress;
 

@@ -1,14 +1,13 @@
-put https://localhost:8000/api/transport_orders/69
+get https://localhost:8000/api/transport_orders/102
 Content-Type: application/json
 
 {
-    "amount": 50,
-    "weight": 0,
-    "volume": 0,
-    "effectiveFirstLoadingBoxes": 0,
-    "effectiveFirstLoadingPallets": 0,
-    "effectiveFirstLoadingPieces": 0,
-    "effectiveFirstLoadingStart": "2020-07-14T06:58:00.000Z",
-    "effectiveFirstLoadingEnd": "2020-07-14T07:58:00.000Z",
-    "effectiveFirstDelivery": "2020-07-16T06:58:00.000Z"
+    "carrier": "/api/carriers/2",
+    "vehicle": "/api/vehicles/1",
+    "firstLoadingWarehouse": "/api/warehouses/2",
+    "firstLoadingStart": "2020-07-17T12:32:00+00:00",
+    "firstDeliveryWarehouse": "/api/warehouses/2",
+    "firstLoadingEnd": "2020-07-18T12:32:00+00:00",
+    "firstDelivery": "2020-07-19T12:32:00+00:00",
+    "amount": 1235
 }

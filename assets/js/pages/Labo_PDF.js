@@ -1,26 +1,25 @@
 import React from "react";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { PdfDocument } from "../components/PdfDocument";
+import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
+import PdfDocument from "../components/PdfDocument";
 import { Link } from "react-router-dom";
-
-const movieDetails = {
-   " one": "Section #1",
-    "two": "Section #1",
-    "three": "Section #1"
-}
+import useSWR from "swr";
+import { ORDERS_API } from "../services/config";
+import API from '../services/api'
 
 export default function Labo_PDF() {
+  const {data, error} = useSWR(ORDERS_API + '/101', API.fetcher )
 
-    return ( <>
-     <PDFDownloadLink
-        document={<PdfDocument data={movieDetails} />}
-        fileName="testPDF.pdf"
-        className="btn"
-      >
-        {({ blob, url, loading, error }) =>
-          loading ? "Loading document..." : "download"
-        }
-      </PDFDownloadLink>
-      <Link to="/pdf-viewer">Viewer</Link>
-  </>)
+  if(error) return <div>Fail to load</div>
+  if(!data) return <div>Loading...</div>
+  return <div>
+    <div>
+      <BlobProvider document={<PdfDocument order={data} />}>
+        {({ blob, url, loading, error }) => {
+          // Do whatever you need with blob here
+          return <a href={url} target="_blank">PDF</a>
+        }}
+      </BlobProvider>
+    </div>
+    <pre>{JSON.stringify(data, null, 4)}</pre>
+  </div>
 }

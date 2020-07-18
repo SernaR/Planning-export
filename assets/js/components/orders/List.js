@@ -116,7 +116,7 @@ const List = ({url}) => {
                         {orders.map( (order, key) => 
                             <TableRow hover role="checkbox" key={key}>
                                 <TableCell>{ order.code }</TableCell>
-                                <TableCell>{ order.firstDeliveryWarehouse ? order.firstDeliveryWarehouse.adress.country.name : ''}</TableCell> 
+                                <TableCell>{ order.firstDeliveryWarehouse ? order.country.name : ''}</TableCell> 
                                 <TableCell>{ order.carrier ? order.carrier.name : ''}</TableCell>
                                 <TableCell>{ moment(order.firstLoadingStart).format('DD-MM-YYYY HH:mm') }</TableCell>
                                 <TableCell>{ fulfilled(order.id, order.effectiveFirstLoadingStart) }</TableCell>
@@ -136,17 +136,3 @@ const List = ({url}) => {
  
 export default List;
 
-/*
-table className="table hover">
-    <tbody>
-        {orders.map( (order, key) => <tr key={key} >
-            <td>{ order.code }</td>
-            <td>{ order.firstDeliveryWarehouse ? order.firstDeliveryWarehouse.adress.country.name : ''}</td> 
-            <td>{ order.carrier ? order.carrier.name : ''}</td>
-            <td>{ order.firstLoadingStart }</td>
-            <td>{fulfilled(order.id, order.effectiveFirstLoadingStart)}</td>
-            <td>{bill(order.id, order.invoice)}</td>
-        </tr>)} 
-    </tbody>
-</table>
-*/
