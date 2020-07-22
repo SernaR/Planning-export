@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ORDERS_API}  from '../services/config'
 import API from '../services/api'
 import moment from 'moment'
-import {toast} from '../services/toast'
 import Field from '../components/form/Field'
 import { Container, Grid, Card, CardContent, Typography, makeStyles, Button } from '@material-ui/core';
 import PageWrap from '../components/ui/PageWrap';
@@ -31,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Bill = ({ match, history }) => {
     const classes = useStyles()
+    const message = useRef('')
+
+    const [toast, setToast] = useState(false) 
     const [bill, setBill] = useState({})
     const [order, setOrder] = useState({})
     const [loading, setLoading] = useState(false)
@@ -83,13 +85,12 @@ const Bill = ({ match, history }) => {
             const bill = formater()
             const { status } = await API.update(ORDERS_API, match.params.id, bill)
             if(status === 200) {
-                toast.change('Enregistrement éffectué') 
                 history.push('/liste') //filtre ?
             }
         } catch (error) {  
             submitted.current = true
-            toast.change('Des erreurs dans le formulaire') 
-            toast.show()  
+            message.current = "Il y a des erreurs dans le formulaire"
+            setToast(true) 
         } 
         setLoading(false)
     }  
@@ -97,6 +98,11 @@ const Bill = ({ match, history }) => {
     return <PageWrap
         loading={loading}
         title={`Facturation : ${order.code || ''}`}
+        message={message.current}
+        open={toast}
+        onClose={() => {
+            message.current = ''
+            setToast(false)}}
     > 
         <Container fixed>
             <form>
@@ -148,9 +154,7 @@ const Bill = ({ match, history }) => {
                     </CardContent>
                 </Card>
                 <Button onClick={ handleSubmit } variant="contained" color="primary">Enregistrer</Button>
-            </form>
-            <div><pre>{JSON.stringify(bill, null, 4)}</pre></div>   
-            <div><pre>{JSON.stringify(order, null, 4)}</pre></div>   
+            </form>   
         </Container>
     </PageWrap> 
 }

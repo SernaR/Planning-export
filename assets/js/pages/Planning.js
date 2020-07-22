@@ -19,14 +19,12 @@ import moment from 'moment'
 moment.locale("fr")
 
 import { IconButton, Grid, Typography, Divider, Collapse } from '@material-ui/core';
+import PageWrap from '../components/ui/PageWrap';
 
 const dateInit = moment().weekday(0)
 //const dateInit = moment().format('dddd') === 'lundi'? moment() : moment().weekday(0)
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
   table: {
     minWidth: 650,
   },
@@ -55,7 +53,11 @@ const Planning = (props) => {
   const [monday, setMonday] = useState(dateInit) //params.monday || dateinit ??
   const [planning, setPlanning] = useState([])
   const [orders, setOrders] = useState([])
+
   const weekOrders = useRef([])
+
+  const [toast, setToast] = useState(false) 
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     fetchData()
@@ -64,7 +66,8 @@ const Planning = (props) => {
   const fetchData = async() => {
     const rows = []
     const countries = []
-  
+    setLoading(true)
+
     try{
       const orders = await ordersAPI.planning(monday.format('DD-MM-YYYY'), monday.clone().add(6, 'd').format('DD-MM-YYYY'))
       if(orders) {
@@ -84,8 +87,9 @@ const Planning = (props) => {
         setOrders(orders) 
       }
     } catch(err){
-        console.log(err.response)
+      setToast(true)
     }
+    setLoading(false)
     setPlanning(rows)
   }
 
@@ -112,10 +116,13 @@ const Planning = (props) => {
     }
   }
 
-  return ( 
-    <section className={classes.root}>
-      <Hero title='Planning'/>
-      
+  return <PageWrap
+    loading={loading}
+    title={ `Planning du ${monday.format('DD/MM') || ''} au ${monday.clone().add(5, 'd').format('DD/MM') || ''}`}
+    open={toast}
+    message=''
+    onClose={() => setToast(false)}
+    > 
       <Grid container spacing={2} justify='center'>
         <Grid item xs={6}>
           <PlanningList orders={orders} onRemove={ fetchData }/>   
@@ -139,12 +146,12 @@ const Planning = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell className={classes.title}>Destination</TableCell>
-                  <TableCell className={classes.title}>{ monday.format('dddd DD') }</TableCell>
-                  <TableCell className={classes.title}>{ monday.clone().add(1, 'd').format('DD/MM')}</TableCell>
-                  <TableCell className={classes.title}>{ monday.clone().add(2, 'd').format('dddd DD/MM')}</TableCell>
-                  <TableCell className={classes.title}>{ monday.clone().add(3, 'd').format('dddd DD')}</TableCell>
-                  <TableCell className={classes.title}>{ monday.clone().add(4, 'd').format('dddd DD')}</TableCell>
-                  <TableCell className={classes.title}>{ monday.clone().add(5, 'd').format('dddd DD')}</TableCell>
+                  <TableCell className={classes.title}>{ monday.format('dddd') }</TableCell>
+                  <TableCell className={classes.title}>{ monday.clone().add(1, 'd').format('dddd')}</TableCell>
+                  <TableCell className={classes.title}>{ monday.clone().add(2, 'd').format('dddd')}</TableCell>
+                  <TableCell className={classes.title}>{ monday.clone().add(3, 'd').format('dddd')}</TableCell>
+                  <TableCell className={classes.title}>{ monday.clone().add(4, 'd').format('dddd')}</TableCell>
+                  <TableCell className={classes.title}>{ monday.clone().add(5, 'd').format('dddd')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -164,9 +171,7 @@ const Planning = (props) => {
           </TableContainer>
         </Grid>    
       </Grid>  
-   
-    </section>  
-  );
+    </PageWrap> 
 }
 
 export default Planning

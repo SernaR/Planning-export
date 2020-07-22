@@ -4,7 +4,6 @@ import API from '../services/api'
 
 import Picker from '../components/form/DateTimePicker'
 import Field from '../components/form/Field'
-import {toast} from '../services/toast'
 import { Container, Grid, Card, CardContent, Typography, makeStyles, Button, Divider } from '@material-ui/core';
 
 import moment from 'moment'
@@ -35,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Fulfill = ({ match, history }) => {
     const classes = useStyles();
+    const message = useRef('')
+
+    const [toast, setToast] = useState(false) 
     const [order, setOrder] = useState({})
     const [fulfill, setFulfill] = useState({})
 
@@ -101,8 +103,10 @@ const Fulfill = ({ match, history }) => {
         const effectiveFirstLoadingPieces = parseInt(fulfill.effectiveFirstLoadingPieces)|| 0
         const weight = parseInt(fulfill.weight) || 0
         const volume = parseFloat(fulfill.volume) || 0
+        const checkAll = amount + weight + volume + effectiveFirstLoadingBoxes + effectiveFirstLoadingPallets + effectiveFirstLoadingPieces
+        const checkQty = weight + volume + effectiveFirstLoadingBoxes + effectiveFirstLoadingPallets + effectiveFirstLoadingPieces
 
-        return isNaN(amount + weight + volume + effectiveFirstLoadingBoxes + effectiveFirstLoadingPallets + effectiveFirstLoadingPieces) ?
+        return (isNaN(checkAll) || checkQty === 0) ?
             false : ({ ...fulfill, amount, weight, volume, effectiveFirstLoadingBoxes, effectiveFirstLoadingPallets, effectiveFirstLoadingPieces})
         
     }
@@ -116,13 +120,12 @@ const Fulfill = ({ match, history }) => {
             const fulfill = formater()
             const {data, status} = await API.update(ORDERS_API, match.params.id, fulfill)
             if(status === 200) {
-                //toast.change('Enregistrement éffectué') 
                 history.push('/liste') //filtre ?************************
             }
         } catch (error) { 
             submitted.current = true
-            toast.change('Des erreurs dans le formulaire') 
-            toast.show() 
+            message.current = "Il y a des erreurs dans le formulaire"
+            setToast(true) 
         }
          
         setLoading(false)
@@ -135,6 +138,11 @@ const Fulfill = ({ match, history }) => {
     return  <PageWrap
         loading={loading}
         title={`Mise à jour : ${order.code || ''}`}
+        message={message.current}
+        open={toast}
+        onClose={() => {
+            message.current = ''
+            setToast(false)}}
     > 
         <Container fixed>
             <form >
@@ -210,7 +218,6 @@ const Fulfill = ({ match, history }) => {
                 <Button onClick={ handleSubmit } variant="contained" color="primary" disabled={disabled.current}>Enregistrer</Button>
             </form>
         </Container>
-        <div><pre>{JSON.stringify(fulfill, null, 4)}</pre></div>   
     </PageWrap>  
 }
  

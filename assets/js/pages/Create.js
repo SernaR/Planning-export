@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { CREATE_SETUP_API, ORDERS_API }  from '../services/config'
 import API from '../services/api'
-import Hero from '../components/ui/Hero';
+
 
 import Field from '../components/form/Field';
 import Select from '../components/form/Selection';
@@ -9,7 +9,6 @@ import Picker from '../components/form/DateTimePicker';
 
 import paramsAPI from '../services/paramsAPI'
 import rateAPI from '../services/rateAPI'
-import {toast} from '../services/toast'
 import useSWR from 'swr';
 
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -55,7 +54,9 @@ const Create = ({match, history}) => {
     
     const submitted = useRef(false)
     const disabled = useRef(true)
+    const message = useRef('')
 
+    const [toast, setToast] = useState(false) 
     const [loading, setLoading] = useState(false)
     const [editing, setEditing] = useState(false)
     const [openAlert, setOpenAlert] = useState(false);
@@ -75,7 +76,7 @@ const Create = ({match, history}) => {
             const list = await paramsAPI.findAll(country)
             setList(list)
         }catch (error) {
-            toast.show()
+            setToast(true)
         } 
         setLoading(false)
     }
@@ -122,8 +123,8 @@ const Create = ({match, history}) => {
                 }) 
                 .catch(error => {
                     setOrder(order)   
-                    toast.change('pas de tarif sur ce schema')
-                    toast.show()
+                    message.current = 'pas de tarif sur ce schema'
+                    setToast(true)
                 }) 
         } else {
             setOrder(order)
@@ -167,7 +168,6 @@ const Create = ({match, history}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        
         setLoading(true)
         
         const order = formater()
@@ -181,9 +181,9 @@ const Create = ({match, history}) => {
                 setup()
             } 
         } catch (error) { 
-            submitted.current = true   
-            toast.change('Des erreurs dans le formulaire')
-            toast.show()  
+            submitted.current = true
+            message.current = "Il y a des erreurs dans le formulaire"
+            setToast(true)   
         }
         setLoading(false)
     }
@@ -205,12 +205,17 @@ const Create = ({match, history}) => {
         }
     })
 
-    if (error) return <div>failed to load</div> //toast ??
+    if (error) setToast(true) //return <div>failed to load</div> 
     if (!initials) return <LoadingPage />
 
     return <PageWrap
         loading={loading}
         title={ `Order de Tansport ${order.code || ''}`}
+        message={message.current}
+        open={toast}
+        onClose={() => {
+            message.current = ''
+            setToast(false)}}
     > 
         <Container fixed>
         <form >
@@ -306,8 +311,6 @@ const Create = ({match, history}) => {
                 </PDFDownloadLink>
             </Button>
         </AlertDialog>
-        <div><pre>{JSON.stringify(order, null, 4)}</pre></div>
-        <div><pre>{JSON.stringify(pdf, null, 4)}</pre></div>
     </PageWrap> 
 }
  

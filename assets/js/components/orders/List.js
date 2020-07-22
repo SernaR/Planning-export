@@ -42,9 +42,9 @@ const useStyles = makeStyles(theme => ({
       },
   }))
 
-const List = ({url}) => {
-    const classes = useStyles();
-    const [loading, setLoading] = useState(false)
+const List = ({url, setLoading, setToast }) => {
+    const classes = useStyles()
+    
     const [totalItems, setTotalItems] = useState(0);
     const [orders, setOrders] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
@@ -66,9 +66,12 @@ const List = ({url}) => {
             .then( response => {
                 setOrders(response.data["hydra:member"]);
                 setTotalItems(response.data["hydra:totalItems"]);
-                setLoading(false);/////////////////////////////à deplacer quand toast MEP
+                setLoading(false)
             })
-            .catch(error => console.log(error.response));
+            .catch(error => {
+                setToast(true)
+                setLoading(false)
+            })
     }
 
     const handlePageChange = (page) => setCurrentPage(page);
@@ -95,37 +98,33 @@ const List = ({url}) => {
     }
 
     return <>
-        { loading && <Backdrop className={classes.backdrop} open={true} >
-        <CircularProgress color="inherit" />
-      </Backdrop> }
-    
-            <TableContainer className={classes.container} component={Paper}>
-                <Table size="small" aria-label="table">
-                    <TableHead>
-                        <TableRow >
-                            <TableCell className={classes.title}>Ordre de transport</TableCell>
-                            <TableCell className={classes.title}>Pays</TableCell>
-                            <TableCell className={classes.title}>Transporteur</TableCell>
-                            <TableCell className={classes.title}>Date</TableCell>
-                            <TableCell className={classes.title}>status</TableCell>
-                            <TableCell className={classes.title}>Facturation</TableCell>
+        <TableContainer className={classes.container} component={Paper}>
+            <Table size="small" aria-label="table">
+                <TableHead>
+                    <TableRow >
+                        <TableCell className={classes.title}>Ordre de transport</TableCell>
+                        <TableCell className={classes.title}>Pays</TableCell>
+                        <TableCell className={classes.title}>Transporteur</TableCell>
+                        <TableCell className={classes.title}>Date</TableCell>
+                        <TableCell className={classes.title}>status</TableCell>
+                        <TableCell className={classes.title}>Facturation</TableCell>
+                    </TableRow>
+                </TableHead>
+            
+                <TableBody>
+                    {orders.map( (order, key) => 
+                        <TableRow hover role="checkbox" key={key}>
+                            <TableCell>{ order.code }</TableCell>
+                            <TableCell>{ order.firstDeliveryWarehouse ? order.country.name : ''}</TableCell> 
+                            <TableCell>{ order.carrier ? order.carrier.name : ''}</TableCell>
+                            <TableCell>{ moment(order.firstLoadingStart).format('DD-MM-YYYY HH:mm') }</TableCell>
+                            <TableCell>{ fulfilled(order.id, order.effectiveFirstLoadingStart) }</TableCell>
+                            <TableCell>{ bill(order.id, order.invoice) }</TableCell>
                         </TableRow>
-                    </TableHead>
-                
-                    <TableBody>
-                        {orders.map( (order, key) => 
-                            <TableRow hover role="checkbox" key={key}>
-                                <TableCell>{ order.code }</TableCell>
-                                <TableCell>{ order.firstDeliveryWarehouse ? order.country.name : ''}</TableCell> 
-                                <TableCell>{ order.carrier ? order.carrier.name : ''}</TableCell>
-                                <TableCell>{ moment(order.firstLoadingStart).format('DD-MM-YYYY HH:mm') }</TableCell>
-                                <TableCell>{ fulfilled(order.id, order.effectiveFirstLoadingStart) }</TableCell>
-                                <TableCell>{ bill(order.id, order.invoice) }</TableCell>
-                            </TableRow>
-                        )}   
-                    </TableBody> 
-                </Table>
-            </TableContainer>
+                    )}   
+                </TableBody> 
+            </Table>
+        </TableContainer>
         <Paginate 
             currentPage={currentPage}
             length={totalItems}

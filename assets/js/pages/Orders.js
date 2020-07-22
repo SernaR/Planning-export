@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Search from '../components/orders/Search';
 import Filters from '../components/orders/Filters';
 import { makeStyles } from '@material-ui/core/styles';
+import PageWrap from '../components/ui/PageWrap';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
 const Orders = (props) => {
     const classes = useStyles();
 
+    const [toast, setToast] = useState(false) 
+    const [loading, setLoading] = useState(false)
     const [search, setSearch] = useState({
         code:'',
         carrier: '',
@@ -62,9 +65,14 @@ const Orders = (props) => {
         return ORDERS_API + '?' + filters.join('&')
     }
 
-    return (
-    <div className={classes.root}>
-        <Hero/>
+    return <PageWrap
+        loading={loading}
+        title='Liste des ordres de transport'
+        message=''
+        open={toast}
+        onClose={() => {
+            setToast(false)}}
+    > 
         <Grid container spacing={2} justify='center'>
             <Grid item xs={3}>
                 <Search 
@@ -75,10 +83,13 @@ const Orders = (props) => {
                 <Filters onFilter = { handleFilter } /> 
             </Grid>
             <Grid item xs={8}>
-                <List url={ url } />
+                <List 
+                    url={ url } 
+                    setToast={ setToast }
+                    setLoading={ setLoading }/>
             </Grid>
         </Grid>
-    </div>)
+    </PageWrap>
 }
  
 export default Orders;
