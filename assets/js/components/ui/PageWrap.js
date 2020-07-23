@@ -57,5 +57,3 @@ const PageWrap = ({ loading, children, title = 'Titre du document', open, onClos
  
 export default PageWrap;
 
-//#103d51 : bleu petrole
-//typo source sans Pro ou Calibri

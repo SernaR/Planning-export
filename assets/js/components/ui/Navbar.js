@@ -33,7 +33,7 @@ export default function Navbar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color='transparent'>
+      <AppBar position="static" color='primary'>
         <Toolbar className={classes.toolbar}>
           <Typography variant="h5" color="inherit" className={classes.title}>
             <NavLink to="/">La Redoute</NavLink>  

@@ -1,6 +1,7 @@
 import React from "react";
 import { DateTimePicker } from "@material-ui/pickers";
 import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Picker({ label, minDate, maxDate, onChange, name, value=null, error, disablePast=false }) {
     const classes = useStyles();    
-    const checkDate = (value && value <= minDate ) || error
+    const checkDate = (value && moment(value) <= moment(minDate) ) || error
     
     return (
         <DateTimePicker

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ORDERS_API}  from '../services/config'
 import List from '../components/orders/List'
-import Hero from '../components/ui/Hero'
 
 import Grid from '@material-ui/core/Grid';
 import Search from '../components/orders/Search';

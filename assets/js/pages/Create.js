@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { CREATE_SETUP_API, ORDERS_API }  from '../services/config'
 import API from '../services/api'
-
+import moment from 'moment'
 
 import Field from '../components/form/Field';
 import Select from '../components/form/Selection';
@@ -102,8 +102,7 @@ const Create = ({match, history}) => {
                 amount: order.amount || ''
             })
         }catch(err) {
-            alert('error')
-            console.log(err)
+            setToast(true)   
         }
     }
 
@@ -134,7 +133,7 @@ const Create = ({match, history}) => {
 
     const checkDate = (order) => {
         if (order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery) {
-            disabled.current = (order.firstDelivery>order.firstLoadingEnd && order.firstLoadingEnd>order.firstLoadingStart)? false : true
+            disabled.current = (moment(order.firstDelivery)>moment(order.firstLoadingEnd) && moment(order.firstLoadingEnd)>moment(order.firstLoadingStart))? false : true
         }    
         setOrder(order) 
     }
@@ -311,6 +310,7 @@ const Create = ({match, history}) => {
                 </PDFDownloadLink>
             </Button>
         </AlertDialog>
+        <div><pre>{JSON.stringify(order, null,2)}</pre></div>
     </PageWrap> 
 }
  

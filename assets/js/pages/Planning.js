@@ -13,7 +13,6 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 
 import PlanningList from '../components/orders/PlanningList'
-import Hero from '../components/ui/Hero'
 
 import moment from 'moment'
 moment.locale("fr")

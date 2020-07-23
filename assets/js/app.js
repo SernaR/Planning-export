@@ -23,6 +23,8 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 
 import moment from "moment";
+import { ThemeProvider } from '@material-ui/core';
+import { theme } from './services/theme'
 moment.locale("fr")
 
 // import $ from 'jquery';
@@ -34,23 +36,24 @@ const App = () => {
     const NavbarWithRouter = withRouter(Navbar);
 
     return (
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-            <HashRouter>
-                <NavbarWithRouter />
-                <Switch>
-                    <Route path="/creation/:id" component={ Create } />
-                    <Route path="/annonce/ordre/:id" component={ Fulfill } />
-                    <Route path="/facturation/ordre/:id" component={ Bill } />
-                    <Route path="/liste" component={ Orders } />
-                    <Route path="/planning" component={ Planning } />
-                    <Route path="/labo" component={ Labo } />
-                    <Route path="/pdf" component={ Labo_PDF } />
-                    <Route path="/pdf-viewer" component={ PdfViewer } />
-                    <Route path="/" component={ Login } />
-                </Switch>  
-            </ HashRouter>
-       
-        </MuiPickersUtilsProvider>
+        <ThemeProvider theme={theme}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+                <HashRouter>
+                    <NavbarWithRouter />
+                    <Switch>
+                        <Route path="/creation/:id" component={ Create } />
+                        <Route path="/annonce/ordre/:id" component={ Fulfill } />
+                        <Route path="/facturation/ordre/:id" component={ Bill } />
+                        <Route path="/liste" component={ Orders } />
+                        <Route path="/planning" component={ Planning } />
+                        <Route path="/labo" component={ Labo } />
+                        <Route path="/pdf" component={ Labo_PDF } />
+                        <Route path="/pdf-viewer" component={ PdfViewer } />
+                        <Route path="/" component={ Login } />
+                    </Switch>  
+                </ HashRouter>
+            </MuiPickersUtilsProvider>
+        </ThemeProvider>
     )
 }
 
