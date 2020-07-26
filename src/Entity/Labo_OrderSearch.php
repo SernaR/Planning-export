@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-class OrderSearch
+class Labo_OrderSearch
 {
 /**
  * @var string|null

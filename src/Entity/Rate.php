@@ -11,6 +11,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 
 /**
  * @ORM\Entity(repositoryClass=RateRepository::class)
@@ -25,7 +26,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *  "carrier": "exact",
  *  "firstLoadingWarehouse": "exact",
  *  "firstDeliveryWarehouse": "exact",
+ *  "secondLoadingWarehouse": "exact",
+ *  "secondDeliveryWarehouse": "exact",
  * })
+ * @ApiFilter(ExistsFilter::class, properties={"secondLoadingWarehouse", "secondDeliveryWarehouse"})
  */
 class Rate
 {
@@ -44,12 +48,12 @@ class Rate
     private $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="rates")
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="ratesFirstLoadings")
      */
     private $firstLoadingWarehouse;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="rates")
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="ratesFirstDeliveries")
      */
     private $firstDeliveryWarehouse;
 
@@ -57,6 +61,16 @@ class Rate
      * @ORM\ManyToOne(targetEntity=Carrier::class, inversedBy="rates")
      */
     private $carrier;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="ratesSecondLoadings")
+     */
+    private $secondLoadingWarehouse;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="ratesSecondDeliveries")
+     */
+    private $secondDeliveryWarehouse;
 
     public function getId(): ?int
     {
@@ -107,6 +121,30 @@ class Rate
     public function setCarrier(?Carrier $carrier): self
     {
         $this->carrier = $carrier;
+
+        return $this;
+    }
+
+    public function getSecondLoadingWarehouse(): ?Warehouse
+    {
+        return $this->secondLoadingWarehouse;
+    }
+
+    public function setSecondLoadingWarehouse(?Warehouse $secondLoadingWarehouse): self
+    {
+        $this->secondLoadingWarehouse = $secondLoadingWarehouse;
+
+        return $this;
+    }
+
+    public function getSecondDeliveryWarehouse(): ?Warehouse
+    {
+        return $this->secondDeliveryWarehouse;
+    }
+
+    public function setSecondDeliveryWarehouse(?Warehouse $secondDeliveryWarehouse): self
+    {
+        $this->secondDeliveryWarehouse = $secondDeliveryWarehouse;
 
         return $this;
     }

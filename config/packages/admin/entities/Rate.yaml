@@ -6,12 +6,16 @@ easy_admin:
         list:
           fields:
             - { property: 'carrier', label: 'Transporteur' } 
-            - { property: 'firstLoadingWarehouse', label: 'Lieu de chargement'}
-            - { property: 'firstDeliveryWarehouse', label: 'Lieu de livraison'}
+            - { property: 'firstLoadingWarehouse', label: 'Lieu de chargement 1'}
+            - { property: 'secondLoadingWarehouse', label: 'Lieu de chargement 2'}
+            - { property: 'firstDeliveryWarehouse', label: 'Lieu de livraison 1'}
+            - { property: 'secondDeliveryWarehouse', label: 'Lieu de livraison 2'}
             - { property: 'amount', label: 'Tarif'}
         form:
           fields:
             - { property: 'carrier', label: 'Transporteur' } 
-            - { property: 'firstLoadingWarehouse', label: 'Lieu de chargement'}
-            - { property: 'firstDeliveryWarehouse', label: 'Lieu de livraison'}
+            - { property: 'firstLoadingWarehouse', label: 'Lieu de chargement 1'}
+            - { property: 'secondLoadingWarehouse', label: 'Lieu de chargement 2'}
+            - { property: 'firstDeliveryWarehouse', label: 'Lieu de livraison 1'}
+            - { property: 'secondDeliveryWarehouse', label: 'Lieu de livraison 2'}
             - { property: 'amount', label: 'Tarif'}       

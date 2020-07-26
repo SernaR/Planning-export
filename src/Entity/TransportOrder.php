@@ -241,13 +241,13 @@ class TransportOrder
     private $effectiveSecondDelivery;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="transportOrders")
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="secondLoadings")
      * @Groups({"order_read"})
      */
     private $secondLoadingWarehouse;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="transportOrders")
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="secondDeliveries")
      * @Groups({"order_read"})
      */
     private $secondDeliveryWarehouse;

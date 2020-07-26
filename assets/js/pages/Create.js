@@ -138,7 +138,7 @@ const Create = ({match, history}) => {
         } 
     }, [id])
 
-    const getRate = (order) => { ///////////////////////////////////rfaire le calcul///////////////////////////////////////
+    const getRate = (order) => { 
         if (order.carrier && order.firstLoadingWarehouse && order.firstDeliveryWarehouse) {
             setLoading(true)
             rateAPI.find(order)
@@ -160,6 +160,7 @@ const Create = ({match, history}) => {
         if(moment()>moment(order.firstLoadingStart)){
             disabled.current = true
         }
+        //2 loading - 2 delivery
         else if(order.secondLoadingStart && order.secondLoadingEnd && order.secondDelivery && order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery){
             disabled.current = (
                 moment(order.secondDelivery)>moment(order.firstDelivery) &&
@@ -169,6 +170,7 @@ const Create = ({match, history}) => {
                 moment(order.firstLoadingEnd)>moment(order.firstLoadingStart)
             )? false : true
         }
+        //1 loading - 2 delivery
         else if(order.secondDelivery && order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery){
             disabled.current = (
                 moment(order.secondDelivery)>moment(order.firstDelivery) &&
@@ -176,6 +178,7 @@ const Create = ({match, history}) => {
                 moment(order.firstLoadingEnd)>moment(order.firstLoadingStart)
             )? false : true
         }
+        //2 loading - 1 delivery
         else if(order.secondLoadingStart && order.secondLoadingEnd && order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery){
             disabled.current = (
                 moment(order.firstDelivery)>moment(order.secondLoadingEnd) && 
@@ -184,6 +187,7 @@ const Create = ({match, history}) => {
                 moment(order.firstLoadingEnd)>moment(order.firstLoadingStart)
             )? false : true
         }
+        //1 loading - 1 delivery
         else if(order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery) {
             disabled.current = (
                 moment(order.firstDelivery)>moment(order.firstLoadingEnd) && 

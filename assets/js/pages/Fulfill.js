@@ -115,6 +115,7 @@ const Fulfill = ({ match, history }) => {
     }
 
     const checkDate = (fulfill) => {
+        //2 loading - 2 delivery
         if(fulfill.effectiveSecondLoadingStart && fulfill.effectiveSecondLoadingEnd && fulfill.effectiveSecondDelivery && fulfill.effectiveFfulfillirstLoadingStart && fulfill.effectiveFfulfillirstLoadingEnd && fulfill.effectiveFfulfillirstDelivery){
             disabled.current = (
                 fulfill.effectiveSecondDelivery>fulfill.effectiveFirstDelivery &&
@@ -124,6 +125,7 @@ const Fulfill = ({ match, history }) => {
                 fulfill.effectiveFirstLoadingEnd>fulfill.effectiveFirstLoadingStart
             )? false : true
         }
+        //1 loading - 2 delivery
         else if(fulfill.effectiveSecondDelivery && fulfill.effectiveFirstLoadingStart && fulfill.effectiveFirstLoadingEnd && fulfill.effectiveFirstDelivery){
             disabled.current = (
                 fulfill.effectiveSecondDelivery>fulfill.effectiveFirstDelivery &&
@@ -131,6 +133,7 @@ const Fulfill = ({ match, history }) => {
                 fulfill.effectiveFirstLoadingEnd>fulfill.effectiveFirstLoadingStart
             )? false : true
         }
+        //2 loading - 1 delivery
         else if(fulfill.effectiveSecondLoadingStart && fulfill.effectiveSecondLoadingEnd && fulfill.effectiveFirstLoadingStart && fulfill.effectiveFirstLoadingEnd && fulfill.effectiveFirstDelivery){
             disabled.current = (
                 fulfill.effectiveFirstDelivery>fulfill.effectiveSecondLoadingEnd && 
@@ -139,6 +142,7 @@ const Fulfill = ({ match, history }) => {
                 fulfill.effectiveFirstLoadingEnd>fulfill.effectiveFirstLoadingStart
             )? false : true
         }
+        //1 loading - 1 delivery
         else if (fulfill.effectiveFirstLoadingStart && fulfill.effectiveFirstLoadingEnd && fulfill.effectiveFirstDelivery) {
             disabled.current = (
                 fulfill.effectiveFirstDelivery>fulfill.effectiveFirstLoadingEnd && 

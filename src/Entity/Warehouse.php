@@ -44,17 +44,36 @@ class Warehouse
      * @ORM\OneToMany(targetEntity=TransportOrder::class, mappedBy="firstLoadingWarehouse")
      */
     private $firstLoadings;
-
     /**
      * @ORM\OneToMany(targetEntity=TransportOrder::class, mappedBy="firstDeliveryWarehouse")
      */
     private $firstDeliveries;
-
+     /**
+     * @ORM\OneToMany(targetEntity=TransportOrder::class, mappedBy="secondLoadingWarehouse")
+     */
+    private $secondLoadings;
+    /**
+     * @ORM\OneToMany(targetEntity=TransportOrder::class, mappedBy="secondDeliveryWarehouse")
+     */
+    private $secondDeliveries;
+    
     /**
      * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="firstLoadingWarehouse")
      */
-    private $rates;
-
+    private $ratesFirstLoadings;
+    /**
+     * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="firstDeliveryWarehouse")
+     */
+    private $ratesFirstDeliveries;
+    /**
+     * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="secondLoadingWarehouse")
+     */
+    private $ratesSecondLoadings;
+    /**
+     * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="secondDeliveryWarehouse")
+     */
+    private $ratesSecondDeliveries;
+   
     /**
      * @ORM\ManyToOne(targetEntity=InitialParams::class, inversedBy="warehouses")
      */
@@ -65,17 +84,14 @@ class Warehouse
      */
     private $destinationParams;
 
-    /**
-     * @ORM\OneToMany(targetEntity=TransportOrder::class, mappedBy="secondLoadingWarehouse")
-     */
-    private $transportOrders;
-
     public function __construct()
     {
         $this->firstLoadings = new ArrayCollection();
         $this->firstDeliveries = new ArrayCollection();
         $this->rates = new ArrayCollection();
         $this->transportOrders = new ArrayCollection();
+        $this->secondDeliveryWarehouse = new ArrayCollection();
+        $this->secondDeliveryWarehousePlop = new ArrayCollection();
     }
 
     public function __toString()
@@ -99,6 +115,170 @@ class Warehouse
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAdress(): ?Adress
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(?Adress $adress): self
+    {
+        $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function country() {
+        return $this->adress ? $this->adress->getCountry()->getName() : 'Aucun';
+    }
+
+    public function getInitialParams(): ?InitialParams
+    {
+        return $this->initialParams;
+    }
+
+    public function setInitialParams(?InitialParams $initialParams): self
+    {
+        $this->initialParams = $initialParams;
+
+        return $this;
+    }
+
+    public function getDestinationParams(): ?DestinationParams
+    {
+        return $this->destinationParams;
+    }
+
+    public function setDestinationParams(?DestinationParams $destinationParams): self
+    {
+        $this->destinationParams = $destinationParams;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRatesFirstLoadings(): Collection
+    {
+        return $this->ratesFirstLoadings;
+    }
+
+    public function addRatesFirstLoadings(Rate $ratesFirstLoading): self
+    {
+        if (!$this->ratesFirstLoadings->contains($ratesFirstLoading)) {
+            $this->ratesFirstLoadings[] = $ratesFirstLoading;
+            $ratesFirstLoading->setFirstLoadingWarehouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRatesFirstLoading(Rate $ratesFirstLoading): self
+    {
+        if ($this->ratesFirstLoadings->contains($ratesFirstLoading)) {
+            $this->ratesFirstLoadings->removeElement($ratesFirstLoading);
+            // set the owning side to null (unless already changed)
+            if ($ratesFirstLoading->getFirstLoadingWarehouse() === $this) {
+                $ratesFirstLoading->setFirstLoadingWarehouse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRatesSecondLoadings(): Collection
+    {
+        return $this->ratesSecondLoadings;
+    }
+
+    public function addRatesSecondLoadings(Rate $ratesSecondLoading): self
+    {
+        if (!$this->ratesSecondLoadings->contains($ratesSecondLoading)) {
+            $this->ratesSecondLoadings[] = $ratesSecondLoading;
+            $ratesSecondLoading->setSecondLoadingWarehouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRatesSecondLoading(Rate $ratesSecondLoading): self
+    {
+        if ($this->ratesSecondLoadings->contains($ratesSecondLoading)) {
+            $this->ratesSecondLoadings->removeElement($ratesSecondLoading);
+            // set the owning side to null (unless already changed)
+            if ($ratesSecondLoading->getSecondLoadingWarehouse() === $this) {
+                $ratesSecondLoading->setSecondLoadingWarehouse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRatesFirstDeliveries(): Collection
+    {
+        return $this->ratesFirstDeliveries;
+    }
+
+    public function addRatesFirstDeliveries(Rate $ratesFirstDelivery): self
+    {
+        if (!$this->ratesFirstDeliveries->contains($ratesFirstDelivery)) {
+            $this->ratesFirstDeliveries[] = $ratesFirstDelivery;
+            $ratesFirstDelivery->setFirstDeliveryWarehouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRatesFirstDelivery(Rate $ratesFirstDelivery): self
+    {
+        if ($this->ratesFirstDeliveries->contains($ratesFirstDelivery)) {
+            $this->ratesFirstDeliveries->removeElement($ratesFirstDelivery);
+            // set the owning side to null (unless already changed)
+            if ($ratesFirstDelivery->getFirstDeliveryWarehouse() === $this) {
+                $ratesFirstDelivery->setFirstDeliveryWarehouse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRatesSecondDeliveries(): Collection
+    {
+        return $this->ratesSecondDeliveries;
+    }
+
+    public function addRatesSecondDeliveries(Rate $ratesSecondDelivery): self
+    {
+        if (!$this->ratesSecondDeliveries->contains($ratesSecondDelivery)) {
+            $this->ratesSecondDeliveries[] = $ratesSecondDelivery;
+            $ratesSecondDelivery->setSecondDeliveryWarehouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRatesSecondDelivery(Rate $ratesSecondDelivery): self
+    {
+        if ($this->ratesSecondDeliveries->contains($ratesSecondDelivery)) {
+            $this->ratesSecondDeliveries->removeElement($ratesSecondDelivery);
+            // set the owning side to null (unless already changed)
+            if ($ratesSecondDelivery->getSecondDeliveryWarehouse() === $this) {
+                $ratesSecondDelivery->setSecondDeliveryWarehouse(null);
+            }
+        }
 
         return $this;
     }
@@ -134,20 +314,35 @@ class Warehouse
         return $this;
     }
 
-    public function getAdress(): ?Adress
+    /**
+     * @return Collection|TransportOrder[]
+     */
+    public function getSecondLoadings(): Collection
     {
-        return $this->adress;
+        return $this->secondLoadings;
     }
 
-    public function setAdress(?Adress $adress): self
+    public function addSecondLoadings(TransportOrder $secondLoading): self
     {
-        $this->adress = $adress;
+        if (!$this->secondLoadings->contains($secondLoading)) {
+            $this->secondLoadings[] = $secondLoading;
+            $secondLoading->setSecondLoadingWarehouse($this);
+        }
 
         return $this;
     }
 
-    public function country() {
-        return $this->adress ? $this->adress->getCountry()->getName() : 'Aucun';
+    public function removeSecondLoading(TransportOrder $secondLoading): self
+    {
+        if ($this->secondLoadings->contains($secondLoading)) {
+            $this->secondLoadings->removeElement($secondLoading);
+            // set the owning side to null (unless already changed)
+            if ($secondLoading->getSecondLoadingWarehouse() === $this) {
+                $secondLoading->setSecondLoadingWarehouse(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -182,88 +377,34 @@ class Warehouse
     }
 
     /**
-     * @return Collection|Rate[]
-     */
-    public function getRates(): Collection
-    {
-        return $this->rates;
-    }
-
-    public function addRate(Rate $rate): self
-    {
-        if (!$this->rates->contains($rate)) {
-            $this->rates[] = $rate;
-            $rate->setFirstLoadingWarehouse($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRate(Rate $rate): self
-    {
-        if ($this->rates->contains($rate)) {
-            $this->rates->removeElement($rate);
-            // set the owning side to null (unless already changed)
-            if ($rate->getFirstLoadingWarehouse() === $this) {
-                $rate->setFirstLoadingWarehouse(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getInitialParams(): ?InitialParams
-    {
-        return $this->initialParams;
-    }
-
-    public function setInitialParams(?InitialParams $initialParams): self
-    {
-        $this->initialParams = $initialParams;
-
-        return $this;
-    }
-
-    public function getDestinationParams(): ?DestinationParams
-    {
-        return $this->destinationParams;
-    }
-
-    public function setDestinationParams(?DestinationParams $destinationParams): self
-    {
-        $this->destinationParams = $destinationParams;
-
-        return $this;
-    }
-
-    /**
      * @return Collection|TransportOrder[]
      */
-    public function getTransportOrders(): Collection
+    public function getSecondDeliveries(): Collection
     {
-        return $this->transportOrders;
+        return $this->secondDeliveries;
     }
 
-    public function addTransportOrder(TransportOrder $transportOrder): self
+    public function addSecondDelivery(TransportOrder $secondDelivery): self
     {
-        if (!$this->transportOrders->contains($transportOrder)) {
-            $this->transportOrders[] = $transportOrder;
-            $transportOrder->setSecondLoadingWarehouse($this);
+        if (!$this->secondDeliveries->contains($secondDelivery)) {
+            $this->secondDeliveries[] = $secondDelivery;
+            $secondDelivery->setSecondDeliveryWarehouse($this);
         }
 
         return $this;
     }
 
-    public function removeTransportOrder(TransportOrder $transportOrder): self
+    public function removeSecondDelivery(TransportOrder $secondDelivery): self
     {
-        if ($this->transportOrders->contains($transportOrder)) {
-            $this->transportOrders->removeElement($transportOrder);
+        if ($this->secondDeliveries->contains($secondDelivery)) {
+            $this->secondDeliveries->removeElement($secondDelivery);
             // set the owning side to null (unless already changed)
-            if ($transportOrder->getSecondLoadingWarehouse() === $this) {
-                $transportOrder->setSecondLoadingWarehouse(null);
+            if ($secondDelivery->getSecondDeliveryWarehouse() === $this) {
+                $secondDelivery->setSecondDeliveryWarehouse(null);
             }
         }
 
         return $this;
     }
+
 }
