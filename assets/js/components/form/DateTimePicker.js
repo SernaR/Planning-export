@@ -10,9 +10,9 @@ const useStyles = makeStyles((theme) => ({
     },
   }))
 
-function Picker({ label, minDate, maxDate, onChange, name, value=null, error, disablePast=false }) {
+function Picker({ label, minDate, maxDate, onChange, name, value=null, error, disablePast=false, disabled=false }) {
     const classes = useStyles();    
-    const checkDate = (value && moment(value) <= moment(minDate) ) || error
+    const isErrorDate = (value && minDate && moment(value) <= moment(minDate) ) || error
     
     return (
         <DateTimePicker
@@ -22,8 +22,9 @@ function Picker({ label, minDate, maxDate, onChange, name, value=null, error, di
             label={label}
             value={value}
             onChange={date =>onChange(name, date)}
-            error={checkDate}
+            error={isErrorDate}
             disablePast={disablePast}
+            disabled={disabled}
             minDate={minDate}
             maxDate={maxDate}
             format='DD/MM/YYYY HH:mm'

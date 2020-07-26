@@ -108,13 +108,13 @@ const styles = StyleSheet.create({
               </View>
               
               <View>
-                <Text style={styles.title2}>2 - {order.firstLoadingWarehouse && order.firstLoadingWarehouse.name}</Text>
-                <Text>{order.firstLoadingWarehouse && order.firstLoadingWarehouse.adress.main}</Text>
-                <Text>{order.firstLoadingWarehouse && order.firstLoadingWarehouse.adress.secondary}</Text>
-                <Text style={styles.gutterBottom}>{order.firstLoadingWarehouse && order.firstLoadingWarehouse.adress.code} {order.firstLoadingWarehouse && order.firstLoadingWarehouse.adress.city}</Text>
-                <Text>Date de départ : {moment(order.firstLoadingStart).format('DD/MM/YYYY')}</Text>
-                <Text>Heure de début : {moment(order.firstLoadingStart).format('HH:mm')}</Text>
-                <Text>Heure de fin : {moment(order.firstLoadingEnd).format('HH:mm')}</Text>
+                <Text style={styles.title2}>2 - {order.secondLoadingWarehouse && order.secondLoadingWarehouse.name}</Text>
+                <Text>{order.secondLoadingWarehouse && order.secondLoadingWarehouse.adress.main}</Text>
+                <Text>{order.secondLoadingWarehouse && order.secondLoadingWarehouse.adress.secondary}</Text>
+                <Text style={styles.gutterBottom}>{order.secondLoadingWarehouse && order.secondLoadingWarehouse.adress.code} {order.secondLoadingWarehouse && order.secondLoadingWarehouse.adress.city}</Text>
+                <Text>Date de départ : {order.secondLoadingStart && moment(order.secondLoadingStart).format('DD/MM/YYYY')}</Text>
+                <Text>Heure de début : {order.secondLoadingStart && moment(order.secondLoadingStart).format('HH:mm')}</Text>
+                <Text>Heure de fin : {order.secondLoadingEnd && moment(order.secondLoadingEnd).format('HH:mm')}</Text>
               </View>
             </View> 
           </View>
@@ -131,84 +131,21 @@ const styles = StyleSheet.create({
                 <Text>Heure de début : {moment(order.firstDelivery).format('HH:mm')}</Text>
               </View> 
               <View>
-                  <Text style={styles.title2}>1 - {order.firstDeliveryWarehouse && order.firstDeliveryWarehouse.name}</Text>
-                  <Text>{order.firstDeliveryWarehouse && order.firstDeliveryWarehouse.adress.main}</Text>
-                  <Text>{order.firstDeliveryWarehouse && order.firstDeliveryWarehouse.adress.secondary}</Text>
-                  <Text style={styles.gutterBottom}>{order.firstDeliveryWarehouse && order.firstDeliveryWarehouse.adress.code} {order.firstDeliveryWarehouse && order.firstDeliveryWarehouse.adress.city}</Text>
-                  <Text>Date de départ : {moment(order.firstDelivery).format('DD/MM/YYYY')}</Text>
-                  <Text>Heure de début : {moment(order.firstDelivery).format('HH:mm')}</Text>
+                  <Text style={styles.title2}>1 - {order.secondDeliveryWarehouse && order.secondDeliveryWarehouse.name}</Text>
+                  <Text>{order.secondDeliveryWarehouse && order.secondDeliveryWarehouse.adress.main}</Text>
+                  <Text>{order.secondDeliveryWarehouse && order.secondDeliveryWarehouse.adress.secondary}</Text>
+                  <Text style={styles.gutterBottom}>{order.secondDeliveryWarehouse && order.secondDeliveryWarehouse.adress.code} {order.secondDeliveryWarehouse && order.secondDeliveryWarehouse.adress.city}</Text>
+                  <Text>Date de départ : {order.secondDelivery && moment(order.secondDelivery).format('DD/MM/YYYY')}</Text>
+                  <Text>Heure de début : {order.secondDelivery && moment(order.secondDelivery).format('HH:mm')}</Text>
               </View> 
             </View>
-          <View style={styles.body2}>
-            <Text>Numéro de commande : {order.code}</Text>
-            <Text>affrétement : {order.amount} € all in</Text>
-          </View>
+            <View style={styles.body2}>
+              <Text>Numéro de commande : {order.code}</Text>
+              <Text>affrétement : {order.amount} € all in</Text>
+            </View>
           </View>
         </>}
       </Page>
     </Document>
   );
 }
-/*
-const order = {
-  "@context": "/api/contexts/TransportOrder",
-  "@id": "/api/transport_orders/101",
-  "@type": "TransportOrder",
-  "id": 101,
-  "code": "FR101",
-  "firstLoadingStart": "2020-07-17T11:38:00+00:00",
-  "firstLoadingEnd": "2020-07-18T11:38:00+00:00",
-  "firstDelivery": "2020-07-18T12:38:00+00:00",
-  "amount": 1351,
-  "effectiveFirstLoadingStart": null,
-  "effectiveFirstLoadingEnd": null,
-  "effectiveFirstLoadingBoxes": null,
-  "effectiveFirstLoadingPallets": null,
-  "effectiveFirstLoadingPieces": null,
-  "effectiveFirstDelivery": null,
-  "weight": null,
-  "volume": null,
-  "carrier": {
-    "@id": "/api/carriers/2",
-    "@type": "Carrier",
-    "name": "JDM"
-  },
-  "firstLoadingWarehouse": {
-    "@id": "/api/warehouses/2",
-    "@type": "Warehouse",
-    "name": "LBIS",
-    "adress": {
-      "main": "ZI PARC EUROPESCAULT",
-      "secondary": "RUE JEAN-JAURES",
-      "code": "59410",
-      "city": "ANZIN"
-    }
-  },
-  "vehicle": {
-    "@id": "/api/vehicles/1",
-    "@type": "Vehicle",
-    "name": "Semi remorque"
-  },
-  "firstDeliveryWarehouse": {
-    "@id": "/api/warehouses/2",
-    "@type": "Warehouse",
-    "name": "LBIS",
-    "adress": {
-      "main": "ZI PARC EUROPESCAULT",
-      "secondary": "RUE JEAN-JAURES",
-      "code": "59410",
-      "city": "ANZIN"
-    }
-  },
-  "invoice": null,
-  "comment": null,
-  "isCancelled": false,
-  "country": {
-    "id": 1,
-    "name": "France"
-  }
-}
-
-*/
-
-

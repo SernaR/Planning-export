@@ -17,6 +17,7 @@ export default function Field({label, value = '', name, onChange, variant = 'sta
     <TextField 
         className={classes.root}
         variant={variant}
+        size="small"
         multiline={multiline}
         name={name}
         label={label}

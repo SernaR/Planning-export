@@ -3,20 +3,31 @@ import { ORDERS_API}  from '../services/config'
 import API from '../services/api'
 import moment from 'moment'
 import Field from '../components/form/Field'
-import { Container, Grid, Card, CardContent, Typography, makeStyles, Button } from '@material-ui/core';
+import { Container, Grid, Card, CardContent, Typography, makeStyles, Button, CardActions } from '@material-ui/core';
 import PageWrap from '../components/ui/PageWrap';
 
 const useStyles = makeStyles((theme) => ({
     card: {
-      margin: '1em auto',
-      paddingLeft:theme.spacing(2),
-      paddingRight: theme.spacing(2)
+        marginTop: theme.spacing(2), 
+        //marginBottom: theme.spacing(2), 
+        paddingLeft:theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        minHeight: '100%'
+    },
+    card2: {
+        marginTop: theme.spacing(3),
+        paddingLeft:theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        minHeight: '100%',
+        position: 'relative'
     },
     label:{
         fontWeight: 'bold',
-        display: 'flex',
-        alignItems: 'center'
    },
+    label2:{
+        fontWeight: 'bold',
+        marginTop: theme.spacing(1),
+    },
    span: {
        fontWeight: 'normal',
        paddingLeft: theme.spacing(2)
@@ -25,7 +36,12 @@ const useStyles = makeStyles((theme) => ({
        paddingBottom: theme.spacing(4),
        textAlign: 'center',
        fontSize: '2em'
-   }
+   },
+   cardActions: {
+        position: 'absolute',
+        bottom: theme.spacing(2),
+        right: theme.spacing(4),
+    }
 }))
 
 const Bill = ({ match, history }) => {
@@ -53,7 +69,7 @@ const Bill = ({ match, history }) => {
                 comment: order.comment || ''
             })
         } catch(err){
-            console.log(err.response)
+            setToast(true)
         }
         setLoading(false)    
     }
@@ -76,16 +92,17 @@ const Bill = ({ match, history }) => {
         return ( isNaN(amount) || bill.invoice === '' )  ? false :({ ...bill, amount}) 
     }
 
+    const goBack = () =>  history.push('/liste') //filtre ?
+
     const handleSubmit = async(e) => {  
         e.preventDefault()
         setLoading(true)
         
-
         try{
             const bill = formater()
             const { status } = await API.update(ORDERS_API, match.params.id, bill)
             if(status === 200) {
-                history.push('/liste') //filtre ?
+                goBack()
             }
         } catch (error) {  
             submitted.current = true
@@ -106,6 +123,33 @@ const Bill = ({ match, history }) => {
     > 
         <Container fixed>
             <form>
+                <Card className={classes.card}>
+                    <CardContent>
+                        <Grid container justify="center">
+                            <Grid item xs={12}>
+                                <Typography className={classes.title}>Facturation - Commentaires</Typography>
+                            </Grid> 
+                            <Grid item xs={4}> 
+                                <Field 
+                                    name='invoice'  
+                                    label='Facture'
+                                    variant="outlined" 
+                                    value={bill.invoice} 
+                                    onChange={ handleChange } 
+                                    error={validation(bill.invoice)}/>
+                            </Grid>  
+                            <Grid item xs={8}>    
+                                <Field 
+                                    name='comment' 
+                                    variant="outlined" 
+                                    label='Commentaire' 
+                                    value={bill.comment} 
+                                    onChange={ handleChange } 
+                                    mult iline/>
+                            </Grid>                              
+                        </Grid>
+                    </CardContent>
+                </Card>
                 <Grid container spacing={2}>
                     <Grid item xs={4}>
                         <Card className={classes.card}>
@@ -121,7 +165,7 @@ const Bill = ({ match, history }) => {
                         <Card className={classes.card}>
                             <CardContent >
                                 <Typography className={classes.title}>Départ</Typography>
-                                <Typography className={classes.label}>Entrepôt : <span className={classes.span}>{order.firstLoadingWarehouse && order.firstLoadingWarehouse.name}</span></Typography>
+                                <Typography className={classes.label}>Premier entrepôt : <span className={classes.span}>{order.firstLoadingWarehouse && order.firstLoadingWarehouse.name}</span></Typography>
                                 <Typography className={classes.label}>Date de début : <span className={classes.span}>{moment(order.effectiveFirstLoadingStart).format('DD/MM/YYYY à HH:mm')}</span></Typography>
                                 <Typography className={classes.label}>Date de fin : <span className={classes.span}>{moment(order.effectiveFirstLoadingEnd).format('DD/MM/YYYY à HH:mm')}</span></Typography>                             
                             </CardContent>
@@ -131,29 +175,56 @@ const Bill = ({ match, history }) => {
                         <Card className={classes.card}>
                             <CardContent >
                                 <Typography className={classes.title}>Arrivée</Typography>
-                                <Typography className={classes.label}>Entrepôt : <span className={classes.span}>{order.firstDeliveryWarehouse && order.firstDeliveryWarehouse.name}</span></Typography>
+                                <Typography className={classes.label}>Premier entrepôt : <span className={classes.span}>{order.firstDeliveryWarehouse && order.firstDeliveryWarehouse.name}</span></Typography>
                                 <Typography className={classes.label}>Date de début : <span className={classes.span}>{moment(order.effectiveFirstDelivery).format('DD/MM/YYYY à HH:mm')}</span></Typography>                               
                             </CardContent>
                         </Card>
                     </Grid> 
-                </Grid> 
-                <Card className={classes.card}>
-                    <CardContent>
-                        <Grid container>
-                        <Grid item xs={12}><Typography className={classes.title}>Facturation - Commentaires</Typography></Grid>
-                            <Grid item xs={3}>
-                                <Field name='amount' variant="outlined" label='Tarif' value={bill.amount} onChange={ handleChange } error={NumberValidation(bill.amount)}/>                                     
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Field name='invoice' variant="outlined" label='Facture' value={bill.invoice} onChange={ handleChange } error={validation(bill.invoice)}/>
-                            </Grid>
-                            <Grid item xs={6}>  
-                                <Field name='comment' variant="outlined" label='Commentaire' value={bill.comment} onChange={ handleChange } multiline/>                                   
-                            </Grid>
-                        </Grid>  
-                    </CardContent>
-                </Card>
-                <Button onClick={ handleSubmit } variant="contained" color="primary">Enregistrer</Button>
+                </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                        <Card className={classes.card2}>
+                            <CardContent >
+                                <Field 
+                                    name='amount' 
+                                    label='Tarif' 
+                                    value={bill.amount} 
+                                    onChange={ handleChange } 
+                                    error={NumberValidation(bill.amount)}/>  
+                            </CardContent>
+                            <CardActions className={classes.cardActions}>
+                                <Button 
+                                    onClick={goBack} 
+                                    color="primary">
+                                    Retour
+                                </Button>                                   
+                                <Button 
+                                    onClick={ handleSubmit } 
+                                    variant="contained" 
+                                    color="primary"
+                                    >Enregistrer
+                                </Button>
+                            </CardActions>    
+                        </Card>
+                    </Grid> 
+                    <Grid item xs={4}>
+                        <Card className={classes.card2}>
+                            <CardContent >                
+                                <Typography className={classes.label2}>Second entrepôt : <span className={classes.span}>{order.secondLoadingWarehouse && order.secondLoadingWarehouse.name}</span></Typography>
+                                <Typography className={classes.label}>Date de début : <span className={classes.span}>{order.effectiveSecondLoadingStart && moment(order.effectiveSecondLoadingStart).format('DD/MM/YYYY à HH:mm')}</span></Typography>
+                                <Typography className={classes.label}>Date de fin : <span className={classes.span}>{order.effectiveSecondLoadingEnd && moment(order.effectiveSecondLoadingEnd).format('DD/MM/YYYY à HH:mm')}</span></Typography>                             
+                            </CardContent>
+                        </Card>
+                    </Grid> 
+                    <Grid item xs={4}>
+                        <Card className={classes.card2}>
+                            <CardContent >
+                                <Typography className={classes.label2}>Second entrepôt : <span className={classes.span}>{order.secondDeliveryWarehouse && order.secondDeliveryWarehouse.name}</span></Typography>
+                                <Typography className={classes.label}>Date de début : <span className={classes.span}>{order.effectiveSecondDelivery && moment(order.effectiveSecondDelivery).format('DD/MM/YYYY à HH:mm')}</span></Typography>                               
+                            </CardContent>
+                        </Card>
+                    </Grid> 
+                </Grid>  
             </form>   
         </Container>
     </PageWrap> 

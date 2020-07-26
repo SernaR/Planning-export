@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%'
   },
   button: {
-      background: '#f4f4f4',
       textTransform: 'capitalize'
   },
   title: {
@@ -60,6 +59,7 @@ export default function Search({ search, onChange, onSubmit }) {
                 <TextField key={index}
                     className={classes.field}
                     variant="outlined"
+                    size="small"
                     label={field.placeholder}
                     name={field.name}
                     value={search[field.name]}
@@ -68,12 +68,13 @@ export default function Search({ search, onChange, onSubmit }) {
                     
             ))}
                 <Button 
-                className={classes.button}
-                variant="outlined" 
-                onClick={onSubmit} 
-                startIcon={<SearchIcon />}
-                fullWidth  >
-                Rechercher
+                  className={classes.button}
+                  variant="contained"
+                  color="primary" 
+                  onClick={onSubmit} 
+                  startIcon={<SearchIcon />}
+                  fullWidth  >
+                  Rechercher
                 </Button>
             </form>
         </CardContent>        

@@ -20,7 +20,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
+import { Typography, CardActions } from '@material-ui/core';
 import LoadingPage from '../components/ui/LoadingPage';
 import AlertDialog from '../components/ui/AlertDialog';
 import PageWrap from '../components/ui/PageWrap';
@@ -28,14 +28,28 @@ import PageWrap from '../components/ui/PageWrap';
 
 const useStyles = makeStyles((theme) => ({
     card: {
-      margin: '1em auto',
+      marginTop: theme.spacing(2), 
+      //marginBottom: theme.spacing(2), 
       paddingLeft:theme.spacing(2),
-      paddingRight: theme.spacing(2)
+      paddingRight: theme.spacing(2),
+      minHeight: '100%'
     },
+    card2: {
+        marginTop: theme.spacing(3),
+        paddingLeft:theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        minHeight: '100%',
+        position: 'relative'
+      },
     title: {
         paddingBottom: theme.spacing(2),
         textAlign: 'center',
         fontSize: '2em'
+    },
+    cardActions: {
+        position: 'absolute',
+        bottom: theme.spacing(2),
+        right: theme.spacing(4),
     }
 }))
   
@@ -65,7 +79,7 @@ const Create = ({match, history}) => {
         setCountry('')
         setList({})
         setOrder({})
-        
+
         submitted.current = false
         disabled.current = true
     }
@@ -88,19 +102,30 @@ const Create = ({match, history}) => {
 
     const fetchData = async(id) => {
         try {
-            const order = await API.find(ORDERS_API, id)
-            setCountry( order.country.id)
-            checkDate({  
-                code: order.code,
-                carrier: order.carrier['@id'],
-                vehicle: order.vehicle['@id'],
-                firstLoadingWarehouse: order.firstLoadingWarehouse['@id'],
-                firstLoadingStart: order.firstLoadingStart,
-                firstDeliveryWarehouse: order.firstDeliveryWarehouse['@id'],
-                firstLoadingEnd: order.firstLoadingEnd,
-                firstDelivery: order.firstDelivery,
-                amount: order.amount || ''
-            })
+            const orderFound = await API.find(ORDERS_API, id)
+            console.log('order:', orderFound)
+            const order = {  
+                code: orderFound.code,
+                carrier: orderFound.carrier['@id'],
+                vehicle: orderFound.vehicle['@id'],
+                firstLoadingWarehouse: orderFound.firstLoadingWarehouse['@id'],
+                firstLoadingStart: orderFound.firstLoadingStart,
+                firstLoadingEnd: orderFound.firstLoadingEnd,
+                firstDeliveryWarehouse: orderFound.firstDeliveryWarehouse['@id'],
+                firstDelivery: orderFound.firstDelivery,  
+                amount: orderFound.amount || ''
+            }
+            if(orderFound.secondLoadingWarehouse) {
+                order.secondLoadingWarehouse= orderFound.secondLoadingWarehouse['@id']
+                order.secondLoadingStart= orderFound.secondLoadingStart
+                order.secondLoadingEnd= orderFound.secondLoadingEnd
+            }
+            if(orderFound.secondDeliveryWarehouse){
+                order.secondDeliveryWarehouse = orderFound.secondDeliveryWarehouse['@id']
+                order.secondDelivery = orderFound.secondDelivery
+            }
+            setCountry( orderFound.country.id)
+            checkDate(order)
         }catch(err) {
             setToast(true)   
         }
@@ -113,7 +138,7 @@ const Create = ({match, history}) => {
         } 
     }, [id])
 
-    const getRate = (order) => { 
+    const getRate = (order) => { ///////////////////////////////////rfaire le calcul///////////////////////////////////////
         if (order.carrier && order.firstLoadingWarehouse && order.firstDeliveryWarehouse) {
             setLoading(true)
             rateAPI.find(order)
@@ -132,9 +157,40 @@ const Create = ({match, history}) => {
     }
 
     const checkDate = (order) => {
-        if (order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery) {
-            disabled.current = (moment(order.firstDelivery)>moment(order.firstLoadingEnd) && moment(order.firstLoadingEnd)>moment(order.firstLoadingStart))? false : true
-        }    
+        if(moment()>moment(order.firstLoadingStart)){
+            disabled.current = true
+        }
+        else if(order.secondLoadingStart && order.secondLoadingEnd && order.secondDelivery && order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery){
+            disabled.current = (
+                moment(order.secondDelivery)>moment(order.firstDelivery) &&
+                moment(order.firstDelivery)>moment(order.secondLoadingEnd) && 
+                moment(order.secondLoadingEnd)>moment(order.secondLoadingStart) &&
+                moment(order.secondLoadingStart)>moment(order.firstLoadingEnd) &&
+                moment(order.firstLoadingEnd)>moment(order.firstLoadingStart)
+            )? false : true
+        }
+        else if(order.secondDelivery && order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery){
+            disabled.current = (
+                moment(order.secondDelivery)>moment(order.firstDelivery) &&
+                moment(order.firstDelivery)>moment(order.firstLoadingEnd) && 
+                moment(order.firstLoadingEnd)>moment(order.firstLoadingStart)
+            )? false : true
+        }
+        else if(order.secondLoadingStart && order.secondLoadingEnd && order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery){
+            disabled.current = (
+                moment(order.firstDelivery)>moment(order.secondLoadingEnd) && 
+                moment(order.secondLoadingEnd)>moment(order.secondLoadingStart) &&
+                moment(order.secondLoadingStart)>moment(order.firstLoadingEnd) &&
+                moment(order.firstLoadingEnd)>moment(order.firstLoadingStart)
+            )? false : true
+        }
+        else if(order.firstLoadingStart && order.firstLoadingEnd && order.firstDelivery) {
+            disabled.current = (
+                moment(order.firstDelivery)>moment(order.firstLoadingEnd) && 
+                moment(order.firstLoadingEnd)>moment(order.firstLoadingStart)
+            )? false : true
+        }
+
         setOrder(order) 
     }
 
@@ -245,7 +301,7 @@ const Create = ({match, history}) => {
                             <Typography className={classes.title}>Départ</Typography>
                             <Select 
                                 name="firstLoadingWarehouse" items={initials.warehouses} onChange={ handleChangeSelect }
-                                label="Entrepôt"
+                                label="Premier entrepôt"
                                 item={order.firstLoadingWarehouse}
                                 error={validation(order.firstLoadingWarehouse)}/>
                             <Picker 
@@ -253,6 +309,7 @@ const Create = ({match, history}) => {
                                 onChange={handleChangeDate} 
                                 name="firstLoadingStart" 
                                 value={order.firstLoadingStart}
+                                minDate={moment()}
                                 disablePast={true}
                                 error={validation(order.firstLoadingStart)}/>     
                             <Picker 
@@ -272,7 +329,7 @@ const Create = ({match, history}) => {
                         <Typography className={classes.title}>Arrivé</Typography>
                             <Select 
                                 name="firstDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }
-                                label="Entrepôt"
+                                label="Premier entrepôt"
                                 item={order.firstDeliveryWarehouse}
                                 error={validation(order.firstDeliveryWarehouse)}/>
                             <Picker 
@@ -280,18 +337,82 @@ const Create = ({match, history}) => {
                                 onChange={handleChangeDate} 
                                 name="firstDelivery" 
                                 value={order.firstDelivery}
-                                minDate={order.firstLoadingEnd}
+                                minDate={order.secondLoadingEnd || order.firstLoadingEnd}
                                 error={validation(order.firstDelivery)}/>    
+                        </CardContent>
+                    </Card> 
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <Card className={classes.card2}>
+                        <CardContent >
                             <Field 
                                 label='Tarif' 
                                 value={order.amount} 
                                 onChange={ handleChangerRate }
                                 error={NumberValidation(order.amount)}/>
                         </CardContent>
+                        <CardActions className={classes.cardActions}>
+                            <Button  
+                                onClick={setup}
+                                color="primary">
+                                Annuler
+                            </Button> 
+                            <Button 
+                                onClick={ handleSubmit } 
+                                variant="contained" 
+                                color="primary" 
+                                disabled={disabled.current}
+                            >Enregistrer</Button>
+                        </CardActions>        
+                    </Card>
+                </Grid>
+                <Grid item xs={4}>
+                    <Card className={classes.card2}>
+                        <CardContent>
+                            <Select 
+                                name="secondLoadingWarehouse" items={initials.warehouses} onChange={ handleChangeSelect }
+                                label=" Second entrepôt"
+                                item={order.secondLoadingWarehouse}
+                                error={validation(order.secondLoadingWarehouse)}/>
+                            <Picker 
+                                label="Date de départ - début" 
+                                onChange={handleChangeDate} 
+                                name="secondLoadingStart" 
+                                value={order.secondLoadingStart}
+                                minDate={order.firstLoadingEnd}
+                                error={validation(order.secondLoadingStart)}/>     
+                            <Picker 
+                                label="Date de départ - fin" 
+                                onChange={handleChangeDate} 
+                                name="secondLoadingEnd" 
+                                value={order.secondLoadingEnd}
+                                minDate={order.secondLoadingStart}
+                                maxDate={order.secondLoadingStart}
+                                error={validation(order.secondLoadingEnd)}/>  
+                        </CardContent>
+                    </Card> 
+                </Grid>
+                <Grid item xs={4}>
+                    <Card className={classes.card2}>
+                        <CardContent >
+                            <Select 
+                                name="secondDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }
+                                label="Second entrepôt"
+                                item={order.secondDeliveryWarehouse}
+                                error={validation(order.secondDeliveryWarehouse)}/>
+                            <Picker 
+                                label="Date d'arrivé" 
+                                onChange={handleChangeDate} 
+                                name="secondDelivery" 
+                                value={order.secondDelivery}
+                                minDate={order.firstDelivery} 
+                                error={validation(order.secondDelivery)}/>    
+                        </CardContent>
                     </Card> 
                 </Grid>
             </Grid>
-            <Button onClick={ handleSubmit } variant="contained" color="primary" disabled={disabled.current}>Enregistrer</Button>
         </form>        
         </Container>
         <AlertDialog
@@ -310,7 +431,6 @@ const Create = ({match, history}) => {
                 </PDFDownloadLink>
             </Button>
         </AlertDialog>
-        <div><pre>{JSON.stringify(order, null,2)}</pre></div>
     </PageWrap> 
 }
  

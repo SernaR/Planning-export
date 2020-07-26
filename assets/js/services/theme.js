@@ -1,5 +1,4 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import green from '@material-ui/core/colors/green';
 
 export const theme = createMuiTheme({
   palette: {
@@ -7,11 +6,11 @@ export const theme = createMuiTheme({
       main: '#103d51', //bleu petrole
     },
     secondary: {
-      main: '#772f32',
+      main: '#d66437',
     },
   },
   typography: {
-    fontFamily: 'Source Sans Pro',
+    fontFamily: 'Source Sans Pro, Calibri',
   },
 });
 

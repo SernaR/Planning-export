@@ -1,13 +1,17 @@
-get https://localhost:8000/api/transport_orders/102
+get https://localhost:8000/api/transport_orders/82
 Content-Type: application/json
 
 {
-    "carrier": "/api/carriers/2",
+    "code": "PO82",
+    "carrier": "/api/carriers/1",
     "vehicle": "/api/vehicles/1",
     "firstLoadingWarehouse": "/api/warehouses/2",
-    "firstLoadingStart": "2020-07-17T12:32:00+00:00",
-    "firstDeliveryWarehouse": "/api/warehouses/2",
-    "firstLoadingEnd": "2020-07-18T12:32:00+00:00",
-    "firstDelivery": "2020-07-19T12:32:00+00:00",
-    "amount": 1235
+    "firstLoadingStart": "2020-07-29T10:15:00+00:00",
+    "firstLoadingEnd": "2020-07-29T14:15:00+00:00",
+    "firstDeliveryWarehouse": "/api/warehouses/1",
+    "firstDelivery": "2020-07-29T20:15:00+00:00",
+    "secondLoadingStart": "",
+    "secondLoadingEnd": "",
+    "secondDelivery": "",
+    "amount": 1400
 }

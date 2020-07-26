@@ -65,11 +65,17 @@ class Warehouse
      */
     private $destinationParams;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TransportOrder::class, mappedBy="secondLoadingWarehouse")
+     */
+    private $transportOrders;
+
     public function __construct()
     {
         $this->firstLoadings = new ArrayCollection();
         $this->firstDeliveries = new ArrayCollection();
         $this->rates = new ArrayCollection();
+        $this->transportOrders = new ArrayCollection();
     }
 
     public function __toString()
@@ -226,6 +232,37 @@ class Warehouse
     public function setDestinationParams(?DestinationParams $destinationParams): self
     {
         $this->destinationParams = $destinationParams;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TransportOrder[]
+     */
+    public function getTransportOrders(): Collection
+    {
+        return $this->transportOrders;
+    }
+
+    public function addTransportOrder(TransportOrder $transportOrder): self
+    {
+        if (!$this->transportOrders->contains($transportOrder)) {
+            $this->transportOrders[] = $transportOrder;
+            $transportOrder->setSecondLoadingWarehouse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransportOrder(TransportOrder $transportOrder): self
+    {
+        if ($this->transportOrders->contains($transportOrder)) {
+            $this->transportOrders->removeElement($transportOrder);
+            // set the owning side to null (unless already changed)
+            if ($transportOrder->getSecondLoadingWarehouse() === $this) {
+                $transportOrder->setSecondLoadingWarehouse(null);
+            }
+        }
 
         return $this;
     }

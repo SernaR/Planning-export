@@ -204,6 +204,54 @@ class TransportOrder
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"order_read"})
+     */
+    private $secondLoadingStart;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"order_read"})
+     */
+    private $effectiveSecondLoadingStart;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"order_read"})
+     */
+    private $secondLoadingEnd;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"order_read"})
+     */
+    private $effectiveSecondLoadingEnd;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"order_read"})
+     */
+    private $secondDelivery;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"order_read"})
+     */
+    private $effectiveSecondDelivery;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="transportOrders")
+     * @Groups({"order_read"})
+     */
+    private $secondLoadingWarehouse;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="transportOrders")
+     * @Groups({"order_read"})
+     */
+    private $secondDeliveryWarehouse;
+
     public function getCountry()
     {
         return [
@@ -477,6 +525,102 @@ class TransportOrder
     public function setIsCancelled(?bool $isCancelled): self
     {
         $this->isCancelled = $isCancelled;
+
+        return $this;
+    }
+
+    public function getSecondLoadingStart(): ?\DateTimeInterface
+    {
+        return $this->secondLoadingStart;
+    }
+
+    public function setSecondLoadingStart(?\DateTimeInterface $secondLoadingStart): self
+    {
+        $this->secondLoadingStart = $secondLoadingStart;
+
+        return $this;
+    }
+
+    public function getEffectiveSecondLoadingStart(): ?\DateTimeInterface
+    {
+        return $this->effectiveSecondLoadingStart;
+    }
+
+    public function setEffectiveSecondLoadingStart(?\DateTimeInterface $effectiveSecondLoadingStart): self
+    {
+        $this->effectiveSecondLoadingStart = $effectiveSecondLoadingStart;
+
+        return $this;
+    }
+
+    public function getSecondLoadingEnd(): ?\DateTimeInterface
+    {
+        return $this->secondLoadingEnd;
+    }
+
+    public function setSecondLoadingEnd(?\DateTimeInterface $secondLoadingEnd): self
+    {
+        $this->secondLoadingEnd = $secondLoadingEnd;
+
+        return $this;
+    }
+
+    public function getEffectiveSecondLoadingEnd(): ?\DateTimeInterface
+    {
+        return $this->effectiveSecondLoadingEnd;
+    }
+
+    public function setEffectiveSecondLoadingEnd(?\DateTimeInterface $effectiveSecondLoadingEnd): self
+    {
+        $this->effectiveSecondLoadingEnd = $effectiveSecondLoadingEnd;
+
+        return $this;
+    }
+
+    public function getSecondDelivery(): ?\DateTimeInterface
+    {
+        return $this->secondDelivery;
+    }
+
+    public function setSecondDelivery(?\DateTimeInterface $secondDelivery): self
+    {
+        $this->secondDelivery = $secondDelivery;
+
+        return $this;
+    }
+
+    public function getEffectiveSecondDelivery(): ?\DateTimeInterface
+    {
+        return $this->effectiveSecondDelivery;
+    }
+
+    public function setEffectiveSecondDelivery(?\DateTimeInterface $effectiveSecondDelivery): self
+    {
+        $this->effectiveSecondDelivery = $effectiveSecondDelivery;
+
+        return $this;
+    }
+
+    public function getSecondLoadingWarehouse(): ?Warehouse
+    {
+        return $this->secondLoadingWarehouse;
+    }
+
+    public function setSecondLoadingWarehouse(?Warehouse $secondLoadingWarehouse): self
+    {
+        $this->secondLoadingWarehouse = $secondLoadingWarehouse;
+
+        return $this;
+    }
+
+    public function getSecondDeliveryWarehouse(): ?Warehouse
+    {
+        return $this->secondDeliveryWarehouse;
+    }
+
+    public function setSecondDeliveryWarehouse(?Warehouse $secondDeliveryWarehouse): self
+    {
+        $this->secondDeliveryWarehouse = $secondDeliveryWarehouse;
 
         return $this;
     }
