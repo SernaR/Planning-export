@@ -103,7 +103,7 @@ const Create = ({match, history}) => {
     const fetchData = async(id) => {
         try {
             const orderFound = await API.find(ORDERS_API, id)
-            console.log('order:', orderFound)
+            
             const order = {  
                 code: orderFound.code,
                 carrier: orderFound.carrier['@id'],
@@ -264,12 +264,20 @@ const Create = ({match, history}) => {
         }
     })
 
+    const handleReset = () => {
+        if(editing) {
+            history.push('/planning') //filtre ?************************
+        } else {
+            setup()
+        }
+    }
+
     if (error) setToast(true) //return <div>failed to load</div> 
     if (!initials) return <LoadingPage />
 
     return <PageWrap
         loading={loading}
-        title={ `Order de Tansport ${order.code || ''}`}
+        title={ `Ordre de Transport ${order.code || ''}`}
         message={message.current}
         open={toast}
         onClose={() => {
@@ -282,7 +290,7 @@ const Create = ({match, history}) => {
                 <Grid item xs={4}>
                     <Card className={classes.card}>
                         <CardContent >
-                            <Typography className={classes.title} >Géneral</Typography>
+                            <Typography className={classes.title} >Général</Typography>
                             <Select 
                                 items={initials.countries} onChange={ handleChangeCountry } 
                                 label="Pays de destination" item={country}/>
@@ -293,7 +301,7 @@ const Create = ({match, history}) => {
                                 error={validation(order.carrier)}/>
                             <Select 
                                 name="vehicle" items={initials.vehicles} onChange={ handleChangeSelect }
-                                label="Vehicule"
+                                label="Véhicule"
                                 item={order.vehicle}
                                 error={validation(order.vehicle)}/>        
                         </CardContent>
@@ -330,14 +338,14 @@ const Create = ({match, history}) => {
                 <Grid item xs={4}>
                     <Card className={classes.card}>
                         <CardContent >
-                        <Typography className={classes.title}>Arrivé</Typography>
+                        <Typography className={classes.title}>Arrivée</Typography>
                             <Select 
                                 name="firstDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }
                                 label="Premier entrepôt"
                                 item={order.firstDeliveryWarehouse}
                                 error={validation(order.firstDeliveryWarehouse)}/>
                             <Picker 
-                                label="Date d'arrivé" 
+                                label="Date d'arrivée" 
                                 onChange={handleChangeDate} 
                                 name="firstDelivery" 
                                 value={order.firstDelivery}
@@ -359,7 +367,7 @@ const Create = ({match, history}) => {
                         </CardContent>
                         <CardActions className={classes.cardActions}>
                             <Button  
-                                onClick={setup}
+                                onClick={handleReset}
                                 color="primary">
                                 Annuler
                             </Button> 
@@ -407,7 +415,7 @@ const Create = ({match, history}) => {
                                 item={order.secondDeliveryWarehouse}
                                 error={validation(order.secondDeliveryWarehouse)}/>
                             <Picker 
-                                label="Date d'arrivé" 
+                                label="Date d'arrivée" 
                                 onChange={handleChangeDate} 
                                 name="secondDelivery" 
                                 value={order.secondDelivery}

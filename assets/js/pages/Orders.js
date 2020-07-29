@@ -73,7 +73,7 @@ const Orders = (props) => {
             setToast(false)}}
     > 
         <Grid container spacing={2} justify='center'>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
                 <Search 
                     search={search} 
                     onChange={ handleChange } 
@@ -81,7 +81,7 @@ const Orders = (props) => {
                 /> 
                 <Filters onFilter = { handleFilter } /> 
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={6}>
                 <List 
                     url={ url } 
                     setToast={ setToast }

@@ -2,7 +2,7 @@ easy_admin:
   entities:
     Carrier:
         class: App\Entity\Carrier 
-        label: 'Tansporteur'
+        label: 'Transporteur'
         list:
           fields:
               - { property: 'name', label: 'Nom' } 

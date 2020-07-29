@@ -57,7 +57,7 @@ const List = ({url, setLoading, setToast }) => {
         fetchData( 1, url )
         setCurrentPage(1)
     },  [url] );
-
+    
     const fetchData = ( page, url ) => {
         setLoading(true);
         const and = url.includes('?') ? '&' : '?'
@@ -96,17 +96,19 @@ const List = ({url, setLoading, setToast }) => {
         }
         return <Link to={'/facturation/ordre/' + id}><Button className={classes.button} size="small" variant={status}>{text}</Button></Link>
     }
-
+    
     return <>
         <TableContainer className={classes.container} component={Paper}>
             <Table size="small" aria-label="table">
                 <TableHead>
                     <TableRow >
-                        <TableCell className={classes.title}>Ordre de transport</TableCell>
+                        <TableCell className={classes.title}>Ordre N°</TableCell>
                         <TableCell className={classes.title}>Pays</TableCell>
+                        <TableCell className={classes.title}>Entrepôts</TableCell>
                         <TableCell className={classes.title}>Transporteur</TableCell>
                         <TableCell className={classes.title}>Date</TableCell>
-                        <TableCell className={classes.title}>status</TableCell>
+                        <TableCell className={classes.title}>statut</TableCell>
+                        <TableCell className={classes.title}>Confirmation</TableCell>
                         <TableCell className={classes.title}>Facturation</TableCell>
                     </TableRow>
                 </TableHead>
@@ -115,9 +117,11 @@ const List = ({url, setLoading, setToast }) => {
                     {orders.map( (order, key) => 
                         <TableRow hover role="checkbox" key={key}>
                             <TableCell>{ order.code }</TableCell>
-                            <TableCell>{ order.firstDeliveryWarehouse ? order.country.name : ''}</TableCell> 
-                            <TableCell>{ order.carrier ? order.carrier.name : ''}</TableCell>
-                            <TableCell>{ moment(order.firstLoadingStart).format('DD-MM-YYYY HH:mm') }</TableCell>
+                            <TableCell>{ order.country.name }</TableCell> 
+                            <TableCell>{ order.firstLoadingWarehouse.name }{order.secondLoadingWarehouse && ' + ' +  order.secondLoadingWarehouse.name }</TableCell>
+                            <TableCell>{ order.carrier.name }</TableCell>
+                            <TableCell>{ moment(order.firstLoadingStart).format('DD-MM-YYYY') }</TableCell>
+                            <TableCell>{ order.isCancelled && 'Annulé' }</TableCell>
                             <TableCell>{ fulfilled(order.id, order.effectiveFirstLoadingStart) }</TableCell>
                             <TableCell>{ bill(order.id, order.invoice) }</TableCell>
                         </TableRow>

@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
             <Text style={styles.title1}> Ordre de chargement / Transport Order {order.code}</Text>
             <View style={styles.body1}>
               <View>
-                <Text style={styles.title2}>DONNEUR D'ORDRE</Text>
+                <Text style={styles.title2}>DONNEUR D'ORDRE / PRINCIPAL</Text>
                 <Text style={styles.title2}>La Redoute</Text>
                 <Text>110, rue Blanchemaille</Text>
                 <Text style={styles.gutterBottom}>59100 Roubaix</Text>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
                 <Text>Num TVA fr0000000000</Text>
               </View>
               <View>
-                <Text style={styles.title2}>TRANSPORTEUR</Text>
+                <Text style={styles.title2}>TRANSPORTEUR / CARRIER</Text>
                 <Text style={styles.title2}>{order.carrier && order.carrier.name}</Text>
                 <Text>{order.carrier && order.carrier.adress.main}</Text>
                 <Text>{order.carrier && order.carrier.adress.secondary}</Text>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
             </View>
             <View style={styles.body2}>
               <Text>Numéro de commande : {order.code}</Text>
-              <Text>affrétement : {order.amount} € all in</Text>
+              <Text>affrètement : {order.amount} € all in</Text>
             </View>
           </View>
         </>}

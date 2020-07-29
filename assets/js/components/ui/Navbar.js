@@ -43,22 +43,10 @@ export default function Navbar() {
             <Button className={classes.menuButton} color="inherit"><NavLink to="/creation/nouveau">Nouveau</NavLink></Button>
             <Button className={classes.menuButton} color="inherit"><NavLink to="/planning">Planning</NavLink></Button>
             <Button className={classes.menuButton} color="inherit"><NavLink to="/liste">Liste</NavLink></Button>
-          </div> 
-          
+          </div>   
         </Toolbar>
       </AppBar>
     </div>
   );
 }
 
-
-/*
-<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-<Button color="inherit"><NavLink to="/creation/nouveau">Nouveau</NavLink></Button>
-          <Button color="inherit"><NavLink to="/planning">Planning</NavLink></Button>
-          <Button color="inherit"><NavLink to="/liste">Liste</NavLink></Button>
-
-
-*/ 

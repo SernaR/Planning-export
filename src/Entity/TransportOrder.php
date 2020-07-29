@@ -150,14 +150,14 @@ class TransportOrder
     /**
      * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstLoadings", cascade={"persist", "remove"})
      * @Assert\NotBlank
-     * @Groups({"order_read"})
+     * @Groups({"orders_read","order_read"})
      */
     private $firstLoadingWarehouse;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="transportOrders", cascade={"persist", "remove"})
      * @Assert\NotBlank
-     * @Groups({"orders_read", "order_read"})   
+     * @Groups({"order_read"})   
      */
     private $vehicle;
 
@@ -177,7 +177,7 @@ class TransportOrder
     /**
      * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstDeliveries", cascade={"persist", "remove"})
      * @Assert\NotBlank
-     * @Groups({"orders_read", "order_read"})
+     * @Groups({"order_read"})
      */
     private $firstDeliveryWarehouse;
 
@@ -242,7 +242,7 @@ class TransportOrder
 
     /**
      * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="secondLoadings")
-     * @Groups({"order_read"})
+     * @Groups({"orders_read", "order_read"})
      */
     private $secondLoadingWarehouse;
 
