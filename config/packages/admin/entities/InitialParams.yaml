@@ -6,11 +6,11 @@ easy_admin:
         list:
           fields:
             - { property: 'id' } 
-            - { property: 'countries', label: 'Pays de destination' } 
+            - { property: 'destinations', label: 'Pays de destination' } 
             - { property: 'vehicles', label: 'Vehicules'}
             - { property: 'warehouses', label: 'Lieux de chargement'}
         form:
           fields:
-            - { property: 'countries', label: 'Pays de destination', type: 'entity', type_options: { class: 'App\Entity\Country', multiple: true,by_reference: false, attr: { data-widget: 'select2' }} } 
+            - { property: 'destinations', label: 'Pays de destination', type: 'entity', type_options: { class: 'App\Entity\DestinationParams', multiple: true,by_reference: false, attr: { data-widget: 'select2' }} } 
             - { property: 'vehicles', label: 'Véhicules', type: 'entity', type_options: { class: 'App\Entity\Vehicle', multiple: true,by_reference: false, attr: { data-widget: 'select2' }} } 
             - { property: 'warehouses', label: 'Lieux de chargement', type: 'entity', type_options: { class: 'App\Entity\Warehouse', multiple: true,by_reference: false, attr: { data-widget: 'select2' }}}      

@@ -14,14 +14,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=DestinationParamsRepository::class)
- * @ApiResource(
- *  collectionOperations={"get"},
- *  itemOperations={"get"},
- *  normalizationContext={
- *      "groups"={"destination_params_read"}
- *  }
- * )
- * @ApiFilter(SearchFilter::class, properties={"country": "exact"})
  */
 class DestinationParams
 {
@@ -34,26 +26,36 @@ class DestinationParams
 
     /**
      * @ORM\OneToOne(targetEntity=Country::class)
-     * @Groups({"destination_params_read"})
+     * @Groups({"initial_params_read"})
      */
     private $country;
 
     /**
      * @ORM\ManyToMany(targetEntity=Carrier::class, inversedBy="destinationParams")
-     * @Groups({"destination_params_read"})
+     * @Groups({"initial_params_read"})
      */
     private $carriers;
 
     /**
      * @ORM\OneToMany(targetEntity=Warehouse::class, mappedBy="destinationParams")
-     * @Groups({"destination_params_read"})
+     * @Groups({"initial_params_read"})
      */
     private $warehouses;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=InitialParams::class, inversedBy="destinations")
+     */
+    private $initialParams;
 
     public function __construct()
     {
         $this->carriers = new ArrayCollection();
         $this->warehouses = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+       return $this->country->getName();
     }
 
     public function getId(): ?int
@@ -126,6 +128,18 @@ class DestinationParams
                 $warehouse->setDestinationParams(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInitialParams(): ?InitialParams
+    {
+        return $this->initialParams;
+    }
+
+    public function setInitialParams(?InitialParams $initialParams): self
+    {
+        $this->initialParams = $initialParams;
 
         return $this;
     }

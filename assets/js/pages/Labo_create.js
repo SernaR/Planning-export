@@ -7,14 +7,20 @@ import Field from '../components/form/Field';
 import Select from '../components/form/Selection';
 import Picker from '../components/form/DateTimePicker';
 
+import paramsAPI from '../services/paramsAPI'
 import rateAPI from '../services/rateAPI'
 import useSWR from 'swr';
 
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PdfDocument from "../components/PdfDocument";
 
-import { Container, Grid, Card, CardContent, Typography, makeStyles, Button, CardActions } from '@material-ui/core';
-
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import { Typography, CardActions } from '@material-ui/core';
 import LoadingPage from '../components/ui/LoadingPage';
 import AlertDialog from '../components/ui/AlertDialog';
 import PageWrap from '../components/ui/PageWrap';
@@ -23,6 +29,7 @@ import PageWrap from '../components/ui/PageWrap';
 const useStyles = makeStyles((theme) => ({
     card: {
       marginTop: theme.spacing(2), 
+      //marginBottom: theme.spacing(2), 
       paddingLeft:theme.spacing(2),
       paddingRight: theme.spacing(2),
       minHeight: '100%'
@@ -52,13 +59,10 @@ const Create = ({match, history}) => {
     const { id } = match.params;
 
     const { data: initials, error } = useSWR( CREATE_SETUP_API, API.fetcher )
+    
+    const [country, setCountry] = useState('')
 
-    const countries = useRef([])
-    if (initials) {
-        countries.current = initials.destinations.map(init => init.country)
-    }
- 
-    const [destination, setDestination] = useState({})
+    const [list, setList] = useState({})
     const [order, setOrder] = useState({})
     const [pdf, setPdf] = useState({})
     
@@ -72,12 +76,29 @@ const Create = ({match, history}) => {
     const [openAlert, setOpenAlert] = useState(false);
 
     const setup = () => {
+        setCountry('')
+        setList({})
         setOrder({})
-        setDestination({})
 
         submitted.current = false
         disabled.current = true
     }
+
+    const fetchCountryParams = async () => {
+        setLoading(true)
+        try{
+            const list = await paramsAPI.findAll(country)
+            setList(list)
+        }catch (error) {
+            setToast(true)
+        } 
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        fetchCountryParams()
+    }, [country])
+
 
     const fetchData = async(id) => {
         try {
@@ -103,7 +124,7 @@ const Create = ({match, history}) => {
                 order.secondDeliveryWarehouse = orderFound.secondDeliveryWarehouse['@id']
                 order.secondDelivery = orderFound.secondDelivery
             }
-            setDestination(getDestination(orderFound.country.id))
+            setCountry( orderFound.country.id)
             checkDate(order)
         }catch(err) {
             setToast(true)   
@@ -179,17 +200,15 @@ const Create = ({match, history}) => {
         setOrder(order) 
     }
 
-    const handleChangeCountry = ({value}) => {  
+    const handleChangeCountry = ({value}) => {
         setOrder({ ...order,
             firstDeliveryWarehouse: '',
             carrier: '',
             firstLoadingWarehouse: '',                      
             amount: ''
         })
-        setDestination(getDestination(value))
+        setCountry(value)
     }
-
-    const getDestination  = value => initials.destinations.filter(destination => destination.country.id === value)[0]
 
     const handleChangeSelect = ({ name, value }) => {
         getRate({ ...order, [name]: value })
@@ -255,8 +274,8 @@ const Create = ({match, history}) => {
         }
     }
 
-    if (error) setToast(true) 
-    if (!initials) return <LoadingPage/>
+    if (error) setToast(true) //return <div>failed to load</div> 
+    if (!initials) return <LoadingPage />
 
     return <PageWrap
         loading={loading}
@@ -275,10 +294,10 @@ const Create = ({match, history}) => {
                         <CardContent >
                             <Typography className={classes.title} >Général</Typography>
                             <Select 
-                                items={countries.current} onChange={ handleChangeCountry } 
-                                label="Pays de destination" item={destination.country && destination.country.id}/>
+                                items={initials.countries} onChange={ handleChangeCountry } 
+                                label="Pays de destination" item={country}/>
                             <Select 
-                                name="carrier" items={destination.carriers} onChange={ handleChangeSelect }
+                                name="carrier" items={list.carriers} onChange={ handleChangeSelect }
                                 label="Transporteur"
                                 item={order.carrier}
                                 error={validation(order.carrier)}/>
@@ -323,7 +342,7 @@ const Create = ({match, history}) => {
                         <CardContent >
                         <Typography className={classes.title}>Arrivée</Typography>
                             <Select 
-                                name="firstDeliveryWarehouse" items={destination.warehouses} onChange={ handleChangeSelect }
+                                name="firstDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }
                                 label="Premier entrepôt"
                                 item={order.firstDeliveryWarehouse}
                                 error={validation(order.firstDeliveryWarehouse)}/>
@@ -393,7 +412,7 @@ const Create = ({match, history}) => {
                     <Card className={classes.card2}>
                         <CardContent >
                             <Select 
-                                name="secondDeliveryWarehouse" items={destination.warehouses} onChange={ handleChangeSelect }
+                                name="secondDeliveryWarehouse" items={list.warehouses} onChange={ handleChangeSelect }
                                 label="Second entrepôt"
                                 item={order.secondDeliveryWarehouse}
                                 error={validation(order.secondDeliveryWarehouse)}/>

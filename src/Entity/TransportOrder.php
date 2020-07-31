@@ -22,7 +22,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * @UniqueEntity("code")
  * @ApiResource(
  *  normalizationContext={"groups"={"order_read"}},
- *  itemOperations={"put", "get"},
+ *  itemOperations={"put", "get", "delete"},
  *  collectionOperations={
  *      "get"={
  *          "normalization_context"={"groups"={"orders_read"}}

@@ -31,12 +31,6 @@ class InitialParams
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Country::class, mappedBy="initialParams")
-     * @Groups({"initial_params_read"})
-     */
-    private $countries;
-
-    /**
      * @ORM\OneToMany(targetEntity=Vehicle::class, mappedBy="initialParams")
      * @Groups({"initial_params_read"})
      */
@@ -48,47 +42,23 @@ class InitialParams
      */
     private $warehouses;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DestinationParams::class, mappedBy="initialParams")
+     * @Groups({"initial_params_read"})
+     */
+    private $destinations;
+
     public function __construct()
     {
         $this->countries = new ArrayCollection();
         $this->vehicles = new ArrayCollection();
         $this->warehouses = new ArrayCollection();
+        $this->destinations = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|Country[]
-     */
-    public function getCountries(): Collection
-    {
-        return $this->countries;
-    }
-
-    public function addCountry(Country $country): self
-    {
-        if (!$this->countries->contains($country)) {
-            $this->countries[] = $country;
-            $country->setInitialParams($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCountry(Country $country): self
-    {
-        if ($this->countries->contains($country)) {
-            $this->countries->removeElement($country);
-            // set the owning side to null (unless already changed)
-            if ($country->getInitialParams() === $this) {
-                $country->setInitialParams(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -147,6 +117,37 @@ class InitialParams
             // set the owning side to null (unless already changed)
             if ($warehouse->getInitialParams() === $this) {
                 $warehouse->setInitialParams(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DestinationParams[]
+     */
+    public function getDestinations(): Collection
+    {
+        return $this->destinations;
+    }
+
+    public function addDestination(DestinationParams $destination): self
+    {
+        if (!$this->destinations->contains($destination)) {
+            $this->destinations[] = $destination;
+            $destination->setInitialParams($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDestination(DestinationParams $destination): self
+    {
+        if ($this->destinations->contains($destination)) {
+            $this->destinations->removeElement($destination);
+            // set the owning side to null (unless already changed)
+            if ($destination->getInitialParams() === $this) {
+                $destination->setInitialParams(null);
             }
         }
 

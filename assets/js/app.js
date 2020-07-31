@@ -49,7 +49,7 @@ const App = () => {
                         <Route path="/labo" component={ Labo } />
                         <Route path="/pdf" component={ Labo_PDF } />
                         <Route path="/pdf-viewer" component={ PdfViewer } />
-                        <Route path="/" component={ Login } />
+                        <Route path="/" component={ Planning } />
                     </Switch>  
                 </ HashRouter>
             </MuiPickersUtilsProvider>

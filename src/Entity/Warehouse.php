@@ -24,13 +24,13 @@ class Warehouse
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"initial_params_read", "orders_read", "destination_params_read"})  
+     * @Groups({"initial_params_read", "orders_read"})  
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"orders_read", "order_read", "initial_params_read", "destination_params_read"})
+     * @Groups({"orders_read", "order_read", "initial_params_read"})
      */
     private $name;
 

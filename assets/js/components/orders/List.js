@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
         textTransform: 'capitalize'
     },
     title: {
+        fontSize: '1rem',
         fontWeight: 'bold',
         textTransform: 'uppercase',
     },
@@ -122,8 +123,8 @@ const List = ({url, setLoading, setToast }) => {
                             <TableCell>{ order.carrier.name }</TableCell>
                             <TableCell>{ moment(order.firstLoadingStart).format('DD-MM-YYYY') }</TableCell>
                             <TableCell>{ order.isCancelled && 'Annulé' }</TableCell>
-                            <TableCell>{ fulfilled(order.id, order.effectiveFirstLoadingStart) }</TableCell>
-                            <TableCell>{ bill(order.id, order.invoice) }</TableCell>
+                            <TableCell>{ !order.isCancelled && fulfilled(order.id, order.effectiveFirstLoadingStart) }</TableCell>
+                            <TableCell>{ !order.isCancelled && bill(order.id, order.invoice) }</TableCell>
                         </TableRow>
                     )}   
                 </TableBody> 

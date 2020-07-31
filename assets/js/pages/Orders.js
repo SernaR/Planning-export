@@ -7,12 +7,16 @@ import Search from '../components/orders/Search';
 import Filters from '../components/orders/Filters';
 import { makeStyles } from '@material-ui/core/styles';
 import PageWrap from '../components/ui/PageWrap';
-
+import RotateLeftTwoToneIcon from '@material-ui/icons/RotateLeftTwoTone';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+  reset: {
+    marginTop: theme.spacing(1)
+  }
 }));
 
 const Orders = (props) => {
@@ -80,6 +84,7 @@ const Orders = (props) => {
                     onSubmit={ handleSubmit } 
                 /> 
                 <Filters onFilter = { handleFilter } /> 
+                <Button className={classes.reset} size="small" onClick={() => setUrl(ORDERS_API)} ><RotateLeftTwoToneIcon/> Réinitialiser</Button>
             </Grid>
             <Grid item xs={6}>
                 <List 

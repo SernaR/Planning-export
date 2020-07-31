@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { ORDERS_API}  from './config'
 
+//renomer en planning api
+
 function planning(dateStart, dateEnd) {
     return axios
         .get(ORDERS_API + '?firstLoadingStart[before]=' + dateEnd + '&firstLoadingStart[after]=' + dateStart + '&isCancelled=false&order[code]=asc')

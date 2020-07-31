@@ -1,4 +1,4 @@
-get https://localhost:8000/api/transport_orders/82
+get https://localhost:8000/api/transport_orders
 Content-Type: application/json
 
 {

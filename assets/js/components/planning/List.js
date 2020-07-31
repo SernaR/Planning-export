@@ -14,16 +14,22 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2),
     },
     title: {
+        fontSize: '1rem',
         fontWeight: 'bold',
         textTransform: 'uppercase',
     },
     lastCell: {
+        textAlign: 'center',
         paddingLeft: 0,
         paddingRight:0
+    },
+    button:{
+        fontWeight: 'bold',
+        color:theme.palette.primary
     }
 }))
 
-const PlanningList = ({orders, onRemove }) => {
+const List = ({orders, onRemove }) => {
     
     const classes = useStyles()
     const [openAlert, setOpenAlert] = useState(false);
@@ -44,7 +50,7 @@ const PlanningList = ({orders, onRemove }) => {
         const disabled =  moment(order.firstLoadingStart) < moment()
         const link = disabled ? order.code : <Link to={ '/creation/' + order.id }>{order.code}</Link>
 
-        return <Button color='primary' disabled={disabled} aria-label="modifier">{link}</Button>
+        return <Button className={classes.button} disabled={disabled} aria-label="modifier">{link}</Button>
     }
 
     const cancelBtn = order => {
@@ -61,12 +67,12 @@ const PlanningList = ({orders, onRemove }) => {
             <Table size="small" aria-label="table">
                 <TableHead>
                     <TableRow >
-                        <TableCell className={classes.title}></TableCell>   
+                        <TableCell className={classes.title}>Ordre N°</TableCell>   
                         <TableCell className={classes.title}>Pays</TableCell>
                         <TableCell className={classes.title}>Entrepôts</TableCell>
                         <TableCell className={classes.title}>Transporteur</TableCell>
                         <TableCell className={classes.title}>Date</TableCell>
-                       <TableCell className={classes.lastCell}></TableCell>
+                       <TableCell className={classes.title}>Annuler</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -96,4 +102,4 @@ const PlanningList = ({orders, onRemove }) => {
      );
 }
  
-export default PlanningList;
+export default List;

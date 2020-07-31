@@ -12,8 +12,6 @@ function findAll(url) {
       .then(response => response.data["hydra:member"]);
 } 
 
-
-
 function find(url, id) {
   return axios
       .get(url + '/' + id)

@@ -13,7 +13,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import RotateLeftTwoToneIcon from '@material-ui/icons/RotateLeftTwoTone';
 
-import PlanningList from '../components/orders/PlanningList'
+import List from '../components/planning/List'
 
 import moment from 'moment'
 moment.locale("fr")
@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     textAlign: 'center',
+    fontSize: '1rem',
     fontWeight: 'bold',
     textTransform: 'uppercase'
   },
@@ -163,7 +164,7 @@ const Planning = (props) => {
           <Button className={classes.reset} size="small" onClick={() => setOrders(weekOrders.current)} ><RotateLeftTwoToneIcon/> Réinitialiser</Button>
         </Grid>  
         <Grid item >
-          <PlanningList orders={orders} onRemove={ fetchData }/>   
+          <List orders={orders} onRemove={ fetchData }/>   
         </Grid>  
       </Grid>  
     </PageWrap> 
