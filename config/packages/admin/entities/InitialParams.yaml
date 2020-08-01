@@ -4,11 +4,13 @@ easy_admin:
         class: App\Entity\InitialParams
         label: 'Paramètres initiaux'
         list:
+          actions: ['-new']
           fields:
             - { property: 'id' } 
             - { property: 'destinations', label: 'Pays de destination' } 
             - { property: 'vehicles', label: 'Vehicules'}
             - { property: 'warehouses', label: 'Lieux de chargement'}
+          help: 'une seule ligne de configuration'  
         form:
           fields:
             - { property: 'destinations', label: 'Pays de destination', type: 'entity', type_options: { class: 'App\Entity\DestinationParams', multiple: true,by_reference: false, attr: { data-widget: 'select2' }} } 

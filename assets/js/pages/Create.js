@@ -13,39 +13,12 @@ import useSWR from 'swr';
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PdfDocument from "../components/PdfDocument";
 
-import { Container, Grid, Card, CardContent, Typography, makeStyles, Button, CardActions } from '@material-ui/core';
+import { Container, Grid, Card, CardContent, Typography, Button, CardActions } from '@material-ui/core';
+import { useStyles } from '../styles/orderForm'
 
 import LoadingPage from '../components/ui/LoadingPage';
 import AlertDialog from '../components/ui/AlertDialog';
 import PageWrap from '../components/ui/PageWrap';
-
-
-const useStyles = makeStyles((theme) => ({
-    card: {
-      marginTop: theme.spacing(2), 
-      paddingLeft:theme.spacing(2),
-      paddingRight: theme.spacing(2),
-      minHeight: '100%'
-    },
-    card2: {
-        marginTop: theme.spacing(3),
-        paddingLeft:theme.spacing(2),
-        paddingRight: theme.spacing(2),
-        minHeight: '100%',
-        position: 'relative'
-      },
-    title: {
-        paddingBottom: theme.spacing(2),
-        textAlign: 'center',
-        fontSize: '2em'
-    },
-    cardActions: {
-        position: 'absolute',
-        bottom: theme.spacing(2),
-        right: theme.spacing(4),
-    }
-}))
-  
 
 const Create = ({match, history}) => {
     const classes = useStyles();

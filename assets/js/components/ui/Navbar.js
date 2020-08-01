@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import Button from '@material-ui/core/Button';
 import { NavLink, Link } from 'react-router-dom';
-import { ADMIN } from '../../services/config';
+import { ADMIN, LOGOUT } from '../../services/config';
 
 
 
@@ -39,7 +39,7 @@ export default function Navbar() {
             <Button className={classes.menuButton} color="inherit"><NavLink to="/planning">Planning</NavLink></Button>
             <Button className={classes.menuButton} color="inherit"><NavLink to="/liste">Liste</NavLink></Button>
             <Button className={classes.menuButton} color="inherit" ><a href={ ADMIN }>Administration</a></Button>
-            <Button className={classes.menuButton} color="inherit" ><a href={ ADMIN }>Deconnexion</a></Button>
+            <Button className={classes.menuButton} color="inherit" ><a href={ LOGOUT }>Deconnexion</a></Button>
           </div>   
         </Toolbar>
       </AppBar>

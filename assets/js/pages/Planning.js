@@ -1,53 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ordersAPI from '../services/ordersAPI'
+import planningAPI from '../services/planningAPI'
 
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import { Grid, makeStyles, Button } from '@material-ui/core';
 import RotateLeftTwoToneIcon from '@material-ui/icons/RotateLeftTwoTone';
-
-import List from '../components/planning/List'
 
 import moment from 'moment'
 moment.locale("fr")
 
-import { IconButton, Grid, Typography, Divider, Collapse, Button } from '@material-ui/core';
 import PageWrap from '../components/ui/PageWrap';
+import List from '../components/planning/List'
+import Agenda from '../components/planning/Agenda';
 
 const dateInit = moment().weekday(0)
-const week = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']
 
 const useStyles = makeStyles(theme => ({
-  table: {
-    minWidth: 650,
-  },
-  cell: {
-    textAlign: 'center',
-    cursor: 'pointer',
-    '&:hover': {
-      background: "#f4f4f4",
-   },
-  },
-  table: {
-    marginTop: theme.spacing(2)
-  },
-  planningCockpit: {
-    alignItems: 'center',
-    justifyContent: 'space-around'
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: '1rem',
-    fontWeight: 'bold',
-    textTransform: 'uppercase'
-  },
   reset: {
     marginTop: theme.spacing(1)
   }
@@ -74,7 +40,7 @@ const Planning = (props) => {
     setLoading(true)
 
     try{
-      const orders = await ordersAPI.planning(monday.format('DD-MM-YYYY'), monday.clone().add(6, 'd').format('DD-MM-YYYY'))
+      const orders = await planningAPI.findAll(monday.format('DD-MM-YYYY'), monday.clone().add(6, 'd').format('DD-MM-YYYY'))
       if(orders) {
         orders.map( order => {
           const {date, country} = getData(order)
@@ -130,37 +96,12 @@ const Planning = (props) => {
     > 
       <Grid container spacing={2} justify='center'>
         <Grid item >
-          <TableContainer component={Paper} className={classes.table}>
-            <Grid container item xs={12} className={classes.planningCockpit}>
-              <IconButton 
-                  aria-label="before"
-                  onClick={previous}>
-                  <NavigateBeforeIcon />
-              </IconButton>
-              <Typography className={classes.title}>Semaine { monday.week() }</Typography>
-              <IconButton 
-                  aria-label="after"
-                  onClick={next}>
-                  <NavigateNextIcon />
-              </IconButton> 
-            </Grid>
-            <Table className={classes.table} aria-label="simple table">  
-              <TableHead>
-                <TableRow>
-                  <TableCell className={classes.title}>Destination</TableCell>
-                  { week.map( day => <TableCell key={day} className={classes.title}>{ day }</TableCell>) }
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {planning.map((row) => (
-                  <TableRow key={row.country}>
-                    <TableCell >{row.country}</TableCell>
-                    { week.map( day => <TableCell key={day} className={classes.cell} onClick={() => filter(row.country, day)}>{row[day]}</TableCell>) }
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Agenda 
+            monday={monday}
+            onPrevious={previous}
+            onNext={next}
+            planning={planning}
+            onFilter={filter}/>
           <Button className={classes.reset} size="small" onClick={() => setOrders(weekOrders.current)} ><RotateLeftTwoToneIcon/> Réinitialiser</Button>
         </Grid>  
         <Grid item >
@@ -172,13 +113,4 @@ const Planning = (props) => {
 
 export default Planning
 
-/*
-jour semaine avec valeurs :
-<TableCell className={classes.title}>{ monday.format('dddd') }</TableCell>
-<TableCell className={classes.title}>{ monday.clone().add(1, 'd').format('dddd')}</TableCell>
-<TableCell className={classes.title}>{ monday.clone().add(2, 'd').format('dddd')}</TableCell>
-<TableCell className={classes.title}>{ monday.clone().add(3, 'd').format('dddd')}</TableCell>
-<TableCell className={classes.title}>{ monday.clone().add(4, 'd').format('dddd')}</TableCell>
-<TableCell className={classes.title}>{ monday.clone().add(5, 'd').format('dddd')}</TableCell>
-*/
 

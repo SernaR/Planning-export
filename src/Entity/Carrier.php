@@ -57,7 +57,7 @@ class Carrier
     private $transportOrders;
 
     /**
-     * @ORM\OneToOne(targetEntity=Adress::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Adress::class, cascade={"persist"})
      *  @Groups({"order_read"})
      */
     private $adress;

@@ -4,49 +4,11 @@ import API from '../services/api'
 
 import Picker from '../components/form/DateTimePicker'
 import Field from '../components/form/Field'
-import { Container, Grid, Card, CardContent, Typography, makeStyles, Button, CardActions } from '@material-ui/core';
+import { Container, Grid, Card, CardContent, Typography, Button, CardActions } from '@material-ui/core';
+import { useStyles } from '../styles/orderForm'
 
 import moment from 'moment'
 import PageWrap from '../components/ui/PageWrap';
-
-
-const useStyles = makeStyles((theme) => ({
-    card: {
-        marginTop: theme.spacing(2), 
-        //marginBottom: theme.spacing(2), 
-        paddingLeft:theme.spacing(2),
-        paddingRight: theme.spacing(2),
-        minHeight: '100%'
-    },
-    card2: {
-        marginTop: theme.spacing(3),
-        paddingLeft:theme.spacing(2),
-        paddingRight: theme.spacing(2),
-        minHeight: '100%',
-        position: 'relative'
-    },
-    label:{
-        fontWeight: 'bold',  
-    },
-    label2:{
-        fontWeight: 'bold',
-        marginTop: theme.spacing(1),
-   },
-    span: {
-        fontWeight: 'normal',
-        paddingLeft: theme.spacing(2)
-    },
-    title: {
-        paddingBottom: theme.spacing(4),
-        textAlign: 'center',
-        fontSize: '2em'
-    },
-    cardActions: {
-        position: 'absolute',
-        bottom: theme.spacing(2),
-        right: theme.spacing(4), 
-    }
-}))
 
 const Fulfill = ({ match, history }) => {
     const classes = useStyles();

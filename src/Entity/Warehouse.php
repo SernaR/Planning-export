@@ -35,7 +35,7 @@ class Warehouse
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity=Adress::class, cascade={"persist", "remove"}, inversedBy="warehouse")
+     * @ORM\OneToOne(targetEntity=Adress::class, cascade={"persist"}, inversedBy="warehouse")
      * @Groups({"order_read"})
      */
     private $adress;

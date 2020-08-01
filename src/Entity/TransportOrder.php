@@ -22,7 +22,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * @UniqueEntity("code")
  * @ApiResource(
  *  normalizationContext={"groups"={"order_read"}},
- *  itemOperations={"put", "get", "delete"},
+ *  itemOperations={"put", "get"},
  *  collectionOperations={
  *      "get"={
  *          "normalization_context"={"groups"={"orders_read"}}
@@ -141,21 +141,21 @@ class TransportOrder
     private $volume;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Carrier::class, inversedBy="transportOrders", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Carrier::class, inversedBy="transportOrders", cascade={"persist"})
      * @Assert\NotBlank
      * @Groups({"orders_read", "order_read"})
      */
     private $carrier;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstLoadings", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstLoadings", cascade={"persist"})
      * @Assert\NotBlank
      * @Groups({"orders_read","order_read"})
      */
     private $firstLoadingWarehouse;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="transportOrders", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="transportOrders", cascade={"persist"})
      * @Assert\NotBlank
      * @Groups({"order_read"})   
      */
@@ -175,7 +175,7 @@ class TransportOrder
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstDeliveries", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Warehouse::class, inversedBy="firstDeliveries", cascade={"persist"})
      * @Assert\NotBlank
      * @Groups({"order_read"})
      */
