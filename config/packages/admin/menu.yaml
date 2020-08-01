@@ -2,7 +2,7 @@ easy_admin:
   design:
     brand_color: 'black'
     menu:
-      - { label: 'Application Export', icon: 'sign-in', route: 'app' }
+      - { label: 'Retour au planning', icon: 'sign-in', route: 'app' }
       - label: 'Information transport'
         children:
           - {entity: 'Warehouse', icon: 'industry', label: 'Entrepôts'}
@@ -19,3 +19,6 @@ easy_admin:
         children:          
           - {entity: 'InitialParams', icon: 'tools', label: 'Paramètres de base'}
           - {entity: 'DestinationParams', icon: 'tools', label: 'Paramètres de destination'}
+      - label: 'Profils'
+        children:
+            - {entity: 'User', icon: 'user', label: 'Utilisateur'}  

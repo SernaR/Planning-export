@@ -41,6 +41,11 @@ const Orders = (props) => {
     }
 
     const handleFilter = (filter) => {
+        setSearch({
+            code:'',
+            carrier: '',
+            country: ''
+        })
         setUrl( ORDERS_API + `?exists[${filter}]=false`)
     }
     
