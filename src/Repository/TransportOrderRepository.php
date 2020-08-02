@@ -29,55 +29,6 @@ class TransportOrderRepository extends ServiceEntityRepository
         ;    
     }
 
-    public function findAllFiltered(OrderSearch $search) {
-
-        $query = $this->createQueryBuilder('t')
-            ->join('t.carrier', 'ca')
-            ->join('t.firstDeliveryWarehouse', 'w')
-            ->join('w.adress', 'a')
-            ->join('a.country', 'c'); 
-
-        if($search->getCode()) {
-            $query = $query
-                ->andWhere('t.code like :code')
-                ->setParameter('code',  '%'.$search->getCode().'%');
-        }
-
-        if($search->getCountry()) {
-            $query = $query
-                ->andWhere('c.name like :country')
-                ->setParameter('country',  '%'.$search->getCountry().'%');
-        } 
-        
-        if($search->getCarrier()) {
-            $query = $query
-                ->andWhere('ca.name like :carrier')
-                ->setParameter('carrier',  '%'.$search->getCarrier().'%');
-        }
-        return $query->getQuery();
-    }
-
-    public function findOneToFulfill($order) {
-        return $this->createQueryBuilder('t')
-            ->select(
-                't.code',
-                't.firstLoadingStart',
-                't.firstLoadingEnd',
-                't.firstDelivery',
-                'c.name as carrier',
-                'lw.name as firstLoadingWarehouse',
-                'dw.name as firstDeliveryWarehouse'
-            )
-            ->join('t.carrier', 'c')
-            ->join('t.firstLoadingWarehouse', 'lw')
-            ->join('t.firstDeliveryWarehouse', 'dw')
-            ->andWhere('t.id = :order')
-            ->setParameter('order', $order)
-            ->getQuery()
-            ->getOneOrNullResult();
-            //->getResult(); 
-    }
-
     // /**
     //  * @return TransportOrder[] Returns an array of TransportOrder objects
     //  */

@@ -32,7 +32,7 @@ export default function Navbar() {
       <AppBar position="static" color='primary'>
         <Toolbar className={classes.toolbar}>
           <Typography variant="h5" color="inherit" className={classes.title}>
-            <NavLink to="/">La Redoute</NavLink>  
+            <NavLink to="/">Kip Creativ'</NavLink>  
           </Typography>
           <div >
             <Button className={classes.menuButton} color="inherit"><NavLink to="/creation/nouveau">Nouveau</NavLink></Button>

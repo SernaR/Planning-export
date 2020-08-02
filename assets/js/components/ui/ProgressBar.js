@@ -17,5 +17,3 @@ export default function ProgressBar() {
     </div>
   );
 }
-
-//<LinearProgress variant="determinate" value={progress} />

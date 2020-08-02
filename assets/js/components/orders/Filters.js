@@ -1,35 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+
+import { useStyles } from '../../styles/orders'
 
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-
-const useStyles = makeStyles((theme) => ({
-    card: {
-        marginTop: theme.spacing(2),
-        //maxWidth: 345,
-    },
-        cardContent: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '80%',
-        margin: 'auto'
-    },  
-
-    title: {
-        textAlign: 'center',
-        fontWeight: 'bold',
-        textTransform: 'uppercase'
-    },
-    button: {
-        background: '#f4f4f4',
-        marginTop: '1em',
-        textTransform: 'capitalize'
-    },
-}));
-
 
 export default function Filters({ onFilter }) {
   const classes = useStyles();
@@ -46,14 +22,14 @@ export default function Filters({ onFilter }) {
             <Button 
                 variant="outlined" 
                 onClick={() => onFilter('effectiveFirstLoadingStart')} 
-                className={classes.button}
+                className={classes.button2}
                 fullWidth  >
                 A confirmer
             </Button>
             <Button 
                 variant="outlined" 
                 onClick={() => onFilter('invoice')} 
-                className={classes.button}
+                className={classes.button2}
                 fullWidth  >
                 A régler
             </Button>

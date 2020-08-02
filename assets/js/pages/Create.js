@@ -80,7 +80,6 @@ const Create = ({match, history}) => {
             checkDate(order)
         }catch(err) {
             setToast(true)
-            console.log(err)   
         }
     }
 

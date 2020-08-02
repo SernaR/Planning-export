@@ -11,8 +11,6 @@ import PageWrap from '../components/ui/PageWrap';
 import List from '../components/planning/List'
 import Agenda from '../components/planning/Agenda';
 
-//const dateInit = moment().weekday(0)
-
 const useStyles = makeStyles(theme => ({
   reset: {
     marginTop: theme.spacing(1)
@@ -25,7 +23,7 @@ const Planning = ({ match }) => {
   const { date } = match.params  
   const dateInit = date === 'consultation' ? moment().weekday(0) : moment(date).weekday(0)
   
-  const [monday, setMonday] = useState(dateInit) //params.monday || dateinit ??
+  const [monday, setMonday] = useState(dateInit) 
   const [planning, setPlanning] = useState([])
   const [orders, setOrders] = useState([])
 
@@ -109,7 +107,10 @@ const Planning = ({ match }) => {
           <Button className={classes.reset} size="small" onClick={() => setOrders(weekOrders.current)} ><RotateLeftTwoToneIcon/> Réinitialiser</Button>
         </Grid>  
         <Grid item >
-          <List orders={orders} onRemove={ fetchData }/>   
+          <List 
+            orders={orders} 
+            onRemove={ fetchData }
+            setToast={setToast}/>   
         </Grid>  
       </Grid>  
     </PageWrap> 

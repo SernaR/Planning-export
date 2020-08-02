@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         { order && <>
           <View style={styles.section}>
             <View style={styles.cockpit}>
-              <Text style={styles.logo}>La Redoute</Text>
+              <Text style={styles.logo}>Kip Creativ'</Text>
               <Text>{moment(order.updatedAt).format('DD/MM/YYYY')} </Text>
             </View>
           </View>  
@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
             <View style={styles.body1}>
               <View>
                 <Text style={styles.title2}>DONNEUR D'ORDRE / PRINCIPAL</Text>
-                <Text style={styles.title2}>La Redoute</Text>
-                <Text>110, rue Blanchemaille</Text>
-                <Text style={styles.gutterBottom}>59100 Roubaix</Text>
-                <Text>tel: 03 20 69 69 32</Text>
+                <Text style={styles.title2}>Kip Creativ'</Text>
+                <Text>132, rue de Dunkerque</Text>
+                <Text style={styles.gutterBottom}>59200 Tourcoing</Text>
+                <Text>tel: 07 81 21 95 94</Text>
                 <Text>Num TVA fr0000000000</Text>
               </View>
               <View>

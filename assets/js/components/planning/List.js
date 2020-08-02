@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const List = ({orders, onRemove }) => {
+const List = ({orders, onRemove, setToast }) => {
     
     const classes = useStyles()
     const [openAlert, setOpenAlert] = useState(false);
@@ -39,8 +39,7 @@ const List = ({orders, onRemove }) => {
             await API.update(ORDERS_API, openAlert, { isCancelled:true })
             
         } catch (err) {
-            console.log(err.response)
-            alert('error')
+            setToast(true)
         }
         onRemove(openAlert)
         setOpenAlert(false)

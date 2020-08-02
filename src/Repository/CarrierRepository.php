@@ -19,19 +19,6 @@ class CarrierRepository extends ServiceEntityRepository
         parent::__construct($registry, Carrier::class);
     }
 
-    public function findCarrierByCountry($country)
-    {
-        return $this->createQueryBuilder('c')
-            ->select('c.id','c.name')
-            ->join('c.deliveryPlaces', 'd')
-            ->where('d.id = :country')
-            ->setParameter('country', $country)
-            ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     // /**
     //  * @return Carrier[] Returns an array of Carrier objects
     //  */
