@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur{% endblock %} 
+
+{% block body %}
+<h1 class="txt-center font-w400">La Redoute</h1>
+<div class="p-2 my-2 shadow-1 white">
+    <h2 class="txt-center font-w400">Oups, voilà qui n'etait pas prévu </h2>
+	
+</div>
+<div class="grix fx-center">
+	<div class="card shadow-1 white">
+		<div class="card-header">Page non trouvée...</div>
+		<div class="divider"></div>
+		<div class="card-content">
+			<p>La page que vous avez demandée n'existe pas</p>
+		</div>
+		<div class="card-footer">
+			<a href={{ path('app') }} class="btn shadow-1 rounded-1 small grey light-3">retour au planning</a>
+		</div>
+   	</div>
+</div>	
+{% endblock %}
+
