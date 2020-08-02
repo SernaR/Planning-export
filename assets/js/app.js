@@ -44,8 +44,8 @@ const App = () => {
                         <Route path="/creation/:id" component={ Create } />
                         <Route path="/annonce/ordre/:id" component={ Fulfill } />
                         <Route path="/facturation/ordre/:id" component={ Bill } />
-                        <Route path="/liste" component={ Orders } />
-                        <Route path="/planning" component={ Planning } />
+                        <Route path="/liste/:selection" component={ Orders } />
+                        <Route path="/planning/:date" component={ Planning } />
                         <Route path="/labo" component={ Labo } />
                         <Route path="/pdf" component={ Labo_PDF } />
                         <Route path="/pdf-viewer" component={ PdfViewer } />

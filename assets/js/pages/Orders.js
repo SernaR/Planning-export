@@ -19,8 +19,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Orders = (props) => {
+const Orders = ({match}) => {
     const classes = useStyles();
+    
+    const { selection } = match.params  
+    const filter = selection === 'consultation' ? ORDERS_API : ORDERS_API + `?exists[${selection}]=false`
 
     const [toast, setToast] = useState(false) 
     const [loading, setLoading] = useState(false)
@@ -29,7 +32,7 @@ const Orders = (props) => {
         carrier: '',
         country: ''
     })
-    const [url, setUrl] = useState(ORDERS_API)
+    const [url, setUrl] = useState(filter)
 
     const handleChange = ({ currentTarget }) => {
         const { name, value } = currentTarget;

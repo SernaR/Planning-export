@@ -36,8 +36,8 @@ export default function Navbar() {
           </Typography>
           <div >
             <Button className={classes.menuButton} color="inherit"><NavLink to="/creation/nouveau">Nouveau</NavLink></Button>
-            <Button className={classes.menuButton} color="inherit"><NavLink to="/planning">Planning</NavLink></Button>
-            <Button className={classes.menuButton} color="inherit"><NavLink to="/liste">Liste</NavLink></Button>
+            <Button className={classes.menuButton} color="inherit"><NavLink to="/planning/consultation">Planning</NavLink></Button>
+            <Button className={classes.menuButton} color="inherit"><NavLink to="/liste/consultation">Liste</NavLink></Button>
             <Button className={classes.menuButton} color="inherit" ><a href={ ADMIN }>Administration</a></Button>
             <Button className={classes.menuButton} color="inherit" ><a href={ LOGOUT }>Deconnexion</a></Button>
           </div>   

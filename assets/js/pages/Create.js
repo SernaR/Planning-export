@@ -25,7 +25,7 @@ const Create = ({match, history}) => {
     const { id } = match.params;
 
     const { data: initials, error } = useSWR( CREATE_SETUP_API, API.fetcher )
-
+    
     const countries = useRef([])
     if (initials) {
         countries.current = initials.destinations.map(init => init.country)
@@ -79,19 +79,22 @@ const Create = ({match, history}) => {
             setDestination(getDestination(orderFound.country.id))
             checkDate(order)
         }catch(err) {
-            setToast(true)   
+            setToast(true)
+            console.log(err)   
         }
     }
 
     useEffect(() => {
-        if(id === "nouveau") {
-            setup()
-        }else {
-            setEditing(true);
-            fetchData(id);
-        } 
-    }, [id])
-
+        if(initials) {
+            if(id === "nouveau") {
+                setup()
+            }else {
+                setEditing(true)
+                fetchData(id)
+            } 
+        }
+    }, [initials, id])
+    
     const getRate = (order) => { 
         if (order.carrier && order.firstLoadingWarehouse && order.firstDeliveryWarehouse) {
             setLoading(true)
@@ -213,7 +216,7 @@ const Create = ({match, history}) => {
 
     const handleClose = useCallback(() => {
         if(editing) {
-            history.push('/planning') //filtre ?************************
+            history.push(`/planning/${order.firstLoadingStart}`) 
         } else {
             setPdf({})
             setOpenAlert(false)
@@ -222,7 +225,7 @@ const Create = ({match, history}) => {
 
     const handleReset = () => {
         if(editing) {
-            history.push('/planning') //filtre ?************************
+            history.push(`/planning/${order.firstLoadingStart}`) 
         } else {
             setup()
         }
@@ -230,7 +233,7 @@ const Create = ({match, history}) => {
 
     if (error) setToast(true) 
     if (!initials) return <LoadingPage/>
-
+    
     return <PageWrap
         loading={loading}
         title={ `Ordre de Transport ${order.code || ''}`}

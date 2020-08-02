@@ -58,7 +58,7 @@ const Bill = ({ match, history }) => {
         return ( isNaN(amount) || bill.invoice === '' )  ? false :({ ...bill, amount}) 
     }
 
-    const goBack = () =>  history.push('/liste') //filtre ?
+    const goBack = () =>  history.push('/liste/invoice')
 
     const handleSubmit = async(e) => {  
         e.preventDefault()

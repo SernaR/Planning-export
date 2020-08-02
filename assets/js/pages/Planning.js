@@ -11,7 +11,7 @@ import PageWrap from '../components/ui/PageWrap';
 import List from '../components/planning/List'
 import Agenda from '../components/planning/Agenda';
 
-const dateInit = moment().weekday(0)
+//const dateInit = moment().weekday(0)
 
 const useStyles = makeStyles(theme => ({
   reset: {
@@ -19,8 +19,12 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Planning = (props) => {
-  const classes = useStyles();
+const Planning = ({ match }) => {
+  const classes = useStyles()
+
+  const { date } = match.params  
+  const dateInit = date === 'consultation' ? moment().weekday(0) : moment(date).weekday(0)
+  
   const [monday, setMonday] = useState(dateInit) //params.monday || dateinit ??
   const [planning, setPlanning] = useState([])
   const [orders, setOrders] = useState([])
