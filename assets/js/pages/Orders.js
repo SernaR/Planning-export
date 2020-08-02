@@ -16,6 +16,19 @@ const useStyles = makeStyles((theme) => ({
   },
   reset: {
     marginTop: theme.spacing(1)
+  },
+  filters: {
+    [theme.breakpoints.down('md')]: {
+        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'row'
+      },
+  },
+  filtersItem: {
+    [theme.breakpoints.down('md')]: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1)
+      },
   }
 }));
 
@@ -85,16 +98,20 @@ const Orders = ({match}) => {
             setToast(false)}}
     > 
         <Grid container spacing={2} justify='center'>
-            <Grid item xs={2}>
-                <Search 
-                    search={search} 
-                    onChange={ handleChange } 
-                    onSubmit={ handleSubmit } 
-                /> 
-                <Filters onFilter = { handleFilter } /> 
-                <Button className={classes.reset} size="small" onClick={() => setUrl(ORDERS_API)} ><RotateLeftTwoToneIcon/> Réinitialiser</Button>
+            <Grid item xs={12} lg={2} className={classes.filters}>
+                <Grid item xs={4} lg={12} className={classes.filtersItem}>
+                    <Search 
+                        search={search} 
+                        onChange={ handleChange } 
+                        onSubmit={ handleSubmit } 
+                    /> 
+                </Grid>
+                <Grid item xs={4} lg={12} className={classes.filtersItem}>
+                    <Filters onFilter = { handleFilter } /> 
+                    <Button className={classes.reset} size="small" onClick={() => setUrl(ORDERS_API)} ><RotateLeftTwoToneIcon/> Réinitialiser</Button>
+                </Grid>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item>
                 <List 
                     url={ url } 
                     setToast={ setToast }
