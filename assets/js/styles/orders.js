@@ -13,11 +13,11 @@ export const useStyles = makeStyles(theme => ({
     },  
     form: {
         margin: '1em auto',
-      },
-      field: {
+    },
+    field: {
         marginBottom: theme.spacing(2),
         width: '100%'
-      },
+    },
     title: {
         textAlign: 'center',
         fontWeight: 'bold',

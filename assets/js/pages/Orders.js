@@ -64,6 +64,15 @@ const Orders = ({match}) => {
         })
         setUrl( ORDERS_API + `?exists[${filter}]=false`)
     }
+
+    const reset = () => {
+        setSearch({
+            code:'',
+            carrier: '',
+            country: ''
+        })
+        setUrl( ORDERS_API )
+    }
     
     
     const getUrl = () => {
@@ -108,7 +117,7 @@ const Orders = ({match}) => {
                 </Grid>
                 <Grid item xs={4} lg={12} className={classes.filtersItem}>
                     <Filters onFilter = { handleFilter } /> 
-                    <Button className={classes.reset} size="small" onClick={() => setUrl(ORDERS_API)} ><RotateLeftTwoToneIcon/> Réinitialiser</Button>
+                    <Button className={classes.reset} size="small" onClick={ reset } ><RotateLeftTwoToneIcon/> Réinitialiser</Button>
                 </Grid>
             </Grid>
             <Grid item>
