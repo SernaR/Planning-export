@@ -3,7 +3,7 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-<h1 class="txt-center font-w400">La Redoute</h1>
+<h1 class="txt-center font-w400">Kip Creativ'</h1>
 <div class="p-2 my-2 shadow-1 white">
     <h2 class="txt-center font-w400">Bienvenue sur le planning Export</h2>
 </div>
@@ -21,8 +21,7 @@
                         You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
                     </div>
                 {% endif %}
-
-                
+    
                 <div class="form-field">
                     <label for="inputEmail">Adresse email</label>
                     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control rounded-1" required autofocus>
