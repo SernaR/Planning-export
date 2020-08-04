@@ -1,5 +1,5 @@
 export const APP_URL = process.env.APP_URL
-export const API_URL = APP_URL + 'api/'
+export const API_URL = 'api/'
 
 export const ORDERS_API = API_URL + 'transport_orders'
 //export const COUNTRY_API = API_URL + '/api/destination_params'

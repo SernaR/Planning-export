@@ -30,7 +30,7 @@ export default function Search({ search, onChange, onSubmit }) {
 
             {fields.map((field, index) => (  
                 <TextField key={index}
-                    className={classes.field}
+                    className={classes.input}
                     variant="outlined"
                     size="small"
                     label={field.placeholder}

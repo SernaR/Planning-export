@@ -14,7 +14,7 @@ export const useStyles = makeStyles(theme => ({
     form: {
         margin: '1em auto',
     },
-    field: {
+    input: {
         marginBottom: theme.spacing(2),
         width: '100%'
     },
