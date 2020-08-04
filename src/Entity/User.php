@@ -44,6 +44,10 @@ class User implements UserInterface
     */
     private $plainPassword = null;
 
+    public function __toString() {
+        return $this->getEmail();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
