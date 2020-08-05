@@ -22,11 +22,15 @@ class TransportOrderRepository extends ServiceEntityRepository
 
     public function lastOrderCode()
     {
-        return $this->createQueryBuilder('t')
-            ->select('count(t.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-        ;    
+        try{
+            return $this->createQueryBuilder('t')
+                ->select('count(t.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
+            ;    
+        } catch(\Exception $e) {
+            return 0;
+        }
     }
 
     // /**
