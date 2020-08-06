@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\api;
 
 use App\Entity\TransportOrder;
 use App\Repository\TransportOrderRepository;

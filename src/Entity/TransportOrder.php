@@ -28,7 +28,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *          "normalization_context"={"groups"={"orders_read"}}
  *      },
  *      "post"={
- *          "controller"=App\Controller\Api\OrderController::class
+ *          "controller"=App\Controller\api\OrderController::class
  *      }
  *  }
  * )
