@@ -215,7 +215,7 @@ const Create = ({match, history}) => {
 
     const handleClose = useCallback(() => {
         if(editing) {
-            history.push(`/planning/${order.firstLoadingStart}`) 
+            history.push(`/planning/${pdf.firstLoadingStart}`) 
         } else {
             setPdf({})
             setOpenAlert(false)
